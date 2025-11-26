@@ -1,0 +1,218 @@
+/* styles/temas.css */
+
+/* Tema para a Hero Section da Home */
+.hero-section-azul {
+    background: linear-gradient(135deg, var(--cor-primaria), #6f42c1);
+    border-radius: 0.75rem;
+}
+
+/* Gradientes para Relatórios */
+.header-gradiente-bug {
+    background: linear-gradient(135deg, #dc3545, #fd7e14);
+}
+
+.header-gradiente-teste {
+    background: linear-gradient(135deg, #0d6efd, #6f42c1);
+}
+
+.header-gradiente-devbox {
+    background: linear-gradient(135deg, #212529, #6c757d);
+}
+
+.header-gradiente-plano {
+    background: linear-gradient(135deg, #6f42c1, #8e44ad);
+}
+
+/* Badges de Status */
+.badge-status {
+    font-size: 1rem;
+    padding: 0.5em 0.7em;
+}
+
+/* Dropdowns com Avatar */
+.form-select-with-avatar {
+    position: relative;
+}
+
+.form-select-with-avatar::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.form-select-with-avatar select {
+    padding-left: 48px !important;
+}
+
+.user-avatar-inline {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* Botões de País com bandeiras */
+.btn-pais {
+    position: relative;
+    padding-left: 2.5rem !important;
+}
+
+.btn-pais img {
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 16px;
+    object-fit: cover;
+    border-radius: 2px;
+    transition: filter 0.2s ease;
+}
+
+/* Bandeiras em preto e branco quando NÃO selecionadas */
+.btn-check:not(:checked) + .btn-pais img {
+    filter: grayscale(100%);
+}
+
+/* Bandeiras coloridas quando selecionadas */
+.btn-check:checked + .btn-pais img {
+    filter: grayscale(0%);
+}
+
+/* Estilo dos botões de país */
+.btn-outline-secondary.btn-pais {
+    color: #6c757d;
+    border-color: #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.btn-check:checked + .btn-outline-secondary.btn-pais {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+/* Hover nos botões de país */
+.btn-outline-secondary.btn-pais:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+/* Melhorar espaçamento dos botões */
+.btn-pais {
+    min-width: 90px;
+    text-align: left;
+}
+
+/* Custom Select com Avatar */
+.custom-select-avatar {
+    position: relative;
+    width: 100%;
+}
+
+.custom-select-avatar .select-selected {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+.custom-select-avatar .select-selected:hover,
+.custom-select-avatar .select-selected.select-arrow-active {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.custom-select-avatar .select-selected.placeholder {
+    color: #6c757d;
+}
+
+.custom-select-avatar .select-items {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 2px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.custom-select-avatar .select-items div {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.custom-select-avatar .select-items div:hover {
+    background-color: #f8f9fa;
+}
+
+.custom-select-avatar .select-items div.same-as-selected {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.custom-select-avatar .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.custom-select-avatar .select-selected .user-avatar {
+    width: 28px;
+    height: 28px;
+    margin-right: 0.5rem;
+}
+
+.custom-select-avatar .select-hide {
+    display: none;
+}
+
+.custom-select-avatar .select-items::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-select-avatar .select-items::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.custom-select-avatar .select-items::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.custom-select-avatar .select-items::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

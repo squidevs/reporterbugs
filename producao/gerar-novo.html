@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Item Generation Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Estilos do projeto aplicados -->
+    <link rel="stylesheet" href="styles/globais.css">
+    <link rel="stylesheet" href="styles/desktop.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+    <link rel="stylesheet" href="styles/temas.css">
+    <link rel="stylesheet" href="styles/styles.css">
+
+</head>
+
+<body>
+    <!-- Conteúdo Principal -->
+    <main class="conteudo-principal p-4">
+        <div class="container-fluid" style="max-width: 1200px;">
+            <!-- Menu de Ações -->
+            <div class="d-flex justify-content-end mb-3">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuActions" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical me-1"></i> Ações
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuActions">
+                        <li><a class="dropdown-item" href="#" id="btn-download-json"><i class="bi bi-download me-2"></i>Baixar Template JSON</a></li>
+                        <li><a class="dropdown-item" href="#" id="btn-import-json"><i class="bi bi-upload me-2"></i>Importar JSON</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="btn-download-csv"><i class="bi bi-filetype-csv me-2"></i>Baixar Template CSV</a></li>
+                        <li><a class="dropdown-item" href="#" id="btn-import-csv"><i class="bi bi-filetype-csv me-2"></i>Importar CSV</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Input oculto para importar arquivos -->
+            <input type="file" id="fileInputJson" accept=".json" style="display: none;">
+            <input type="file" id="fileInputCsv" accept=".csv" style="display: none;">
+            
+            <!-- Page Header -->
+            <div class="page-header text-center">
+                <h1><i class="bi bi-hammer me-2"></i>Work Item Generation Assistant</h1>
+                <p class="mb-0 mt-2 opacity-90">Fill in the fields below to generate a formatted work item</p>
+            </div>
+
+            <!-- Form -->
+            <form id="formulario" novalidate>
+                <!-- Steps Accordion -->
+                <div class="accordion" id="accordionEtapas">
+                    <!-- Step 1: Basic Information -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingInfoBasicas">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseInfoBasicas" aria-expanded="true"
+                                aria-controls="collapseInfoBasicas">
+                                <i class=" me-2"></i>Step 1: Basic Information
+                            </button>
+                        </h2>
+                        <div id="collapseInfoBasicas" class="accordion-collapse collapse show"
+                            aria-labelledby="headingInfoBasicas" data-bs-parent="#accordionEtapas">
+                            <div class="accordion-body">
+
+                                <div class="mb-4">
+                                    <div class="mb-4">
+                                        <label class="form-label" for="demandSource">
+                                            Will this demand be returned directly by the service or come from Backoffice? <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Select whether the demand comes directly from the service or from Backoffice."></i>
+                                        </label>
+                                        <div class="btn-toggle-group" role="group" id="demandSourceGroup">
+                                            <input type="radio" class="btn-check" name="demandSource" id="Service" value="Service"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Service">Service</label>
+                                            <input type="radio" class="btn-check" name="demandSource" id="Backoffice" value="Backoffice"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Backoffice">Backoffice</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="backendDocAvailable">
+                                            Backend documentation already available?
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Indicate if the backend documentation is already available."></i>
+                                        </label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="backendDocAvailable"
+                                                name="backendDocAvailable">
+                                            <label class="form-check-label" for="backendDocAvailable">
+                                                <span id="backendDocAvailableLabel">No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4" id="backendDocUrlContainer" style="display: none;">
+                                        <label class="form-label" for="backendDocUrl">
+                                            Enter URL/Link to document (Azure Wiki or other) <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Enter the URL or link to the backend documentation."></i>
+                                        </label>
+                                        <input type="url" id="backendDocUrl" name="backendDocUrl" class="form-control"
+                                            placeholder="https://dev.azure.com/... or https://wiki.example.com/...">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="titulo">
+                                            Title <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Enter a clear and objective title for the work item."></i>
+                                        </label>
+                                        <input type="text" id="titulo" name="titulo" class="form-control"
+                                            placeholder="Enter the work item title...">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="solicitante">
+                                            Reported by <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Enter your name"></i>
+                                        </label>
+                                        <input type="text" id="nome" name="nome" class="form-control"
+                                            placeholder="Enter your name...">
+                                    </div>
+
+
+                                    <label class="form-label" for="country">
+                                        Select country <span class="badge-required">*</span>
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Select the country(ies) involved in the work item."></i>
+                                    </label>
+                                    <div class="btn-toggle-group" role="group" id="countryGroup">
+                                        <input type="checkbox" class="btn-check" name="country" id="LT" value="LT"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-danger btn-pais" for="LT">
+                                            <img src="https://img1.gratispng.com/20181206/up/kisspng-flags-of-south-america-latin-america-united-states-americalatina-en-taringa-1713912771812.webp"
+                                                alt="LT" onerror="this.style.display='none'">
+                                            LT
+                                        </label>
+                                        <input type="checkbox" class="btn-check" name="country" id="AR" value="AR"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-danger btn-pais" for="AR">
+                                            <img src="https://flagpedia.net/data/flags/h20/ar.webp" alt="AR"
+                                                onerror="this.style.display='none'">
+                                            AR
+                                        </label>
+                                        <input type="checkbox" class="btn-check" name="country" id="BO" value="BO"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-danger btn-pais" for="BO">
+                                            <img src="https://flagpedia.net/data/flags/h20/bo.webp" alt="BO"
+                                                onerror="this.style.display='none'">
+                                            BO
+                                        </label>
+                                        <input type="checkbox" class="btn-check" name="country" id="CL" value="CL"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-danger btn-pais" for="CL">
+                                            <img src="https://flagpedia.net/data/flags/h20/cl.webp" alt="CL"
+                                                onerror="this.style.display='none'">
+                                            CL
+                                        </label>
+                                        <input type="checkbox" class="btn-check" name="country" id="PE" value="PE"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-danger btn-pais" for="PE">
+                                            <img src="https://flagpedia.net/data/flags/h20/pe.webp" alt="PE"
+                                                onerror="this.style.display='none'">
+                                            PE
+                                        </label>
+                                        <input type="checkbox" class="btn-check" name="country" id="PY" value="PY"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-danger btn-pais" for="PY">
+                                            <img src="https://flagpedia.net/data/flags/h20/py.webp" alt="PY"
+                                                onerror="this.style.display='none'">
+                                            PY
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="featureModalBtn">
+                                        Select Feature/Page <span class="badge-required">*</span>
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Select one or more features or pages related to the work item. Click the button to open the complete list."></i>
+                                    </label>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center"
+                                            id="featureModalBtn" data-bs-toggle="modal" data-bs-target="#featureModal">
+                                        <span id="featureSelectedDisplay">
+                                                <span class="text-muted">Select one or more features...</span>
+                                        </span>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                    <input type="text" id="featureOtherInput" name="featureOtherInput"
+                                        class="form-control mt-2" style="display:none;"
+                                            placeholder="Describe the feature...">
+                                    <input type="hidden" id="featureSelectedValues" name="featureSelectedValues">
+                                </div>
+
+                                <div class="mb-4">
+                                        <label class="form-label" for="workitem">
+                                        Select Work Item <span class="badge-required">*</span>
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Choose if the work item is a BUG or a Defect"></i>
+                                    </label>
+                                    <div class="btn-toggle-group" role="group" id="workitemGroup">
+                                        <input type="radio" class="btn-check" name="workitem" id="BUG"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-danger" for="BUG"><i
+                                                class="bi bi-bug-fill me-1"></i>BUG</label>
+                                        <input type="radio" class="btn-check" name="workitem" id="Defect"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="Defect"><i
+                                                class="bi bi-file-text me-1"></i>Defect</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Bug Details -->
+                    <div class="accordion-item" id="accordionItemBug" style="display: none;">
+                        <h2 class="accordion-header" id="headingBug">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseBug" aria-expanded="false" aria-controls="collapseBug">
+                                <i class="bi bi-bug-fill me-2"></i>Step 2: Bug Details
+                            </button>
+                        </h2>
+                        <div id="collapseBug" class="accordion-collapse collapse" aria-labelledby="headingBug"
+                            data-bs-parent="#accordionEtapas">
+                            <div class="accordion-body">
+                                <div id="bugFields">
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="env">
+                                            Select environment <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Select the environment(s) where the bug occurs."></i>
+                                        </label>
+                                        <div class="btn-toggle-group" role="group" id="envGroup">
+                                            <input type="checkbox" class="btn-check" name="env" id="QA" value="QA"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-danger" for="QA"><i
+                                                    class="bi bi-bug me-1"></i>QA</label>
+                                            <input type="checkbox" class="btn-check" name="env" id="BETA" value="BETA"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-danger" for="BETA"><i
+                                                    class="bi bi-layers me-1"></i>BETA</label>
+                                            <input type="checkbox" class="btn-check" name="env" id="PROD" value="PROD"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-danger" for="PROD"><i
+                                                    class="bi bi-globe me-1"></i>PROD</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="prodRepro">
+                                            Possible reproduce in PROD?
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Indicate if the bug can be reproduced in production."></i>
+                                        </label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="prodRepro"
+                                                name="prodRepro">
+                                            <label class="form-check-label" for="prodRepro">
+                                                <span id="prodReproLabel">No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="context">
+                                            Context <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Describe the context in which the bug occurs."></i>
+                                        </label>
+                                        <textarea id="context" name="context" rows="3" class="form-control"
+                                            placeholder="Describe the context..."></textarea>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="reproSteps">
+                                            Repro Steps to reproduction <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="List the steps to reproduce the bug."></i>
+                                        </label>
+                                        <textarea id="reproSteps" name="reproSteps" rows="4" class="form-control"
+                                            placeholder="1. Step one&#10;2. Step two&#10;3. Step three"></textarea>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="breakpoint">
+                                            Select Breakpoint (optional)
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Select the affected breakpoint(s), if applicable."></i>
+                                        </label>
+                                        <div class="btn-group-flex" role="group" id="breakpointGroup">
+                                            <input type="checkbox" class="btn-check" name="breakpoint" id="1280px"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="1280px">1280px</label>
+                                            <input type="checkbox" class="btn-check" name="breakpoint" id="360px"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="360px">360px</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            <label class="form-label" for="cine">
+                                                Cinema (optional)
+                                                <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                    title="Enter the cinema involved, if applicable."></i>
+                                            </label>
+                                            <input type="text" id="cine" name="cine" class="form-control"
+                                                placeholder="Hoyts Unicenter, etc.">
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label class="form-label" for="user">
+                                                User <span class="badge-required">*</span>
+                                                <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                    title="User used for login and testing."></i>
+                                            </label>
+                                            <input type="text" id="user" name="user" class="form-control"
+                                                placeholder="user@example.com">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="password">
+                                            Password <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="User password for login."></i>
+                                        </label>
+                                        <input type="password" id="password" name="password" class="form-control"
+ placeholder="••••••••">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="userType">
+                                            Select User type <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Select the user type(s) involved in the test."></i>
+                                        </label>
+                                        <div class="btn-group-flex" role="group" id="userTypeGroup">
+                                            <input type="checkbox" class="btn-check" name="userType" id="Comum"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-user-type" for="Comum">
+                                                <img src="https://i.ibb.co/tTSF48b7/Captura-de-tela-2025-09-25-135916-removebg-preview.png"
+                                                    alt="Comum" onerror="this.style.display='none'">
+                                                Comum
+                                            </label>
+                                            <input type="checkbox" class="btn-check" name="userType"
+                                                id="cine fan or club" autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-user-type" for="cine fan or club">
+                                                <img src="https://i.ibb.co/TML2xPsS/Captura-de-tela-2025-09-25-135828-removebg-preview.png"
+                                                    alt="Cine Fan/Club" onerror="this.style.display='none'">
+                                                Cine Fan/Club
+                                            </label>
+                                            <input type="checkbox" class="btn-check" name="userType"
+                                                id="cine fan or club plus" autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-user-type"
+                                                for="cine fan or club plus">
+                                                <img src="https://i.ibb.co/99jF8Yzb/Captura-de-tela-2025-09-25-135820-removebg-preview.png"
+                                                    alt="Cine Fan/Club Plus" onerror="this.style.display='none'">
+                                                Cine Fan/Club Plus
+                                            </label>
+                                            <input type="checkbox" class="btn-check" name="userType"
+                                                id="cine fan or club black" autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-user-type"
+                                                for="cine fan or club black">
+                                                <img src="https://i.ibb.co/zV5L6gQy/Captura-de-tela-2025-09-25-135813-removebg-preview.png"
+                                                    alt="Cine Fan/Club Black" onerror="this.style.display='none'">
+                                                Cine Fan/Club Black
+                                            </label>
+                                            <input type="checkbox" class="btn-check" name="userType" id="employee"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-dark" for="employee">Employee</label>
+                                            <input type="checkbox" class="btn-check" name="userType" id="YPF"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-dark" for="YPF">YPF</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="businessRule">
+                                            Business rule And expected solution <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Describe the business rule and expected solution for the request."></i>
+                                        </label>
+                                        <textarea id="businessRule" name="businessRule" rows="4" class="form-control"
+                                            placeholder="Describe the business rule and expected solution..."></textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="related">
+                                            Related
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Related ID or reference"></i>
+                                        </label>
+                                        <input type="text" id="related" name="related" class="form-control"
+                                            placeholder="Enter the related ID or reference...">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="linkFigma">
+                                            Link Figma (optional)
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Enter the Figma link, if available."></i>
+                                        </label>
+                                        <input type="text" id="linkFigma" name="linkFigma" class="form-control"
+                                            placeholder="https://figma.com/...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Defect Details -->
+                    <div class="accordion-item" id="accordionItemDefect" style="display: none;">
+                        <h2 class="accordion-header" id="headingDefect">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseDefect" aria-expanded="false"
+                                aria-controls="collapseDefect">
+                                <i class="bi bi-file-text me-2"></i>Step 2: Defect Details
+                            </button>
+                        </h2>
+                        <div id="collapseDefect" class="accordion-collapse collapse"
+                            aria-labelledby="headingDefect" data-bs-parent="#accordionEtapas">
+                            <div class="accordion-body">
+                                <div id="defectFields">
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="envDefect">
+                                            Select environment <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Select the environment(s) where the defect occurs."></i>
+                                        </label>
+                                        <div class="btn-toggle-group" role="group" id="envGroupDefect">
+                                            <input type="checkbox" class="btn-check" name="envDefect" id="QADefect" value="QA"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-danger" for="QADefect"><i
+                                                    class="bi bi-bug me-1"></i>QA</label>
+                                            <input type="checkbox" class="btn-check" name="envDefect" id="BETADefect" value="BETA"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-danger" for="BETADefect"><i
+                                                    class="bi bi-layers me-1"></i>BETA</label>
+                                            <input type="checkbox" class="btn-check" name="envDefect" id="PRODDefect" value="PROD"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-danger" for="PRODDefect"><i
+                                                    class="bi bi-globe me-1"></i>PROD</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="prodReproDefect">
+                                            Possible reproduce in PROD?
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Indicate if the defect can be reproduced in production."></i>
+                                        </label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="prodReproDefect"
+                                                name="prodReproDefect">
+                                            <label class="form-check-label" for="prodReproDefect">
+                                                <span id="prodReproDefectLabel">No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="contextDefect">
+                                            Context <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Describe the context in which the defect occurs."></i>
+                                        </label>
+                                        <textarea id="contextDefect" name="contextDefect" rows="3" class="form-control"
+                                            placeholder="Describe the context..."></textarea>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="reproStepsDefect">
+                                            Repro Steps to reproduction <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="List the steps to reproduce the defect."></i>
+                                        </label>
+                                        <textarea id="reproStepsDefect" name="reproStepsDefect" rows="4" class="form-control"
+                                            placeholder="1. Step one&#10;2. Step two&#10;3. Step three"></textarea>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="breakpointDefect">
+                                            Select Breakpoint (optional)
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Select the affected breakpoint(s), if applicable."></i>
+                                        </label>
+                                        <div class="btn-group-flex" role="group" id="breakpointGroupDefect">
+                                            <input type="checkbox" class="btn-check" name="breakpointDefect" id="1280pxDefect"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="1280pxDefect">1280px</label>
+                                            <input type="checkbox" class="btn-check" name="breakpointDefect" id="360pxDefect"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="360pxDefect">360px</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            <label class="form-label" for="cineDefect">
+                                                Cinema (optional)
+                                                <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                    title="Enter the cinema involved, if applicable."></i>
+                                            </label>
+                                            <input type="text" id="cineDefect" name="cineDefect" class="form-control"
+                                                placeholder="Hoyts Unicenter, etc.">
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label class="form-label" for="userDefect">
+                                                User <span class="badge-required">*</span>
+                                                <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                    title="User used for login and testing."></i>
+                                            </label>
+                                            <input type="text" id="userDefect" name="userDefect" class="form-control"
+                                                placeholder="user@example.com">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="passwordDefect">
+                                            Password <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="User password for login."></i>
+                                        </label>
+                                        <input type="password" id="passwordDefect" name="passwordDefect" class="form-control"
+                                            placeholder="••••••••">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="userTypeDefect">
+                                            Select User type <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Select the user type(s) involved in the test."></i>
+                                        </label>
+                                        <div class="btn-group-flex" role="group" id="userTypeGroupDefect">
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect" id="ComumDefect"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-user-type" for="ComumDefect">
+                                                <img src="https://i.ibb.co/tTSF48b7/Captura-de-tela-2025-09-25-135916-removebg-preview.png"
+                                                    alt="Comum" onerror="this.style.display='none'">
+                                                Comum
+                                            </label>
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect"
+                                                id="cine fan or clubDefect" autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-user-type" for="cine fan or clubDefect">
+                                                <img src="https://i.ibb.co/TML2xPsS/Captura-de-tela-2025-09-25-135828-removebg-preview.png"
+                                                    alt="Cine Fan/Club" onerror="this.style.display='none'">
+                                                Cine Fan/Club
+                                            </label>
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect"
+                                                id="cine fan or club plusDefect" autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-user-type"
+                                                for="cine fan or club plusDefect">
+                                                <img src="https://i.ibb.co/99jF8Yzb/Captura-de-tela-2025-09-25-135820-removebg-preview.png"
+                                                    alt="Cine Fan/Club Plus" onerror="this.style.display='none'">
+                                                Cine Fan/Club Plus
+                                            </label>
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect"
+                                                id="cine fan or club blackDefect" autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-user-type"
+                                                for="cine fan or club blackDefect">
+                                                <img src="https://i.ibb.co/zV5L6gQy/Captura-de-tela-2025-09-25-135813-removebg-preview.png"
+                                                    alt="Cine Fan/Club Black" onerror="this.style.display='none'">
+                                                Cine Fan/Club Black
+                                            </label>
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect" id="employeeDefect"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-dark" for="employeeDefect">Employee</label>
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect" id="YPFDefect"
+                                                autocomplete="off">
+                                            <label class="btn btn-outline-dark" for="YPFDefect">YPF</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="businessRuleDefect">
+                                            Business rule And expected solution <span class="badge-required">*</span>
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Describe the business rule and expected solution for the request."></i>
+                                        </label>
+                                        <textarea id="businessRuleDefect" name="businessRuleDefect" rows="4" class="form-control"
+                                            placeholder="Describe the business rule and expected solution..."></textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="relatedDefect">
+                                            Related
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Related ID or reference"></i>
+                                        </label>
+                                        <input type="text" id="relatedDefect" name="relatedDefect" class="form-control"
+                                            placeholder="Enter the related ID or reference...">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="linkFigmaDefect">
+                                            Link Figma (optional)
+                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                                title="Enter the Figma link, if available."></i>
+                                        </label>
+                                        <input type="text" id="linkFigmaDefect" name="linkFigmaDefect" class="form-control"
+                                            placeholder="https://figma.com/...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Formatted Result -->
+                    <div class="accordion-item" id="accordionItemResultado" style="display: none;">
+                        <h2 class="accordion-header" id="headingResultado">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseResultado" aria-expanded="false"
+                                aria-controls="collapseResultado">
+                                <i class="bi bi-file-text me-2"></i>Step 3: Formatted Result
+                            </button>
+                        </h2>
+                        <div id="collapseResultado" class="accordion-collapse collapse"
+                            aria-labelledby="headingResultado" data-bs-parent="#accordionEtapas">
+                            <div class="accordion-body">
+                                <div id="resultadoDiv">
+                                    <div class="resultado-box">
+                                        <button id="copyButton" class="btn btn-primary btn-copiar">
+                                            <i class="bi bi-clipboard me-1"></i>Copy
+                                        </button>
+                                        <textarea id="resultado" name="resultado"
+                                            class="form-control resultado-textarea"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Steps Accordion -->
+
+                <!-- Generate Button -->
+                <div class="form-section text-center">
+                    <button type="submit" id="gerarButton" class="btn btn-success btn-lg px-5">
+                        <i class="bi bi-hammer me-2"></i>Generate Work Item
+                    </button>
+
+                    <!-- Pending Fields List -->
+                    <div id="pendenciasBox" class="pendencias-box">
+                        <h5><i class="bi bi-exclamation-triangle me-2"></i>Pending Fields:</h5>
+                        <ul id="pendenciasLista"></ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Copy Alert -->
+    <div class="alert alert-success alert-copiado" role="alert">
+        <i class="bi bi-check-circle me-2"></i>Text copied successfully!
+    </div>
+
+    <!-- Modal for Feature Selection -->
+    <div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="featureModalLabel">
+                        <i class="bi bi-list-check me-2"></i>Select Features/Pages
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Barra de pesquisa -->
+                    <div class="">
+                        <input type="text" id="featureModalSearch" class="form-control"
+                            placeholder="Search features...">
+                    </div>
+                    <!-- Lista de features -->
+                    <div id="featureModalOptions" style="max-height: 400px; overflow-y: auto;">
+                        <!-- Opções serão preenchidas via JavaScript -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="featureModalConfirm">
+                        <i class="bi bi-check-lg me-1"></i>Confirm Selection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase client
+        const supabaseUrl = 'https://yuldyoshjovfgvgwvbar.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1bGR5b3Noam92Zmd2Z3d2YmFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNjIyMzEsImV4cCI6MjA3OTczODIzMX0._-QXbx-1xdnCnWlK8i7AgICLUL1-rQii9EUVwIdu04g';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    </script>
+    <script>
+        // Lista de features
+        const featuresList = [
+            'General application', 'NavigationBar', 'Header', 'Footer', 'Homepage',
+            'Candy LP', 'CineFan LP', 'Cinemark Club LP', 'CineFan Drawer', 'CinemarkClub Drawer',
+            'Visitas LP', 'Login', 'Profile', 'Profile/CineFan Drawer', 'Profile/CinemarkClub Drawer',
+            'Profile/User Date', 'Profile/Order History', 'Profile/OrderDetail', 'MerchStore', 'RegalaCine',
+            'Formats LP (General)', 'Formats (Dedicated)', 'Which Movie', 'Movie Page', 'Movies By Theater',
+            'Erros Page', 'Quich Purchase', 'Eletronic Invoce', 'Groups Purchase', 'Corporate Purchase',
+            'OtherPurchase', 'Theaters', 'Prices', 'About Us', 'Promotions',
+            'Cyber Sales', 'Work with Us', 'Ticket Upgrade', 'Ticket selection', 'Seat Map',
+            'Candy (by ticket journey)', 'Merch (by ticket journey)', 'Checkout', 'Order Detail',
+            'Candy (by candy journey)', 'Checkout  (by candy journey)', 'OrderDetail  (by candy journey)',
+            'Merch (by merch journey)', 'Creat Account', 'Disclaimer',
+            'CineFan  Signature drawer', 'CineFan Plus Signature drawer', 'CineFan  Black Signature drawer',
+            'Cinemark Club Signature drawer', 'Cinemark Club Plus Signature drawer', 'Cinemark Club Black Signature drawer',
+            'Other'
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inicializar tooltips do Bootstrap 5
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Sistema de seleção de Features com Modal
+            let selectedFeatures = [];
+            const featureOtherInput = document.getElementById('featureOtherInput');
+            const featureModalSearch = document.getElementById('featureModalSearch');
+            const featureModalOptions = document.getElementById('featureModalOptions');
+            const featureModal = new bootstrap.Modal(document.getElementById('featureModal'));
+            let tempSelectedFeatures = []; // Para armazenar seleções temporárias no modal
+
+            // Renderizar opções no modal
+            function renderFeaturesInModal(filter = '') {
+                featureModalOptions.innerHTML = '';
+                const filtered = featuresList.filter(f =>
+                    f.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filtered.length === 0) {
+                    featureModalOptions.innerHTML = '<p class="text-muted text-center py-3">No features found.</p>';
+                    return;
+                }
+
+                filtered.forEach((feature, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'form-check border-bottom';
+                    
+                    const isSelected = tempSelectedFeatures.includes(feature);
+                    
+                    // Criar ID seguro para o checkbox
+                    const safeId = 'feature-modal-' + index + '-' + Date.now();
+                    
+                    // Criar checkbox
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'form-check-input';
+                    checkbox.id = safeId;
+                    checkbox.value = feature;
+                    checkbox.checked = isSelected;
+                    
+                    // Criar label
+                    const label = document.createElement('label');
+                    label.className = 'form-check-label w-100';
+                    label.setAttribute('for', safeId);
+                    label.textContent = feature;
+                    
+                    // Adicionar evento ao checkbox
+                    checkbox.addEventListener('change', function () {
+                        if (this.checked) {
+                            if (!tempSelectedFeatures.includes(feature)) {
+                                tempSelectedFeatures.push(feature);
+                            }
+                        } else {
+                            tempSelectedFeatures = tempSelectedFeatures.filter(f => f !== feature);
+                        }
+                    });
+                    
+                    // Adicionar evento ao label também
+                    label.addEventListener('click', function (e) {
+                        if (e.target.tagName !== 'INPUT') {
+                            checkbox.checked = !checkbox.checked;
+                            checkbox.dispatchEvent(new Event('change'));
+                        }
+                    });
+                    
+                    // Adicionar elementos ao div na ordem correta
+                    optionDiv.appendChild(checkbox);
+                    optionDiv.appendChild(label);
+                    
+                    // Adicionar ao container
+                    featureModalOptions.appendChild(optionDiv);
+                });
+            }
+
+            // Atualizar display do botão com features selecionadas
+            function updateFeatureDisplay() {
+                const featureDisplay = document.getElementById('featureSelectedDisplay');
+                const featureBtn = document.getElementById('featureModalBtn');
+                
+                if (selectedFeatures.length === 0) {
+                    featureDisplay.innerHTML = '<span class="text-muted">Select one or more features...</span>';
+                } else {
+                    const tagsHtml = selectedFeatures.map(feature => 
+                        `<span class="badge bg-primary me-1 mb-1">${feature}</span>`
+                    ).join('');
+                    featureDisplay.innerHTML = tagsHtml || '<span class="text-muted">Select one or more features...</span>';
+                }
+                document.getElementById('featureSelectedValues').value = selectedFeatures.join(',');
+                
+                // Remover destaque de pendente se houver seleções
+                if (selectedFeatures.length > 0) {
+                    document.querySelector('label[for="featureModalBtn"]')?.classList.remove('campo-pendente-label');
+                    featureBtn?.classList.remove('campo-pendente');
+                }
+            }
+
+            // Quando o modal abrir, copiar seleções atuais para temporárias
+            document.getElementById('featureModal').addEventListener('show.bs.modal', function () {
+                tempSelectedFeatures = [...selectedFeatures];
+                featureModalSearch.value = '';
+                // Garantir que o modal esteja visível antes de renderizar
+                setTimeout(() => {
+                    renderFeaturesInModal();
+                }, 100);
+            });
+
+            // Pesquisa no modal
+            featureModalSearch.addEventListener('input', function () {
+                renderFeaturesInModal(this.value);
+            });
+
+            // Variável para rastrear se foi clicado no botão de confirmar
+            let modalConfirmClicked = false;
+
+            // Confirmar seleção do modal
+            document.getElementById('featureModalConfirm').addEventListener('click', function (e) {
+                e.preventDefault();
+                modalConfirmClicked = true;
+                
+                // Remover foco do botão
+                this.blur();
+                
+                // Processar seleções
+                selectedFeatures = [...tempSelectedFeatures];
+                updateFeatureDisplay();
+                
+                // Mostrar/ocultar input "Other"
+                if (selectedFeatures.includes('Other')) {
+                    featureOtherInput.style.display = 'block';
+                } else {
+                    featureOtherInput.style.display = 'none';
+                    featureOtherInput.value = '';
+                }
+                
+                // Fechar modal após um pequeno delay
+                setTimeout(() => {
+                    const modalElement = document.getElementById('featureModal');
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                    // Mover foco para fora do modal
+                    document.getElementById('featureModalBtn')?.blur();
+                    modalConfirmClicked = false;
+                }, 50);
+            });
+
+            // Resetar flag quando modal for aberto novamente
+            document.getElementById('featureModal').addEventListener('show.bs.modal', function () {
+                modalConfirmClicked = false;
+            });
+
+            // Inicializar
+            updateFeatureDisplay();
+
+            // Controlar switch do prodRepro
+            const prodReproSwitch = document.getElementById('prodRepro');
+            const prodReproLabel = document.getElementById('prodReproLabel');
+            prodReproSwitch.addEventListener('change', function () {
+                prodReproLabel.textContent = this.checked ? 'Yes' : 'No';
+            });
+
+            // Controlar switch do prodReproDefect
+            const prodReproDefectSwitch = document.getElementById('prodReproDefect');
+            const prodReproDefectLabel = document.getElementById('prodReproDefectLabel');
+            if (prodReproDefectSwitch && prodReproDefectLabel) {
+                prodReproDefectSwitch.addEventListener('change', function () {
+                    prodReproDefectLabel.textContent = this.checked ? 'Yes' : 'No';
+                });
+            }
+
+            // Controlar switch do backendDocAvailable
+            const backendDocAvailableSwitch = document.getElementById('backendDocAvailable');
+            const backendDocAvailableLabel = document.getElementById('backendDocAvailableLabel');
+            const backendDocUrlContainer = document.getElementById('backendDocUrlContainer');
+            const backendDocUrlInput = document.getElementById('backendDocUrl');
+            
+            backendDocAvailableSwitch.addEventListener('change', function () {
+                backendDocAvailableLabel.textContent = this.checked ? 'Yes' : 'No';
+                if (this.checked) {
+                    backendDocUrlContainer.style.display = 'block';
+                    backendDocUrlInput.setAttribute('required', 'required');
+                } else {
+                    backendDocUrlContainer.style.display = 'none';
+                    backendDocUrlInput.removeAttribute('required');
+                    backendDocUrlInput.value = '';
+                }
+            });
+
+            // Controlar switch do presidentApproval (removido - não existe mais em Defect)
+            // Este código foi removido pois Defect não usa presidentApproval
+
+            // Função para aplicar tema
+            function aplicarTema(mostrarBug) {
+                if (mostrarBug) {
+                    document.body.classList.remove('theme-us', 'theme-defect');
+                    document.body.classList.add('theme-bug');
+                } else {
+                    document.body.classList.remove('theme-bug', 'theme-us');
+                    document.body.classList.add('theme-defect');
+                }
+            }
+
+            // Alterna campos do formulário conforme tipo de work item com animação
+            function alternarSecoes(mostrarBug) {
+                const bugFields = document.getElementById('bugFields');
+                const defectFields = document.getElementById('defectFields');
+                const accordionItemBug = document.getElementById('accordionItemBug');
+                const accordionItemDefect = document.getElementById('accordionItemDefect');
+                const collapseBugEl = document.getElementById('collapseBug');
+                const collapseDefectEl = document.getElementById('collapseDefect');
+                const collapseInfoBasicasEl = document.getElementById('collapseInfoBasicas');
+
+                // Aplicar tema
+                aplicarTema(mostrarBug);
+
+                if (mostrarBug) {
+                    // Ocultar Defect primeiro
+                    accordionItemDefect.style.display = 'none';
+                    let collapseDefect = bootstrap.Collapse.getInstance(collapseDefectEl);
+                    if (collapseDefect) {
+                        collapseDefect.hide();
+                    }
+                    defectFields.style.display = 'none';
+
+                    // Mostrar Bug ANTES de criar a instância do Collapse
+                    accordionItemBug.style.display = 'block';
+                    bugFields.style.display = 'block';
+
+                    // Aguardar um frame para o DOM atualizar
+                    setTimeout(() => {
+                        // Colapsar Informações Básicas
+                        let collapseInfoBasicas = bootstrap.Collapse.getInstance(collapseInfoBasicasEl);
+                        if (!collapseInfoBasicas) {
+                            collapseInfoBasicas = new bootstrap.Collapse(collapseInfoBasicasEl, { toggle: false });
+                        }
+                        collapseInfoBasicas.hide();
+
+                        // Expandir Bug
+                        let collapseBug = bootstrap.Collapse.getInstance(collapseBugEl);
+                        if (!collapseBug) {
+                            collapseBug = new bootstrap.Collapse(collapseBugEl, { toggle: false });
+                        }
+                        collapseBug.show();
+
+                        // Scroll suave para o accordion de Bug
+                        setTimeout(() => {
+                            accordionItemBug.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }, 350);
+                    }, 100);
+                } else {
+                    // Ocultar Bug primeiro
+                    accordionItemBug.style.display = 'none';
+                    let collapseBug = bootstrap.Collapse.getInstance(collapseBugEl);
+                    if (collapseBug) {
+                        collapseBug.hide();
+                    }
+                    bugFields.style.display = 'none';
+
+                    // Mostrar Defect ANTES de criar a instância do Collapse
+                    accordionItemDefect.style.display = 'block';
+                    defectFields.style.display = 'block';
+
+                    // Aguardar um frame para o DOM atualizar
+                    setTimeout(() => {
+                        // Colapsar Informações Básicas
+                        let collapseInfoBasicas = bootstrap.Collapse.getInstance(collapseInfoBasicasEl);
+                        if (!collapseInfoBasicas) {
+                            collapseInfoBasicas = new bootstrap.Collapse(collapseInfoBasicasEl, { toggle: false });
+                        }
+                        collapseInfoBasicas.hide();
+
+                        // Expandir Defect
+                        let collapseDefect = bootstrap.Collapse.getInstance(collapseDefectEl);
+                        if (!collapseDefect) {
+                            collapseDefect = new bootstrap.Collapse(collapseDefectEl, { toggle: false });
+                        }
+                        collapseDefect.show();
+
+                        // Scroll suave para o accordion de Defect
+                        setTimeout(() => {
+                            accordionItemDefect.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }, 350);
+                    }, 100);
+                }
+            }
+
+            // Mostrar campos baseado no Work Item selecionado
+            document.getElementById('BUG').addEventListener('change', function () {
+                if (this.checked) {
+                    alternarSecoes(true);
+                }
+            });
+
+            document.getElementById('Defect').addEventListener('change', function () {
+                if (this.checked) {
+                    alternarSecoes(false);
+                }
+            });
+
+            // Inicializar accordions - ambos ocultos inicialmente, aparecerão ao selecionar Work Item
+            const accordionItemBug = document.getElementById('accordionItemBug');
+            const accordionItemDefect = document.getElementById('accordionItemDefect');
+            accordionItemBug.style.display = 'none';
+            accordionItemDefect.style.display = 'none';
+
+            // Não aplicar tema inicial - aguardar seleção do usuário
+
+            // Função para remover destaques de campos pendentes
+            function removerDestaquesPendentes() {
+                document.querySelectorAll('.campo-pendente').forEach(el => {
+                    el.classList.remove('campo-pendente');
+                });
+                document.querySelectorAll('.campo-pendente-label').forEach(el => {
+                    el.classList.remove('campo-pendente-label');
+                });
+                document.getElementById('pendenciasBox').classList.remove('show');
+            }
+
+            // Função de validação completa que retorna lista de pendências
+            function validarFormularioCompleto() {
+                const pendencias = [];
+
+                // Remover destaques anteriores
+                removerDestaquesPendentes();
+
+                // Coletar dados básicos
+                const nome = document.getElementById('nome').value.trim();
+                const titulo = document.getElementById('titulo').value.trim();
+                const related = document.getElementById('related').value.trim() || '';
+
+                // Coletar novos campos
+                const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
+                const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
+                const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
+
+                // Coletar countries
+                const countries = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(i => i.value || i.id);
+                const countryStr = countries.join(', ');
+
+                // Coletar features
+                const feature = selectedFeatures.join(', ') || '';
+
+                // Validar campos obrigatórios básicos
+                if (!demandSourceEl) {
+                    pendencias.push('Will this demand be returned directly by the service or come from Backoffice?');
+                    document.querySelector('label[for="demandSource"]')?.classList.add('campo-pendente-label');
+                }
+                if (backendDocAvailable && !backendDocUrl) {
+                    pendencias.push('Enter URL/Link to document (Azure Wiki or other)');
+                    document.getElementById('backendDocUrl').classList.add('campo-pendente');
+                    document.querySelector('label[for="backendDocUrl"]')?.classList.add('campo-pendente-label');
+                }
+                if (!nome) {
+                    pendencias.push('Requester');
+                    document.getElementById('nome').classList.add('campo-pendente');
+                    document.querySelector('label[for="nome"]')?.classList.add('campo-pendente-label');
+                }
+                if (!titulo) {
+                    pendencias.push('Title');
+                    document.getElementById('titulo').classList.add('campo-pendente');
+                    document.querySelector('label[for="titulo"]')?.classList.add('campo-pendente-label');
+                }
+                if (countries.length === 0) {
+                    pendencias.push('Select country');
+                    document.querySelector('label[for="country"]')?.classList.add('campo-pendente-label');
+                }
+                if (!feature) {
+                    pendencias.push('Select Feature/Page');
+                    document.querySelector('label[for="featureModalBtn"]')?.classList.add('campo-pendente-label');
+                    document.getElementById('featureModalBtn')?.classList.add('campo-pendente');
+                }
+
+                // Verificar Work Item
+                const workitemEl = document.querySelector('input[name="workitem"]:checked');
+                if (!workitemEl) {
+                    pendencias.push('Select Work Item');
+                    return pendencias;
+                }
+                const workitem = workitemEl.id;
+
+                // Formatação da data
+                const dataAtual = new Date();
+                    const dataFormatada = dataAtual.toLocaleDateString('en-US', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                let formatted = '';
+
+                if (workitem === 'BUG') {
+                    // Campos de BUG
+                    const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
+                    const demandSource = demandSourceEl ? demandSourceEl.value : '';
+                    const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
+                    const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
+                    
+                    const env = Array.from(document.querySelectorAll('input[name="env"]:checked')).map(i => i.value || i.id);
+                    const envStr = env.join(', ');
+                    const prodRepro = document.getElementById('prodRepro').checked ? '✓Yes' : '✘No';
+                    const breakpoint = Array.from(document.querySelectorAll('input[name="breakpoint"]:checked')).map(i => i.id).join(', ') || '';
+                    const cine = document.getElementById('cine').value.trim() || '';
+                    const context = document.getElementById('context').value.trim();
+                    const reproSteps = document.getElementById('reproSteps').value.trim();
+                    const user = document.getElementById('user').value.trim();
+                    const password = document.getElementById('password').value.trim();
+                    const userType = Array.from(document.querySelectorAll('input[name="userType"]:checked')).map(i => i.labels && i.labels.length > 0 ? i.labels[0].innerText.trim() : (i.value || i.id));
+                    const userTypeStr = userType.join(', ');
+                    const businessRule = document.getElementById('businessRule').value.trim();
+                    const linkFigma = document.getElementById('linkFigma').value.trim() || '';
+                    
+                    // Preparar mensagens condicionais
+                    let backendDocMessage = '';
+                    if (!backendDocAvailable) {
+                        backendDocMessage = '\n⚠️ Validation with the service provider\'s team will be necessary to determine the feasibility of the request.';
+                    }
+
+                    // Validação de campos obrigatórios BUG
+                    if (env.length === 0) {
+                        pendencias.push('Select environment');
+                        document.querySelector('label[for="env"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!context) {
+                        pendencias.push('Context');
+                        document.getElementById('context').classList.add('campo-pendente');
+                        document.querySelector('label[for="context"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!reproSteps) {
+                        pendencias.push('Repro Steps to reproduction');
+                        document.getElementById('reproSteps').classList.add('campo-pendente');
+                        document.querySelector('label[for="reproSteps"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!user) {
+                        pendencias.push('User');
+                        document.getElementById('user').classList.add('campo-pendente');
+                        document.querySelector('label[for="user"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!password) {
+                        pendencias.push('Password');
+                        document.getElementById('password').classList.add('campo-pendente');
+                        document.querySelector('label[for="password"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (userType.length === 0) {
+                        pendencias.push('Select User type');
+                        document.querySelector('label[for="userType"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!businessRule) {
+                        pendencias.push('Business rule And expected solution');
+                        document.getElementById('businessRule').classList.add('campo-pendente');
+                        document.querySelector('label[for="businessRule"]')?.classList.add('campo-pendente-label');
+                    }
+
+                    // Se houver pendências, retornar
+                    if (pendencias.length > 0) {
+                        return pendencias;
+                    }
+
+                    // Formato de texto simples conforme especificado
+                    formatted = `[${feature}] ${titulo}
+𝗖𝗢𝗨𝗡𝗧𝗥𝗬: ${countryStr}
+𝗪𝗢𝗥𝗞 𝗜𝗧𝗘𝗠: BUG (INT)
+𝗗𝗘𝗠𝗔𝗡𝗗 𝗦𝗢𝗨𝗥𝗖𝗘: ${demandSource}
+${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: \n Available in:  ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
+𝗥𝗘𝗟𝗔𝗧𝗘𝗗: ${related}
+𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡𝗧: ${envStr}
+𝗜𝗦 𝗣𝗢𝗦𝗦𝗜𝗕𝗟𝗘 𝗥𝗘𝗣𝗥𝗢𝗗𝗨𝗖𝗘 𝗜𝗡 𝗣𝗥𝗢𝗗 𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡: ${prodRepro}
+𝗖𝗢𝗡𝗧𝗘𝗫𝗧:
+${context}
+𝗥𝗘𝗣𝗥𝗢 𝗦𝗧𝗘𝗣𝗦 𝗧𝗢 𝗥𝗘𝗣𝗥𝗢𝗗𝗨𝗖𝗧𝗜𝗢𝗡:
+${reproSteps}
+𝗕𝗥𝗘𝗔𝗞𝗣𝗢𝗜𝗡𝗧: ${breakpoint}
+𝗖𝗜𝗡𝗘: ${cine}
+𝗨𝗦𝗘𝗥: ${user}
+𝗣𝗔𝗦𝗦𝗪𝗢𝗥𝗗: ${password}
+𝗨𝗦𝗘𝗥 𝗧𝗬𝗣𝗘: ${userTypeStr}
+𝗕𝗨𝗦𝗜𝗡𝗘𝗦𝗦 𝗥𝗨𝗟𝗘 𝗔𝗡𝗗 𝗘𝗫𝗣𝗘𝗖𝗧𝗘𝗗 𝗦𝗢𝗟𝗨𝗧𝗜𝗢𝗡:
+${businessRule}
+${linkFigma ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigma}` : ''}${backendDocMessage}
+Created by ${nome} on ${dataFormatada}`;
+                } else {
+                    // Campos de Defect (iguais aos de BUG)
+                    const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
+                    const demandSource = demandSourceEl ? demandSourceEl.value : '';
+                    const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
+                    const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
+                    
+                    const env = Array.from(document.querySelectorAll('input[name="envDefect"]:checked')).map(i => i.value || i.id);
+                    const envStr = env.join(', ');
+                    const prodRepro = document.getElementById('prodReproDefect').checked ? '✓Yes' : '✘No';
+                    const breakpoint = Array.from(document.querySelectorAll('input[name="breakpointDefect"]:checked')).map(i => {
+                        const id = i.id;
+                        if (id.includes('1280px')) return '1280px';
+                        if (id.includes('360px')) return '360px';
+                        return id.replace('Defect', '');
+                    }).join(', ') || '';
+                    const cine = document.getElementById('cineDefect').value.trim() || '';
+                    const context = document.getElementById('contextDefect').value.trim();
+                    const reproSteps = document.getElementById('reproStepsDefect').value.trim();
+                    const user = document.getElementById('userDefect').value.trim();
+                    const password = document.getElementById('passwordDefect').value.trim();
+                    const userType = Array.from(document.querySelectorAll('input[name="userTypeDefect"]:checked')).map(i => {
+                        if (i.labels && i.labels.length > 0) {
+                            return i.labels[0].innerText.trim();
+                        }
+                        const id = i.id;
+                        if (id.includes('Comum')) return 'Comum';
+                        if (id.includes('cine fan or club') && !id.includes('plus') && !id.includes('black')) return 'cine fan or club';
+                        if (id.includes('cine fan or club plus')) return 'cine fan or club plus';
+                        if (id.includes('cine fan or club black')) return 'cine fan or club black';
+                        if (id.includes('employee')) return 'employee';
+                        if (id.includes('YPF')) return 'YPF';
+                        return i.value || id.replace('Defect', '');
+                    });
+                    const userTypeStr = userType.join(', ');
+                    const businessRule = document.getElementById('businessRuleDefect').value.trim();
+                    const linkFigma = document.getElementById('linkFigmaDefect').value.trim() || '';
+                    const relatedDefect = document.getElementById('relatedDefect').value.trim() || '';
+                    
+                    // Preparar mensagens condicionais
+                    let backendDocMessage = '';
+                    if (!backendDocAvailable) {
+                        backendDocMessage = '\n⚠️ Validation with the service provider\'s team will be necessary to determine the feasibility of the request.';
+                    }
+
+                    // Validação de campos obrigatórios Defect
+                    if (env.length === 0) {
+                        pendencias.push('Select environment');
+                        document.querySelector('label[for="envDefect"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!context) {
+                        pendencias.push('Context');
+                        document.getElementById('contextDefect').classList.add('campo-pendente');
+                        document.querySelector('label[for="contextDefect"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!reproSteps) {
+                        pendencias.push('Repro Steps to reproduction');
+                        document.getElementById('reproStepsDefect').classList.add('campo-pendente');
+                        document.querySelector('label[for="reproStepsDefect"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!user) {
+                        pendencias.push('User');
+                        document.getElementById('userDefect').classList.add('campo-pendente');
+                        document.querySelector('label[for="userDefect"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!password) {
+                        pendencias.push('Password');
+                        document.getElementById('passwordDefect').classList.add('campo-pendente');
+                        document.querySelector('label[for="passwordDefect"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (userType.length === 0) {
+                        pendencias.push('Select User type');
+                        document.querySelector('label[for="userTypeDefect"]')?.classList.add('campo-pendente-label');
+                    }
+                    if (!businessRule) {
+                        pendencias.push('Business rule And expected solution');
+                        document.getElementById('businessRuleDefect').classList.add('campo-pendente');
+                        document.querySelector('label[for="businessRuleDefect"]')?.classList.add('campo-pendente-label');
+                    }
+
+                    // Se houver pendências, retornar
+                    if (pendencias.length > 0) {
+                        return pendencias;
+                    }
+
+                    // Formato de texto simples conforme especificado - adicionar 🪲[DEF] antes do título
+                    formatted = `🪲[DEF][${feature}] ${titulo}
+𝗖𝗢𝗨𝗡𝗧𝗥𝗬: ${countryStr}
+𝗪𝗢𝗥𝗞 𝗜𝗧𝗘𝗠: DEFECT (INT)
+𝗗𝗘𝗠𝗔𝗡𝗗 𝗦𝗢𝗨𝗥𝗖𝗘: ${demandSource}
+${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: \n Available in:  ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
+𝗥𝗘𝗟𝗔𝗧𝗘𝗗: ${relatedDefect}
+𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡𝗧: ${envStr}
+𝗜𝗦 𝗣𝗢𝗦𝗦𝗜𝗕𝗟𝗘 𝗥𝗘𝗣𝗥𝗢𝗗𝗨𝗖𝗘 𝗜𝗡 𝗣𝗥𝗢𝗗 𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡: ${prodRepro}
+𝗖𝗢𝗡𝗧𝗘𝗫𝗧:
+${context}
+𝗥𝗘𝗣𝗥𝗢 𝗦𝗧𝗘𝗣𝗦 𝗧𝗢 𝗥𝗘𝗣𝗥𝗢𝗗𝗨𝗖𝗧𝗜𝗢𝗡:
+${reproSteps}
+𝗕𝗥𝗘𝗔𝗞𝗣𝗢𝗜𝗡𝗧: ${breakpoint}
+𝗖𝗜𝗡𝗘: ${cine}
+𝗨𝗦𝗘𝗥: ${user}
+𝗣𝗔𝗦𝗦𝗪𝗢𝗥𝗗: ${password}
+𝗨𝗦𝗘𝗥 𝗧𝗬𝗣𝗘: ${userTypeStr}
+𝗕𝗨𝗦𝗜𝗡𝗘𝗦𝗦 𝗥𝗨𝗟𝗘 𝗔𝗡𝗗 𝗘𝗫𝗣𝗘𝗖𝗧𝗘𝗗 𝗦𝗢𝗟𝗨𝗧𝗜𝗢𝗡:
+${businessRule}
+${linkFigma ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigma}` : ''}${backendDocMessage}
+Created by ${nome} on ${dataFormatada}`;
+                }
+
+                // Exibir resultado formatado
+                const resultadoDiv = document.getElementById('resultadoDiv');
+                const resultadoTextarea = document.getElementById('resultado');
+                resultadoTextarea.value = formatted;
+
+                // Mostrar seção de resultado
+                const accordionItemResultado = document.getElementById('accordionItemResultado');
+                const collapseResultadoEl = document.getElementById('collapseResultado');
+                accordionItemResultado.style.display = 'block';
+                
+                // Colapsar etapas anteriores
+                const collapseBug = bootstrap.Collapse.getInstance(document.getElementById('collapseBug'));
+                const collapseDefect = bootstrap.Collapse.getInstance(document.getElementById('collapseDefect'));
+                if (collapseBug) collapseBug.hide();
+                if (collapseDefect) collapseDefect.hide();
+
+                // Aguardar um pouco para garantir que o DOM atualizou
+                setTimeout(() => {
+                    // Expandir o accordion de resultado
+                    let collapseResultado = bootstrap.Collapse.getInstance(collapseResultadoEl);
+                    if (!collapseResultado) {
+                        collapseResultado = new bootstrap.Collapse(collapseResultadoEl, {
+                            toggle: false
+                        });
+                    }
+                    
+                    // Forçar exibição do conteúdo
+                    collapseResultadoEl.classList.add('show');
+                    collapseResultadoEl.style.display = 'block';
+                    
+                    // Expandir
+                    collapseResultado.show();
+
+                    // Scroll suave até o resultado
+                    setTimeout(() => {
+                        accordionItemResultado.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 350);
+                }, 150);
+
+                return pendencias;
+            }
+
+            // Event listener para o formulário
+            document.getElementById('formulario').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const pendencias = validarFormularioCompleto();
+
+                if (pendencias.length > 0) {
+                    // Mostrar lista de pendências
+                    const pendenciasBox = document.getElementById('pendenciasBox');
+                    const pendenciasLista = document.getElementById('pendenciasLista');
+                    pendenciasLista.innerHTML = '';
+                    pendencias.forEach(pendencia => {
+                        const li = document.createElement('li');
+                        li.textContent = pendencia;
+                        pendenciasLista.appendChild(li);
+                    });
+                    pendenciasBox.classList.add('show');
+
+                    // Scroll para o primeiro campo pendente (já destacado pela função de validação)
+                    setTimeout(() => {
+                        const primeiroCampoPendente = document.querySelector('.campo-pendente, .campo-pendente-label');
+                        if (primeiroCampoPendente) {
+                            primeiroCampoPendente.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }
+                    }, 100);
+                } else {
+                    // Se não houver pendências, o resultado já foi gerado na função
+                    document.getElementById('pendenciasBox').classList.remove('show');
+                    
+                    // Obter tipo de work item
+                    const workitemEl = document.querySelector('input[name="workitem"]:checked');
+                    const workitemType = workitemEl ? workitemEl.id : '';
+                    const resultado = document.getElementById('resultado').value;
+                    
+                    console.log('📋 Formulário submetido com sucesso!', {
+                        workitemType,
+                        resultadoLength: resultado?.length,
+                        resultadoPreview: resultado?.substring(0, 100) + '...'
+                    });
+                    
+                    // Enviar notificação ao Slack
+                    if (workitemType && resultado) {
+                        notificarSlack(workitemType, resultado);
+                    } else {
+                        console.error('❌ Dados incompletos para enviar ao Slack:', { workitemType, resultado: !!resultado });
+                    }
+                }
+            });
+
+            // Função para notificar o Slack usando Supabase Edge Function (resolve CORS)
+            async function notificarSlack(workitemType, formattedText) {
+                console.log('🔔 Função notificarSlack chamada', { workitemType, formattedTextLength: formattedText?.length });
+                
+                if (!formattedText || formattedText.trim() === '') {
+                    console.error('❌ Texto formatado está vazio!');
+                    return;
+                }
+
+                if (!workitemType) {
+                    console.error('❌ Tipo de work item não definido!');
+                    return;
+                }
+
+                try {
+                    const titulo = document.getElementById('titulo').value.trim();
+                    const nome = document.getElementById('nome').value.trim();
+                    
+                    // Determinar emoji e cor baseado no tipo
+                    let emoji = '🪲';
+                    let typeLabel = 'DEFECT';
+                    if (workitemType === 'BUG') {
+                        emoji = '🐞';
+                        typeLabel = 'BUG';
+                    } else if (workitemType === 'Defect') {
+                        emoji = '🪲';
+                        typeLabel = 'DEFECT';
+                    }
+                    
+
+                    console.log('📝 Dados preparados:', { titulo, nome, typeLabel });
+
+                    // Formato simplificado para Slack
+                    const slackMessageText = `${emoji} *New ${typeLabel} reported by QA Team.*\n*Title:* ${titulo}\n*Created by:* ${nome}\n\n\`\`\`${formattedText}\`\`\``;
+
+                    console.log('📤 Enviando mensagem via Supabase Edge Function...');
+
+                    // Chamar Edge Function do Supabase para enviar ao Slack (resolve CORS)
+                    const { data, error } = await supabase.functions.invoke('notify-slack', {
+                        body: {
+                            message: slackMessageText
+                        }
+                    });
+
+                    if (error) {
+                        console.error('❌ Erro ao chamar Edge Function:', error);
+                        console.error('📋 Detalhes do erro:', JSON.stringify(error, null, 2));
+                        alert(`Erro ao enviar notificação ao Slack.\n\nErro: ${error.message || JSON.stringify(error)}\n\nVerifique o console (F12) para mais detalhes.`);
+                        return;
+                    }
+
+                    console.log('📬 Resposta da Edge Function:', data);
+
+                    if (data) {
+                        if (data.success || data.message || !data.error) {
+                            console.log('✅ Notificação enviada ao Slack com sucesso!', data);
+                            mostrarAlertaSucesso();
+                        } else if (data.error) {
+                            console.error('❌ Erro na resposta da Edge Function:', data.error);
+                            alert(`Erro ao enviar notificação: ${data.error}\n\nVerifique o console para mais detalhes.`);
+                        } else {
+                            // Mesmo sem confirmação explícita, tentar mostrar sucesso
+                            console.log('⚠️ Resposta sem confirmação explícita, assumindo sucesso:', data);
+                            mostrarAlertaSucesso();
+                        }
+                    } else {
+                        console.warn('⚠️ Resposta vazia da Edge Function, mas sem erro. Assumindo sucesso.');
+                        mostrarAlertaSucesso();
+                    }
+                } catch (error) {
+                    console.error('❌ Erro ao enviar notificação ao Slack:', error);
+                    console.error('📋 Stack trace:', error.stack);
+                    alert(`Erro ao enviar notificação ao Slack.\n\nErro: ${error.message}\n\nVerifique o console (F12) para mais detalhes.`);
+                }
+            }
+
+            function mostrarAlertaSucesso() {
+                const alertCopiado = document.querySelector('.alert-copiado');
+                const originalText = alertCopiado.innerHTML;
+                alertCopiado.innerHTML = '<i class="bi bi-slack me-2"></i>Notification sent to Slack channel!';
+                alertCopiado.classList.remove('alert-danger');
+                alertCopiado.classList.add('alert-success');
+                alertCopiado.style.display = 'block';
+                setTimeout(() => {
+                    alertCopiado.innerHTML = originalText;
+                    alertCopiado.style.display = 'none';
+                }, 4000);
+            }
+
+            // Event listener para o botão de copiar
+            document.getElementById('copyButton').addEventListener('click', function () {
+                const resultado = document.getElementById('resultado');
+                resultado.select();
+                document.execCommand('copy');
+
+                // Mostrar alert de cópia
+                const alertCopiado = document.querySelector('.alert-copiado');
+                alertCopiado.style.display = 'block';
+                setTimeout(() => {
+                    alertCopiado.style.display = 'none';
+                }, 3000);
+            });
+
+            // Função para coletar todos os dados do formulário
+            function coletarDadosFormulario() {
+                const dados = {
+                    demandSource: document.querySelector('input[name="demandSource"]:checked')?.value || '',
+                    backendDocAvailable: document.getElementById('backendDocAvailable').checked,
+                    backendDocUrl: document.getElementById('backendDocUrl').value.trim(),
+                    titulo: document.getElementById('titulo').value.trim(),
+                    nome: document.getElementById('nome').value.trim(),
+                    countries: Array.from(document.querySelectorAll('input[name="country"]:checked')).map(i => i.value),
+                    features: selectedFeatures,
+                    featureOtherInput: document.getElementById('featureOtherInput').value.trim(),
+                    workitem: document.querySelector('input[name="workitem"]:checked')?.id || '',
+                    // Campos de BUG
+                    env: Array.from(document.querySelectorAll('input[name="env"]:checked')).map(i => i.value),
+                    prodRepro: document.getElementById('prodRepro').checked,
+                    context: document.getElementById('context').value.trim(),
+                    reproSteps: document.getElementById('reproSteps').value.trim(),
+                    breakpoint: Array.from(document.querySelectorAll('input[name="breakpoint"]:checked')).map(i => i.id),
+                    cine: document.getElementById('cine').value.trim(),
+                    user: document.getElementById('user').value.trim(),
+                    password: document.getElementById('password').value.trim(),
+                    userType: Array.from(document.querySelectorAll('input[name="userType"]:checked')).map(i => i.id),
+                    businessRule: document.getElementById('businessRule').value.trim(),
+                    related: document.getElementById('related').value.trim(),
+                    linkFigma: document.getElementById('linkFigma').value.trim(),
+                    // Campos de Defect
+                    envDefect: Array.from(document.querySelectorAll('input[name="envDefect"]:checked')).map(i => i.value),
+                    prodReproDefect: document.getElementById('prodReproDefect')?.checked || false,
+                    contextDefect: document.getElementById('contextDefect')?.value.trim() || '',
+                    reproStepsDefect: document.getElementById('reproStepsDefect')?.value.trim() || '',
+                    breakpointDefect: Array.from(document.querySelectorAll('input[name="breakpointDefect"]:checked')).map(i => i.id),
+                    cineDefect: document.getElementById('cineDefect')?.value.trim() || '',
+                    userDefect: document.getElementById('userDefect')?.value.trim() || '',
+                    passwordDefect: document.getElementById('passwordDefect')?.value.trim() || '',
+                    userTypeDefect: Array.from(document.querySelectorAll('input[name="userTypeDefect"]:checked')).map(i => i.id),
+                    businessRuleDefect: document.getElementById('businessRuleDefect')?.value.trim() || '',
+                    relatedDefect: document.getElementById('relatedDefect')?.value.trim() || '',
+                    linkFigmaDefect: document.getElementById('linkFigmaDefect')?.value.trim() || ''
+                };
+                return dados;
+            }
+
+            // Função para preencher formulário com dados
+            function preencherFormulario(dados) {
+                try {
+                    console.log('Preenchendo formulário com dados:', dados);
+                    
+                    // Campos básicos - Demand Source
+                    if (dados.demandSource) {
+                        // Primeiro desmarcar todos
+                        document.querySelectorAll('input[name="demandSource"]').forEach(radio => radio.checked = false);
+                        // Depois marcar o selecionado
+                        const demandSourceEl = document.getElementById(dados.demandSource);
+                        if (demandSourceEl) {
+                            demandSourceEl.checked = true;
+                            demandSourceEl.dispatchEvent(new Event('change'));
+                        } else {
+                            console.warn('Demand Source não encontrado:', dados.demandSource);
+                        }
+                    }
+                    
+                    // Backend Doc
+                    const backendDocAvailable = document.getElementById('backendDocAvailable');
+                    if (backendDocAvailable) {
+                        backendDocAvailable.checked = dados.backendDocAvailable === true || dados.backendDocAvailable === 'true';
+                        backendDocAvailable.dispatchEvent(new Event('change'));
+                    }
+                    
+                    const backendDocUrl = document.getElementById('backendDocUrl');
+                    if (backendDocUrl) {
+                        backendDocUrl.value = dados.backendDocUrl || '';
+                    }
+                    
+                    // Título e Nome
+                    const titulo = document.getElementById('titulo');
+                    if (titulo) titulo.value = dados.titulo || '';
+                    
+                    const nome = document.getElementById('nome');
+                    if (nome) nome.value = dados.nome || '';
+                    
+                    const featureOtherInput = document.getElementById('featureOtherInput');
+                    if (featureOtherInput) featureOtherInput.value = dados.featureOtherInput || '';
+                    
+                    // Countries
+                    document.querySelectorAll('input[name="country"]').forEach(cb => cb.checked = false);
+                    if (dados.countries && Array.isArray(dados.countries)) {
+                        dados.countries.forEach(country => {
+                            // Tentar pelo ID primeiro, depois pelo value
+                            let cb = document.getElementById(country);
+                            if (!cb) {
+                                // Tentar encontrar pelo value
+                                cb = Array.from(document.querySelectorAll('input[name="country"]')).find(
+                                    input => input.value === country || input.id === country
+                                );
+                            }
+                            if (cb) {
+                                cb.checked = true;
+                                cb.dispatchEvent(new Event('change'));
+                            } else {
+                                console.warn('Country não encontrado:', country);
+                            }
+                        });
+                    }
+                    
+                    // Features
+                    if (dados.features) {
+                        selectedFeatures = Array.isArray(dados.features) ? dados.features : [];
+                        updateFeatureDisplay();
+                    }
+                    
+                    // Work Item - IMPORTANTE: fazer isso primeiro para mostrar os campos corretos
+                    if (dados.workitem) {
+                        const workitemEl = document.getElementById(dados.workitem);
+                        if (workitemEl) {
+                            workitemEl.checked = true;
+                            // Disparar evento change para ativar alternarSecoes
+                            workitemEl.dispatchEvent(new Event('change'));
+                            // Aguardar um pouco para os campos aparecerem
+                            setTimeout(() => {
+                                preencherCamposEspecificos(dados);
+                            }, 500);
+                        } else {
+                            preencherCamposEspecificos(dados);
+                        }
+                    } else {
+                        preencherCamposEspecificos(dados);
+                    }
+                } catch (error) {
+                    console.error('Erro ao preencher formulário:', error);
+                    alert('Erro ao preencher formulário: ' + error.message);
+                }
+            }
+            
+            // Função auxiliar para preencher campos específicos de BUG e Defect
+            function preencherCamposEspecificos(dados) {
+                // Campos de BUG
+                if (dados.env && Array.isArray(dados.env)) {
+                    document.querySelectorAll('input[name="env"]').forEach(cb => cb.checked = false);
+                    dados.env.forEach(env => {
+                        const cb = document.getElementById(env);
+                        if (cb) cb.checked = true;
+                    });
+                }
+                
+                const prodRepro = document.getElementById('prodRepro');
+                if (prodRepro) {
+                    prodRepro.checked = dados.prodRepro === true || dados.prodRepro === 'true';
+                    prodRepro.dispatchEvent(new Event('change'));
+                }
+                
+                const context = document.getElementById('context');
+                if (context) context.value = dados.context || '';
+                
+                const reproSteps = document.getElementById('reproSteps');
+                if (reproSteps) reproSteps.value = dados.reproSteps || '';
+                
+                const cine = document.getElementById('cine');
+                if (cine) cine.value = dados.cine || '';
+                
+                const user = document.getElementById('user');
+                if (user) user.value = dados.user || '';
+                
+                const password = document.getElementById('password');
+                if (password) password.value = dados.password || '';
+                
+                const businessRule = document.getElementById('businessRule');
+                if (businessRule) businessRule.value = dados.businessRule || '';
+                
+                const related = document.getElementById('related');
+                if (related) related.value = dados.related || '';
+                
+                const linkFigma = document.getElementById('linkFigma');
+                if (linkFigma) linkFigma.value = dados.linkFigma || '';
+                
+                if (dados.breakpoint && Array.isArray(dados.breakpoint)) {
+                    document.querySelectorAll('input[name="breakpoint"]').forEach(cb => cb.checked = false);
+                    dados.breakpoint.forEach(bp => {
+                        const cb = document.getElementById(bp);
+                        if (cb) cb.checked = true;
+                    });
+                }
+                
+                if (dados.userType && Array.isArray(dados.userType)) {
+                    document.querySelectorAll('input[name="userType"]').forEach(cb => cb.checked = false);
+                    dados.userType.forEach(ut => {
+                        // Tentar encontrar pelo ID exato
+                        let cb = document.getElementById(ut);
+                        if (!cb) {
+                            // Tentar encontrar pelo name e value
+                            cb = Array.from(document.querySelectorAll('input[name="userType"]')).find(
+                                input => input.id === ut || input.value === ut
+                            );
+                        }
+                        if (cb) {
+                            cb.checked = true;
+                            cb.dispatchEvent(new Event('change'));
+                        } else {
+                            console.warn('UserType não encontrado:', ut);
+                        }
+                    });
+                }
+                
+                // Campos de Defect
+                if (dados.envDefect && Array.isArray(dados.envDefect)) {
+                    document.querySelectorAll('input[name="envDefect"]').forEach(cb => cb.checked = false);
+                    dados.envDefect.forEach(env => {
+                        const cb = document.getElementById(env + 'Defect');
+                        if (cb) cb.checked = true;
+                    });
+                }
+                
+                const prodReproDefect = document.getElementById('prodReproDefect');
+                if (prodReproDefect) {
+                    prodReproDefect.checked = dados.prodReproDefect === true || dados.prodReproDefect === 'true';
+                    prodReproDefect.dispatchEvent(new Event('change'));
+                }
+                
+                const contextDefect = document.getElementById('contextDefect');
+                if (contextDefect) contextDefect.value = dados.contextDefect || '';
+                
+                const reproStepsDefect = document.getElementById('reproStepsDefect');
+                if (reproStepsDefect) reproStepsDefect.value = dados.reproStepsDefect || '';
+                
+                const cineDefect = document.getElementById('cineDefect');
+                if (cineDefect) cineDefect.value = dados.cineDefect || '';
+                
+                const userDefect = document.getElementById('userDefect');
+                if (userDefect) userDefect.value = dados.userDefect || '';
+                
+                const passwordDefect = document.getElementById('passwordDefect');
+                if (passwordDefect) passwordDefect.value = dados.passwordDefect || '';
+                
+                const businessRuleDefect = document.getElementById('businessRuleDefect');
+                if (businessRuleDefect) businessRuleDefect.value = dados.businessRuleDefect || '';
+                
+                const relatedDefect = document.getElementById('relatedDefect');
+                if (relatedDefect) relatedDefect.value = dados.relatedDefect || '';
+                
+                const linkFigmaDefect = document.getElementById('linkFigmaDefect');
+                if (linkFigmaDefect) linkFigmaDefect.value = dados.linkFigmaDefect || '';
+                
+                if (dados.breakpointDefect && Array.isArray(dados.breakpointDefect)) {
+                    document.querySelectorAll('input[name="breakpointDefect"]').forEach(cb => cb.checked = false);
+                    dados.breakpointDefect.forEach(bp => {
+                        const cb = document.getElementById(bp);
+                        if (cb) cb.checked = true;
+                    });
+                }
+                
+                if (dados.userTypeDefect && Array.isArray(dados.userTypeDefect)) {
+                    document.querySelectorAll('input[name="userTypeDefect"]').forEach(cb => cb.checked = false);
+                    dados.userTypeDefect.forEach(ut => {
+                        // Os IDs já têm "Defect" no final, então não adicionar novamente
+                        // Mas pode vir sem "Defect" do template, então tentar ambos
+                        let cb = document.getElementById(ut);
+                        if (!cb && !ut.endsWith('Defect')) {
+                            cb = document.getElementById(ut + 'Defect');
+                        }
+                        if (!cb) {
+                            // Tentar encontrar pelo name e value
+                            cb = Array.from(document.querySelectorAll('input[name="userTypeDefect"]')).find(
+                                input => input.id === ut || input.id === ut + 'Defect' || input.value === ut
+                            );
+                        }
+                        if (cb) {
+                            cb.checked = true;
+                            cb.dispatchEvent(new Event('change'));
+                        } else {
+                            console.warn('UserTypeDefect não encontrado:', ut);
+                        }
+                    });
+                }
+            }
+
+            // Função para gerar template com exemplos válidos
+            function gerarTemplateExemplo() {
+                return {
+                    demandSource: "Service",
+                    backendDocAvailable: true,
+                    backendDocUrl: "https://example.com/docs",
+                    titulo: "Exemplo de Título do Work Item",
+                    nome: "Nome do Usuário",
+                    countries: ["AR", "CL"],
+                    features: ["Feature1", "Feature2"],
+                    featureOtherInput: "",
+                    workitem: "BUG",
+                    // Campos de BUG
+                    env: ["QA", "BETA"],
+                    prodRepro: true,
+                    context: "Contexto do bug: descreva o ambiente e situação onde o bug ocorre.",
+                    reproSteps: "1. Passo um\n2. Passo dois\n3. Passo três",
+                    breakpoint: ["1280px", "360px"],
+                    cine: "CINE-12345",
+                    user: "usuario.teste@example.com",
+                    password: "senha123",
+                    userType: ["Comum"],
+                    businessRule: "Regra de negócio: descreva a regra esperada e a solução.",
+                    related: "REL-123",
+                    linkFigma: "https://figma.com/example",
+                    // Campos de Defect
+                    envDefect: ["QA"],
+                    prodReproDefect: false,
+                    contextDefect: "Contexto do defect: descreva o ambiente e situação onde o defect ocorre.",
+                    reproStepsDefect: "1. Passo um\n2. Passo dois\n3. Passo três",
+                    breakpointDefect: ["1280px"],
+                    cineDefect: "CINE-67890",
+                    userDefect: "usuario.defect@example.com",
+                    passwordDefect: "senha456",
+                    userTypeDefect: ["ComumDefect"],
+                    businessRuleDefect: "Regra de negócio do defect: descreva a regra esperada e a solução.",
+                    relatedDefect: "REL-456",
+                    linkFigmaDefect: "https://figma.com/defect-example"
+                };
+            }
+
+            // Baixar Template JSON
+            document.getElementById('btn-download-json').addEventListener('click', function(e) {
+                e.preventDefault();
+                const template = gerarTemplateExemplo();
+                const jsonStr = JSON.stringify(template, null, 2);
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'work-item-template.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            // Importar JSON
+            document.getElementById('btn-import-json').addEventListener('click', function(e) {
+                e.preventDefault();
+                const fileInput = document.getElementById('fileInputJson');
+                if (!fileInput) {
+                    alert('Erro: Input de arquivo não encontrado!');
+                    return;
+                }
+                
+                // Remover listener anterior se existir
+                const newFileInput = fileInput.cloneNode(true);
+                fileInput.parentNode.replaceChild(newFileInput, fileInput);
+                
+                newFileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        console.log('Arquivo selecionado:', file.name);
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            try {
+                                console.log('Lendo arquivo...');
+                                const dados = JSON.parse(e.target.result);
+                                console.log('Dados parseados:', dados);
+                                preencherFormulario(dados);
+                                alert('JSON importado com sucesso!');
+                            } catch (error) {
+                                console.error('Erro ao importar JSON:', error);
+                                alert('Erro ao importar JSON: ' + error.message);
+                            }
+                        };
+                        reader.onerror = function(error) {
+                            console.error('Erro ao ler arquivo:', error);
+                            alert('Erro ao ler arquivo!');
+                        };
+                        reader.readAsText(file);
+                    }
+                });
+                
+                newFileInput.click();
+            });
+
+            // Baixar Template CSV
+            document.getElementById('btn-download-csv').addEventListener('click', function(e) {
+                e.preventDefault();
+                const dados = gerarTemplateExemplo();
+                const csvRows = [];
+                csvRows.push('Campo,Valor');
+                Object.keys(dados).forEach(key => {
+                    let value = dados[key];
+                    if (Array.isArray(value)) {
+                        value = value.join('; ');
+                    } else if (typeof value === 'boolean') {
+                        value = value ? 'true' : 'false';
+                    }
+                    // Escapar aspas duplas no valor
+                    value = String(value).replace(/"/g, '""');
+                    csvRows.push(`"${key}","${value}"`);
+                });
+                const csvContent = csvRows.join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'work-item-template.csv';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            // Importar CSV
+            document.getElementById('btn-import-csv').addEventListener('click', function(e) {
+                e.preventDefault();
+                const fileInput = document.getElementById('fileInputCsv');
+                if (!fileInput) {
+                    alert('Erro: Input de arquivo não encontrado!');
+                    return;
+                }
+                
+                // Remover listener anterior se existir
+                const newFileInput = fileInput.cloneNode(true);
+                fileInput.parentNode.replaceChild(newFileInput, fileInput);
+                
+                newFileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        console.log('Arquivo CSV selecionado:', file.name);
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            try {
+                                const csv = e.target.result;
+                                const lines = csv.split('\n');
+                                const dados = {};
+                                
+                                for (let i = 1; i < lines.length; i++) {
+                                    const line = lines[i].trim();
+                                    if (!line) continue;
+                                    
+                                    // Melhorar parsing do CSV para lidar com valores que contêm vírgulas e aspas
+                                    const match = line.match(/^"([^"]*(?:""[^"]*)*)","([^"]*(?:""[^"]*)*)"$/);
+                                    if (match) {
+                                        const key = match[1].replace(/""/g, '"');
+                                        let value = match[2].replace(/""/g, '"');
+                                        
+                                        // Converter booleanos
+                                        if (value === 'true') {
+                                            value = true;
+                                        } else if (value === 'false') {
+                                            value = false;
+                                        }
+                                        // Converter arrays
+                                        else if (value.includes('; ')) {
+                                            value = value.split('; ');
+                                        }
+                                        
+                                        dados[key] = value;
+                                    } else {
+                                        // Tentar parsing simples sem aspas
+                                        const parts = line.split(',');
+                                        if (parts.length >= 2) {
+                                            const key = parts[0].replace(/^"|"$/g, '');
+                                            let value = parts.slice(1).join(',').replace(/^"|"$/g, '');
+                                            
+                                            // Converter booleanos
+                                            if (value === 'true') {
+                                                value = true;
+                                            } else if (value === 'false') {
+                                                value = false;
+                                            }
+                                            // Converter arrays
+                                            else if (value.includes('; ')) {
+                                                value = value.split('; ');
+                                            }
+                                            
+                                            dados[key] = value;
+                                        }
+                                    }
+                                }
+                                
+                                console.log('Dados CSV parseados:', dados);
+                                preencherFormulario(dados);
+                                alert('CSV importado com sucesso!');
+                            } catch (error) {
+                                console.error('Erro ao importar CSV:', error);
+                                alert('Erro ao importar CSV: ' + error.message);
+                            }
+                        };
+                        reader.onerror = function(error) {
+                            console.error('Erro ao ler arquivo CSV:', error);
+                            alert('Erro ao ler arquivo!');
+                        };
+                        reader.readAsText(file);
+                    }
+                });
+                
+                newFileInput.click();
+            });
+        });
+    </script>
+</body>
+
+</html>
