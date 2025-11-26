@@ -1,0 +1,32 @@
+/* styles/desktop.css */
+
+/* Estilos aplicados em telas maiores (desktops) */
+@media (min-width: 992px) {
+    body.sidebar-recolhida .sidebar-principal {
+        width: var(--largura-sidebar-recolhida);
+    }
+
+    body.sidebar-recolhida .sidebar-header span {
+        display: none;
+    }
+    
+    body.sidebar-recolhida .nav-link span {
+        display: none;
+    }
+
+    body.sidebar-recolhida .nav-link .bi {
+        margin-right: 0 !important;
+        width: 100%;
+        text-align: center;
+    }
+
+    body.sidebar-recolhida .conteudo-principal {
+        padding-left: var(--largura-sidebar-recolhida);
+    }
+
+    .grid-responsivo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+}

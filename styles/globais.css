@@ -1,0 +1,111 @@
+/* styles/globais.css */
+
+:root {
+    --cor-primaria: #0d6efd;
+    --cor-secundaria: #6c757d;
+    --cor-sucesso: #198754;
+    --cor-perigo: #dc3545;
+    --cor-aviso: #ffc107;
+    --cor-info: #0dcaf0;
+    --cor-light: #f8f9fa;
+    --cor-dark: #212529;
+    --cor-sidebar-bg: #fff;
+    --cor-sidebar-header: linear-gradient(135deg, #6f42c1, #0d6efd);
+    --cor-texto-sidebar: #333;
+    --cor-link-ativo-sidebar: #0d6efd;
+    --largura-sidebar: 250px;
+    --largura-sidebar-recolhida: 80px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f9;
+    transition: padding-left 0.3s ease-in-out;
+}
+
+.sidebar-principal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: var(--largura-sidebar);
+    background-color: var(--cor-sidebar-bg);
+    transition: width 0.3s ease-in-out;
+    z-index: 1030;
+    overflow-x: hidden;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 1rem;
+    color: white;
+    background: var(--cor-sidebar-header);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.sidebar-principal .nav-link {
+    color: var(--cor-texto-sidebar);
+    padding: 0.9rem 1.5rem;
+    display: flex;
+    align-items: center;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.sidebar-principal .nav-link .bi {
+    font-size: 1.2rem;
+}
+
+.sidebar-principal .nav-link:hover {
+    background-color: #e9ecef;
+    color: var(--cor-link-ativo-sidebar);
+}
+
+.sidebar-principal .nav-link.active {
+    background-color: #e9ecef;
+    color: var(--cor-link-ativo-sidebar);
+    border-left-color: var(--cor-link-ativo-sidebar);
+    font-weight: 500;
+}
+
+.conteudo-principal {
+    padding-left: var(--largura-sidebar);
+    transition: padding-left 0.3s ease-in-out;
+    width: 100%;
+}
+
+.top-navigation {
+    background-color: #fff;
+    z-index: 1020;
+}
+
+/* Estilos para formulários */
+.form-control, .form-select {
+    margin-bottom: 1rem;
+}
+
+.form-check-label {
+    margin-left: 0.5rem;
+}
+
+.input-group .btn {
+    z-index: 2;
+}
+
+/* Animações e transições */
+.fade-in {
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Comentários para organização */
+/* Fim Sidebar Navegação */
+/* Início Conteúdo Principal */
+/* Fim Conteúdo Principal */
