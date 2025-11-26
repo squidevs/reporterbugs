@@ -23,22 +23,29 @@
             <!-- Menu de Ações -->
             <div class="d-flex justify-content-end mb-3">
                 <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuActions" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuActions"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-three-dots-vertical me-1"></i> Ações
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuActions">
-                        <li><a class="dropdown-item" href="#" id="btn-download-json"><i class="bi bi-download me-2"></i>Baixar Template JSON</a></li>
-                        <li><a class="dropdown-item" href="#" id="btn-import-json"><i class="bi bi-upload me-2"></i>Importar JSON</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#" id="btn-download-csv"><i class="bi bi-filetype-csv me-2"></i>Baixar Template CSV</a></li>
-                        <li><a class="dropdown-item" href="#" id="btn-import-csv"><i class="bi bi-filetype-csv me-2"></i>Importar CSV</a></li>
+                        <li><a class="dropdown-item" href="#" id="btn-download-json"><i
+                                    class="bi bi-download me-2"></i>Baixar Template JSON</a></li>
+                        <li><a class="dropdown-item" href="#" id="btn-import-json"><i
+                                    class="bi bi-upload me-2"></i>Importar JSON</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#" id="btn-download-csv"><i
+                                    class="bi bi-filetype-csv me-2"></i>Baixar Template CSV</a></li>
+                        <li><a class="dropdown-item" href="#" id="btn-import-csv"><i
+                                    class="bi bi-filetype-csv me-2"></i>Importar CSV</a></li>
                     </ul>
                 </div>
             </div>
             <!-- Input oculto para importar arquivos -->
             <input type="file" id="fileInputJson" accept=".json" style="display: none;">
             <input type="file" id="fileInputCsv" accept=".csv" style="display: none;">
-            
+
             <!-- Page Header -->
             <div class="page-header text-center">
                 <h1><i class="bi bi-hammer me-2"></i>Work Item Generation Assistant</h1>
@@ -65,17 +72,24 @@
                                 <div class="mb-4">
                                     <div class="mb-4">
                                         <label class="form-label" for="demandSource">
-                                            Will this demand be returned directly by the service or come from Backoffice? <span class="badge-required">*</span>
+                                            Will this demand be returned directly by the service or come from
+                                            Backoffice? <span class="badge-required">*</span>
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                                title="Select whether the demand comes directly from the service or from Backoffice."></i>
+                                                title="Select the service layer(s) involved (multiple selection allowed)."></i>
                                         </label>
                                         <div class="btn-toggle-group" role="group" id="demandSourceGroup">
-                                            <input type="radio" class="btn-check" name="demandSource" id="Service" value="Service"
-                                                autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="Service">Service</label>
-                                            <input type="radio" class="btn-check" name="demandSource" id="Backoffice" value="Backoffice"
-                                                autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="Backoffice">Backoffice</label>
+                                            <input type="checkbox" class="btn-check" name="demandSource" id="NextSolutions"
+                                                value="NextSolutions" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="NextSolutions">NextSolutions</label>
+                                            <input type="checkbox" class="btn-check" name="demandSource" id="SunDevs"
+                                                value="SunDevs" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="SunDevs">SunDevs</label>
+                                            <input type="checkbox" class="btn-check" name="demandSource" id="LênioLabs"
+                                                value="LênioLabs" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="LênioLabs">LênioLabs</label>
+                                            <input type="checkbox" class="btn-check" name="demandSource" id="BackOffice"
+                                                value="BackOffice" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="BackOffice">BackOffice</label>
                                         </div>
                                     </div>
 
@@ -86,8 +100,8 @@
                                                 title="Indicate if the backend documentation is already available."></i>
                                         </label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="backendDocAvailable"
-                                                name="backendDocAvailable">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="backendDocAvailable" name="backendDocAvailable">
                                             <label class="form-check-label" for="backendDocAvailable">
                                                 <span id="backendDocAvailableLabel">No</span>
                                             </label>
@@ -96,7 +110,8 @@
 
                                     <div class="mb-4" id="backendDocUrlContainer" style="display: none;">
                                         <label class="form-label" for="backendDocUrl">
-                                            Enter URL/Link to document (Azure Wiki or other) <span class="badge-required">*</span>
+                                            Enter URL/Link to document (Azure Wiki or other) <span
+                                                class="badge-required">*</span>
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
                                                 title="Enter the URL or link to the backend documentation."></i>
                                         </label>
@@ -178,24 +193,39 @@
                                     <label class="form-label" for="featureModalBtn">
                                         Select Feature/Page <span class="badge-required">*</span>
                                         <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                            title="Select one or more features or pages related to the work item. Click the button to open the complete list."></i>
+                                            title="Select the main feature or page for the work item. Click the button to open the complete list."></i>
                                     </label>
-                                        <button type="button"
-                                            class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center"
-                                            id="featureModalBtn" data-bs-toggle="modal" data-bs-target="#featureModal">
+                                    <button type="button"
+                                        class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center"
+                                        id="featureModalBtn" data-bs-toggle="modal" data-bs-target="#featureModal">
                                         <span id="featureSelectedDisplay">
-                                                <span class="text-muted">Select one or more features...</span>
+                                            <span class="text-muted">Select one feature...</span>
                                         </span>
                                         <i class="bi bi-chevron-right"></i>
                                     </button>
-                                    <input type="text" id="featureOtherInput" name="featureOtherInput"
-                                        class="form-control mt-2" style="display:none;"
-                                            placeholder="Describe the feature...">
-                                    <input type="hidden" id="featureSelectedValues" name="featureSelectedValues">
+                                    <input type="hidden" id="featureSelectedValue" name="featureSelectedValue">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="relatedFeaturesModalBtn">
+                                        Related Features/Pages
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Select related features or pages (multiple selection allowed). Click the button to open the complete list."></i>
+                                    </label>
+                                    <button type="button"
+                                        class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center"
+                                        id="relatedFeaturesModalBtn" data-bs-toggle="modal"
+                                        data-bs-target="#relatedFeaturesModal">
+                                        <span id="relatedFeaturesSelectedDisplay">
+                                            <span class="text-muted">Select related features...</span>
+                                        </span>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                    <input type="hidden" id="relatedFeaturesSelectedValues"
+                                        name="relatedFeaturesSelectedValues">
                                 </div>
 
                                 <div class="mb-4">
-                                        <label class="form-label" for="workitem">
+                                    <label class="form-label" for="workitem">
                                         Select Work Item <span class="badge-required">*</span>
                                         <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
                                             title="Choose if the work item is a BUG or a Defect"></i>
@@ -329,7 +359,7 @@
                                                 title="User password for login."></i>
                                         </label>
                                         <input type="password" id="password" name="password" class="form-control"
- placeholder="••••••••">
+                                            placeholder="••••••••">
                                     </div>
 
                                     <div class="mb-4">
@@ -414,13 +444,12 @@
                     <div class="accordion-item" id="accordionItemDefect" style="display: none;">
                         <h2 class="accordion-header" id="headingDefect">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseDefect" aria-expanded="false"
-                                aria-controls="collapseDefect">
+                                data-bs-target="#collapseDefect" aria-expanded="false" aria-controls="collapseDefect">
                                 <i class="bi bi-file-text me-2"></i>Step 2: Defect Details
                             </button>
                         </h2>
-                        <div id="collapseDefect" class="accordion-collapse collapse"
-                            aria-labelledby="headingDefect" data-bs-parent="#accordionEtapas">
+                        <div id="collapseDefect" class="accordion-collapse collapse" aria-labelledby="headingDefect"
+                            data-bs-parent="#accordionEtapas">
                             <div class="accordion-body">
                                 <div id="defectFields">
 
@@ -431,16 +460,16 @@
                                                 title="Select the environment(s) where the defect occurs."></i>
                                         </label>
                                         <div class="btn-toggle-group" role="group" id="envGroupDefect">
-                                            <input type="checkbox" class="btn-check" name="envDefect" id="QADefect" value="QA"
-                                                autocomplete="off">
+                                            <input type="checkbox" class="btn-check" name="envDefect" id="QADefect"
+                                                value="QA" autocomplete="off">
                                             <label class="btn btn-outline-danger" for="QADefect"><i
                                                     class="bi bi-bug me-1"></i>QA</label>
-                                            <input type="checkbox" class="btn-check" name="envDefect" id="BETADefect" value="BETA"
-                                                autocomplete="off">
+                                            <input type="checkbox" class="btn-check" name="envDefect" id="BETADefect"
+                                                value="BETA" autocomplete="off">
                                             <label class="btn btn-outline-danger" for="BETADefect"><i
                                                     class="bi bi-layers me-1"></i>BETA</label>
-                                            <input type="checkbox" class="btn-check" name="envDefect" id="PRODDefect" value="PROD"
-                                                autocomplete="off">
+                                            <input type="checkbox" class="btn-check" name="envDefect" id="PRODDefect"
+                                                value="PROD" autocomplete="off">
                                             <label class="btn btn-outline-danger" for="PRODDefect"><i
                                                     class="bi bi-globe me-1"></i>PROD</label>
                                         </div>
@@ -453,8 +482,8 @@
                                                 title="Indicate if the defect can be reproduced in production."></i>
                                         </label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="prodReproDefect"
-                                                name="prodReproDefect">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="prodReproDefect" name="prodReproDefect">
                                             <label class="form-check-label" for="prodReproDefect">
                                                 <span id="prodReproDefectLabel">No</span>
                                             </label>
@@ -477,7 +506,8 @@
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
                                                 title="List the steps to reproduce the defect."></i>
                                         </label>
-                                        <textarea id="reproStepsDefect" name="reproStepsDefect" rows="4" class="form-control"
+                                        <textarea id="reproStepsDefect" name="reproStepsDefect" rows="4"
+                                            class="form-control"
                                             placeholder="1. Step one&#10;2. Step two&#10;3. Step three"></textarea>
                                     </div>
 
@@ -488,11 +518,11 @@
                                                 title="Select the affected breakpoint(s), if applicable."></i>
                                         </label>
                                         <div class="btn-group-flex" role="group" id="breakpointGroupDefect">
-                                            <input type="checkbox" class="btn-check" name="breakpointDefect" id="1280pxDefect"
-                                                autocomplete="off">
+                                            <input type="checkbox" class="btn-check" name="breakpointDefect"
+                                                id="1280pxDefect" autocomplete="off">
                                             <label class="btn btn-outline-secondary" for="1280pxDefect">1280px</label>
-                                            <input type="checkbox" class="btn-check" name="breakpointDefect" id="360pxDefect"
-                                                autocomplete="off">
+                                            <input type="checkbox" class="btn-check" name="breakpointDefect"
+                                                id="360pxDefect" autocomplete="off">
                                             <label class="btn btn-outline-secondary" for="360pxDefect">360px</label>
                                         </div>
                                     </div>
@@ -524,8 +554,8 @@
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
                                                 title="User password for login."></i>
                                         </label>
-                                        <input type="password" id="passwordDefect" name="passwordDefect" class="form-control"
-                                            placeholder="••••••••">
+                                        <input type="password" id="passwordDefect" name="passwordDefect"
+                                            class="form-control" placeholder="••••••••">
                                     </div>
 
                                     <div class="mb-4">
@@ -535,8 +565,8 @@
                                                 title="Select the user type(s) involved in the test."></i>
                                         </label>
                                         <div class="btn-group-flex" role="group" id="userTypeGroupDefect">
-                                            <input type="checkbox" class="btn-check" name="userTypeDefect" id="ComumDefect"
-                                                autocomplete="off">
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect"
+                                                id="ComumDefect" autocomplete="off">
                                             <label class="btn btn-outline-dark btn-user-type" for="ComumDefect">
                                                 <img src="https://i.ibb.co/tTSF48b7/Captura-de-tela-2025-09-25-135916-removebg-preview.png"
                                                     alt="Comum" onerror="this.style.display='none'">
@@ -544,7 +574,8 @@
                                             </label>
                                             <input type="checkbox" class="btn-check" name="userTypeDefect"
                                                 id="cine fan or clubDefect" autocomplete="off">
-                                            <label class="btn btn-outline-dark btn-user-type" for="cine fan or clubDefect">
+                                            <label class="btn btn-outline-dark btn-user-type"
+                                                for="cine fan or clubDefect">
                                                 <img src="https://i.ibb.co/TML2xPsS/Captura-de-tela-2025-09-25-135828-removebg-preview.png"
                                                     alt="Cine Fan/Club" onerror="this.style.display='none'">
                                                 Cine Fan/Club
@@ -565,11 +596,11 @@
                                                     alt="Cine Fan/Club Black" onerror="this.style.display='none'">
                                                 Cine Fan/Club Black
                                             </label>
-                                            <input type="checkbox" class="btn-check" name="userTypeDefect" id="employeeDefect"
-                                                autocomplete="off">
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect"
+                                                id="employeeDefect" autocomplete="off">
                                             <label class="btn btn-outline-dark" for="employeeDefect">Employee</label>
-                                            <input type="checkbox" class="btn-check" name="userTypeDefect" id="YPFDefect"
-                                                autocomplete="off">
+                                            <input type="checkbox" class="btn-check" name="userTypeDefect"
+                                                id="YPFDefect" autocomplete="off">
                                             <label class="btn btn-outline-dark" for="YPFDefect">YPF</label>
                                         </div>
                                     </div>
@@ -580,7 +611,8 @@
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
                                                 title="Describe the business rule and expected solution for the request."></i>
                                         </label>
-                                        <textarea id="businessRuleDefect" name="businessRuleDefect" rows="4" class="form-control"
+                                        <textarea id="businessRuleDefect" name="businessRuleDefect" rows="4"
+                                            class="form-control"
                                             placeholder="Describe the business rule and expected solution..."></textarea>
                                     </div>
                                     <div class="mb-4">
@@ -598,8 +630,8 @@
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
                                                 title="Enter the Figma link, if available."></i>
                                         </label>
-                                        <input type="text" id="linkFigmaDefect" name="linkFigmaDefect" class="form-control"
-                                            placeholder="https://figma.com/...">
+                                        <input type="text" id="linkFigmaDefect" name="linkFigmaDefect"
+                                            class="form-control" placeholder="https://figma.com/...">
                                     </div>
                                 </div>
                             </div>
@@ -654,30 +686,48 @@
         <i class="bi bi-check-circle me-2"></i>Text copied successfully!
     </div>
 
-    <!-- Modal for Feature Selection -->
+    <!-- Modal for Feature Selection (Single) -->
     <div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="featureModalLabel">
-                        <i class="bi bi-list-check me-2"></i>Select Features/Pages
+                        <i class="bi bi-list-check me-2"></i>Select Feature/Page
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Barra de pesquisa -->
-                    <div class="">
-                        <input type="text" id="featureModalSearch" class="form-control"
-                            placeholder="Search features...">
-                    </div>
-                    <!-- Lista de features -->
-                    <div id="featureModalOptions" style="max-height: 400px; overflow-y: auto;">
-                        <!-- Opções serão preenchidas via JavaScript -->
-                    </div>
+                    <input type="text" id="featureModalSearch" class="form-control" placeholder="Search features...">
+                    <div id="featureModalOptions" class="modal-options-container"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="featureModalConfirm">
+                        <i class="bi bi-check-lg me-1"></i>Confirm Selection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Related Features (Multi) -->
+    <div class="modal fade" id="relatedFeaturesModal" tabindex="-1" aria-labelledby="relatedFeaturesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="relatedFeaturesModalLabel">
+                        <i class="bi bi-list-check me-2"></i>Select Related Features/Pages
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="relatedFeaturesModalSearch" class="form-control"
+                        placeholder="Search features...">
+                    <div id="relatedFeaturesModalOptions" class="modal-options-container"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="relatedFeaturesModalConfirm">
                         <i class="bi bi-check-lg me-1"></i>Confirm Selection
                     </button>
                 </div>
@@ -696,182 +746,170 @@
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     </script>
     <script>
-        // Lista de features
-        const featuresList = [
-            'General application', 'NavigationBar', 'Header', 'Footer', 'Homepage',
-            'Candy LP', 'CineFan LP', 'Cinemark Club LP', 'CineFan Drawer', 'CinemarkClub Drawer',
-            'Visitas LP', 'Login', 'Profile', 'Profile/CineFan Drawer', 'Profile/CinemarkClub Drawer',
-            'Profile/User Date', 'Profile/Order History', 'Profile/OrderDetail', 'MerchStore', 'RegalaCine',
-            'Formats LP (General)', 'Formats (Dedicated)', 'Which Movie', 'Movie Page', 'Movies By Theater',
-            'Erros Page', 'Quich Purchase', 'Eletronic Invoce', 'Groups Purchase', 'Corporate Purchase',
-            'OtherPurchase', 'Theaters', 'Prices', 'About Us', 'Promotions',
-            'Cyber Sales', 'Work with Us', 'Ticket Upgrade', 'Ticket selection', 'Seat Map',
-            'Candy (by ticket journey)', 'Merch (by ticket journey)', 'Checkout', 'Order Detail',
-            'Candy (by candy journey)', 'Checkout  (by candy journey)', 'OrderDetail  (by candy journey)',
-            'Merch (by merch journey)', 'Creat Account', 'Disclaimer',
-            'CineFan  Signature drawer', 'CineFan Plus Signature drawer', 'CineFan  Black Signature drawer',
-            'Cinemark Club Signature drawer', 'Cinemark Club Plus Signature drawer', 'Cinemark Club Black Signature drawer',
-            'Other'
-        ];
+        // Variável global para armazenar features carregadas do JSON
+        let featuresGrouped = {};
+        let featuresList = [];
 
-        document.addEventListener('DOMContentLoaded', function () {
+        // Função para carregar features do JSON
+        async function loadFeatures() {
+            try {
+                const response = await fetch('data/features.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load features.json');
+                }
+                featuresGrouped = await response.json();
+                featuresList = Object.values(featuresGrouped).flat();
+                return featuresGrouped;
+            } catch (error) {
+                console.error('Erro ao carregar features.json:', error);
+                // Fallback para objeto vazio em caso de erro
+                featuresGrouped = {};
+                featuresList = [];
+                return featuresGrouped;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            // Carregar features do JSON antes de inicializar
+            await loadFeatures();
             // Inicializar tooltips do Bootstrap 5
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
-            // Sistema de seleção de Features com Modal
-            let selectedFeatures = [];
-            const featureOtherInput = document.getElementById('featureOtherInput');
-            const featureModalSearch = document.getElementById('featureModalSearch');
-            const featureModalOptions = document.getElementById('featureModalOptions');
-            const featureModal = new bootstrap.Modal(document.getElementById('featureModal'));
-            let tempSelectedFeatures = []; // Para armazenar seleções temporárias no modal
+            // --- Seleção principal (single) ---
+            let selectedFeature = '';
+            function renderFeatureModalOptions(filter = '') {
+                const container = document.getElementById('featureModalOptions');
+                container.innerHTML = '';
 
-            // Renderizar opções no modal
-            function renderFeaturesInModal(filter = '') {
-                featureModalOptions.innerHTML = '';
-                const filtered = featuresList.filter(f =>
-                    f.toLowerCase().includes(filter.toLowerCase())
-                );
+                let hasResults = false;
 
-                if (filtered.length === 0) {
-                    featureModalOptions.innerHTML = '<p class="text-muted text-center py-3">No features found.</p>';
-                    return;
-                }
+                // Iterar sobre os grupos
+                Object.entries(featuresGrouped).forEach(([groupName, features]) => {
+                    // Filtrar features do grupo
+                    const filtered = features.filter(f => f.toLowerCase().includes(filter.toLowerCase()));
 
-                filtered.forEach((feature, index) => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'form-check border-bottom';
-                    
-                    const isSelected = tempSelectedFeatures.includes(feature);
-                    
-                    // Criar ID seguro para o checkbox
-                    const safeId = 'feature-modal-' + index + '-' + Date.now();
-                    
-                    // Criar checkbox
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.className = 'form-check-input';
-                    checkbox.id = safeId;
-                    checkbox.value = feature;
-                    checkbox.checked = isSelected;
-                    
-                    // Criar label
-                    const label = document.createElement('label');
-                    label.className = 'form-check-label w-100';
-                    label.setAttribute('for', safeId);
-                    label.textContent = feature;
-                    
-                    // Adicionar evento ao checkbox
-                    checkbox.addEventListener('change', function () {
-                        if (this.checked) {
-                            if (!tempSelectedFeatures.includes(feature)) {
-                                tempSelectedFeatures.push(feature);
-                            }
-                        } else {
-                            tempSelectedFeatures = tempSelectedFeatures.filter(f => f !== feature);
-                        }
+                    if (filtered.length === 0) return;
+
+                    hasResults = true;
+
+                    // Criar cabeçalho do grupo
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'fw-bold text-primary mt-3 mb-2 px-2 py-1 feature-group-header';
+                    groupHeader.textContent = groupName;
+                    container.appendChild(groupHeader);
+
+                    // Criar features do grupo
+                    filtered.forEach((feature, idx) => {
+                        const id = 'feature-modal-single-' + groupName.replace(/\s+/g, '-') + '-' + idx;
+                        const div = document.createElement('div');
+                        div.className = 'form-check border-bottom feature-item';
+                        const input = document.createElement('input');
+                        input.type = 'radio';
+                        input.className = 'form-check-input feature-input';
+                        input.name = 'featureModalRadio';
+                        input.id = id;
+                        input.value = feature;
+                        input.checked = selectedFeature === feature;
+                        input.addEventListener('change', function () {
+                            selectedFeature = this.value;
+                        });
+                        const label = document.createElement('label');
+                        label.className = 'form-check-label feature-label';
+                        label.setAttribute('for', id);
+                        label.textContent = feature;
+                        div.appendChild(input);
+                        div.appendChild(label);
+                        container.appendChild(div);
                     });
-                    
-                    // Adicionar evento ao label também
-                    label.addEventListener('click', function (e) {
-                        if (e.target.tagName !== 'INPUT') {
-                            checkbox.checked = !checkbox.checked;
-                            checkbox.dispatchEvent(new Event('change'));
-                        }
-                    });
-                    
-                    // Adicionar elementos ao div na ordem correta
-                    optionDiv.appendChild(checkbox);
-                    optionDiv.appendChild(label);
-                    
-                    // Adicionar ao container
-                    featureModalOptions.appendChild(optionDiv);
                 });
-            }
 
-            // Atualizar display do botão com features selecionadas
-            function updateFeatureDisplay() {
-                const featureDisplay = document.getElementById('featureSelectedDisplay');
-                const featureBtn = document.getElementById('featureModalBtn');
-                
-                if (selectedFeatures.length === 0) {
-                    featureDisplay.innerHTML = '<span class="text-muted">Select one or more features...</span>';
-                } else {
-                    const tagsHtml = selectedFeatures.map(feature => 
-                        `<span class="badge bg-primary me-1 mb-1">${feature}</span>`
-                    ).join('');
-                    featureDisplay.innerHTML = tagsHtml || '<span class="text-muted">Select one or more features...</span>';
-                }
-                document.getElementById('featureSelectedValues').value = selectedFeatures.join(',');
-                
-                // Remover destaque de pendente se houver seleções
-                if (selectedFeatures.length > 0) {
-                    document.querySelector('label[for="featureModalBtn"]')?.classList.remove('campo-pendente-label');
-                    featureBtn?.classList.remove('campo-pendente');
+                if (!hasResults) {
+                    container.innerHTML = '<p class="text-muted text-center py-3">No features found.</p>';
                 }
             }
-
-            // Quando o modal abrir, copiar seleções atuais para temporárias
             document.getElementById('featureModal').addEventListener('show.bs.modal', function () {
-                tempSelectedFeatures = [...selectedFeatures];
-                featureModalSearch.value = '';
-                // Garantir que o modal esteja visível antes de renderizar
-                setTimeout(() => {
-                    renderFeaturesInModal();
-                }, 100);
+                document.getElementById('featureModalSearch').value = '';
+                renderFeatureModalOptions();
+            });
+            document.getElementById('featureModalSearch').addEventListener('input', function () {
+                renderFeatureModalOptions(this.value);
+            });
+            document.getElementById('featureModalConfirm').addEventListener('click', function () {
+                document.getElementById('featureSelectedValue').value = selectedFeature;
+                document.getElementById('featureSelectedDisplay').innerHTML = selectedFeature ? `<span class="badge bg-primary">${selectedFeature}</span>` : '<span class="text-muted">Select one feature...</span>';
+                bootstrap.Modal.getInstance(document.getElementById('featureModal')).hide();
             });
 
-            // Pesquisa no modal
-            featureModalSearch.addEventListener('input', function () {
-                renderFeaturesInModal(this.value);
-            });
+            // --- Seleção relacionadas (multi) ---
+            let selectedRelatedFeatures = [];
+            function renderRelatedFeaturesModalOptions(filter = '') {
+                const container = document.getElementById('relatedFeaturesModalOptions');
+                container.innerHTML = '';
 
-            // Variável para rastrear se foi clicado no botão de confirmar
-            let modalConfirmClicked = false;
+                let hasResults = false;
 
-            // Confirmar seleção do modal
-            document.getElementById('featureModalConfirm').addEventListener('click', function (e) {
-                e.preventDefault();
-                modalConfirmClicked = true;
-                
-                // Remover foco do botão
-                this.blur();
-                
-                // Processar seleções
-                selectedFeatures = [...tempSelectedFeatures];
-                updateFeatureDisplay();
-                
-                // Mostrar/ocultar input "Other"
-                if (selectedFeatures.includes('Other')) {
-                    featureOtherInput.style.display = 'block';
-                } else {
-                    featureOtherInput.style.display = 'none';
-                    featureOtherInput.value = '';
+                // Iterar sobre os grupos
+                Object.entries(featuresGrouped).forEach(([groupName, features]) => {
+                    // Filtrar features do grupo
+                    const filtered = features.filter(f => f.toLowerCase().includes(filter.toLowerCase()));
+
+                    if (filtered.length === 0) return;
+
+                    hasResults = true;
+
+                    // Criar cabeçalho do grupo
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'fw-bold text-primary mt-3 mb-2 px-2 py-1 feature-group-header';
+                    groupHeader.textContent = groupName;
+                    container.appendChild(groupHeader);
+
+                    // Criar features do grupo
+                    filtered.forEach((feature, idx) => {
+                        const id = 'related-feature-modal-' + groupName.replace(/\s+/g, '-') + '-' + idx;
+                        const div = document.createElement('div');
+                        div.className = 'form-check border-bottom feature-item';
+                        const input = document.createElement('input');
+                        input.type = 'checkbox';
+                        input.className = 'form-check-input feature-input';
+                        input.id = id;
+                        input.value = feature;
+                        input.checked = selectedRelatedFeatures.includes(feature);
+                        input.addEventListener('change', function () {
+                            if (this.checked) {
+                                if (!selectedRelatedFeatures.includes(feature)) selectedRelatedFeatures.push(feature);
+                            } else {
+                                selectedRelatedFeatures = selectedRelatedFeatures.filter(f => f !== feature);
+                            }
+                        });
+                        const label = document.createElement('label');
+                        label.className = 'form-check-label feature-label';
+                        label.setAttribute('for', id);
+                        label.textContent = feature;
+                        div.appendChild(input);
+                        div.appendChild(label);
+                        container.appendChild(div);
+                    });
+                });
+
+                if (!hasResults) {
+                    container.innerHTML = '<p class="text-muted text-center py-3">No features found.</p>';
                 }
-                
-                // Fechar modal após um pequeno delay
-                setTimeout(() => {
-                    const modalElement = document.getElementById('featureModal');
-                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                    if (modalInstance) {
-                        modalInstance.hide();
-                    }
-                    // Mover foco para fora do modal
-                    document.getElementById('featureModalBtn')?.blur();
-                    modalConfirmClicked = false;
-                }, 50);
+            }
+            document.getElementById('relatedFeaturesModal').addEventListener('show.bs.modal', function () {
+                document.getElementById('relatedFeaturesModalSearch').value = '';
+                renderRelatedFeaturesModalOptions();
             });
-
-            // Resetar flag quando modal for aberto novamente
-            document.getElementById('featureModal').addEventListener('show.bs.modal', function () {
-                modalConfirmClicked = false;
+            document.getElementById('relatedFeaturesModalSearch').addEventListener('input', function () {
+                renderRelatedFeaturesModalOptions(this.value);
             });
-
-            // Inicializar
-            updateFeatureDisplay();
+            document.getElementById('relatedFeaturesModalConfirm').addEventListener('click', function () {
+                document.getElementById('relatedFeaturesSelectedValues').value = selectedRelatedFeatures.join(', ');
+                document.getElementById('relatedFeaturesSelectedDisplay').innerHTML = selectedRelatedFeatures.length > 0 ? selectedRelatedFeatures.map(f => `<span class="badge bg-secondary me-1 mb-1">${f}</span>`).join('') : '<span class="text-muted">Select related features...</span>';
+                bootstrap.Modal.getInstance(document.getElementById('relatedFeaturesModal')).hide();
+            });
 
             // Controlar switch do prodRepro
             const prodReproSwitch = document.getElementById('prodRepro');
@@ -894,7 +932,7 @@
             const backendDocAvailableLabel = document.getElementById('backendDocAvailableLabel');
             const backendDocUrlContainer = document.getElementById('backendDocUrlContainer');
             const backendDocUrlInput = document.getElementById('backendDocUrl');
-            
+
             backendDocAvailableSwitch.addEventListener('change', function () {
                 backendDocAvailableLabel.textContent = this.checked ? 'Yes' : 'No';
                 if (this.checked) {
@@ -1056,7 +1094,8 @@
                 const related = document.getElementById('related').value.trim() || '';
 
                 // Coletar novos campos
-                const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
+                const demandSources = Array.from(document.querySelectorAll('input[name="demandSource"]:checked')).map(i => i.value);
+                const demandSourceStr = demandSources.join(', ');
                 const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
                 const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
 
@@ -1064,11 +1103,39 @@
                 const countries = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(i => i.value || i.id);
                 const countryStr = countries.join(', ');
 
-                // Coletar features
-                const feature = selectedFeatures.join(', ') || '';
+                // Coletar feature principal
+                const feature = document.getElementById('featureSelectedValue').value || '';
+                // Coletar features relacionadas
+                const relatedFeaturesRaw = document.getElementById('relatedFeaturesSelectedValues').value || '';
+                
+                // Função para agrupar features relacionadas por grupo
+                function formatRelatedFeaturesByGroup(featuresStr) {
+                    if (!featuresStr || featuresStr.trim() === '') return '';
+                    
+                    const featuresList = featuresStr.split(', ').map(f => f.trim()).filter(f => f);
+                    if (featuresList.length === 0) return '';
+                    
+                    // Agrupar features por grupo
+                    const grouped = {};
+                    Object.entries(featuresGrouped).forEach(([groupName, groupFeatures]) => {
+                        const matchingFeatures = featuresList.filter(f => groupFeatures.includes(f));
+                        if (matchingFeatures.length > 0) {
+                            grouped[groupName] = matchingFeatures;
+                        }
+                    });
+                    
+                    // Formatar como "Group(feature1, feature2, etc...)"
+                    const formattedGroups = Object.entries(grouped).map(([groupName, features]) => {
+                        return `${groupName}(${features.join(', ')})`;
+                    });
+                    
+                    return formattedGroups.join('\n');
+                }
+                
+                const relatedFeatures = formatRelatedFeaturesByGroup(relatedFeaturesRaw);
 
                 // Validar campos obrigatórios básicos
-                if (!demandSourceEl) {
+                if (demandSources.length === 0) {
                     pendencias.push('Will this demand be returned directly by the service or come from Backoffice?');
                     document.querySelector('label[for="demandSource"]')?.classList.add('campo-pendente-label');
                 }
@@ -1107,7 +1174,7 @@
 
                 // Formatação da data
                 const dataAtual = new Date();
-                    const dataFormatada = dataAtual.toLocaleDateString('en-US', {
+                const dataFormatada = dataAtual.toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric',
@@ -1119,11 +1186,11 @@
 
                 if (workitem === 'BUG') {
                     // Campos de BUG
-                    const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
-                    const demandSource = demandSourceEl ? demandSourceEl.value : '';
+                    const demandSources = Array.from(document.querySelectorAll('input[name="demandSource"]:checked')).map(i => i.value);
+                    const demandSource = demandSources.join(', ');
                     const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
                     const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
-                    
+
                     const env = Array.from(document.querySelectorAll('input[name="env"]:checked')).map(i => i.value || i.id);
                     const envStr = env.join(', ');
                     const prodRepro = document.getElementById('prodRepro').checked ? '✓Yes' : '✘No';
@@ -1137,12 +1204,6 @@
                     const userTypeStr = userType.join(', ');
                     const businessRule = document.getElementById('businessRule').value.trim();
                     const linkFigma = document.getElementById('linkFigma').value.trim() || '';
-                    
-                    // Preparar mensagens condicionais
-                    let backendDocMessage = '';
-                    if (!backendDocAvailable) {
-                        backendDocMessage = '\n⚠️ Validation with the service provider\'s team will be necessary to determine the feasibility of the request.';
-                    }
 
                     // Validação de campos obrigatórios BUG
                     if (env.length === 0) {
@@ -1184,13 +1245,19 @@
                         return pendencias;
                     }
 
+                    // Coletar features relacionadas
+                    const relatedFeaturesRaw = document.getElementById('relatedFeaturesSelectedValues').value || '';
+                    const relatedFeatures = formatRelatedFeaturesByGroup(relatedFeaturesRaw);
+                    
                     // Formato de texto simples conforme especificado
                     formatted = `[${feature}] ${titulo}
 𝗖𝗢𝗨𝗡𝗧𝗥𝗬: ${countryStr}
 𝗪𝗢𝗥𝗞 𝗜𝗧𝗘𝗠: BUG (INT)
-𝗗𝗘𝗠𝗔𝗡𝗗 𝗦𝗢𝗨𝗥𝗖𝗘: ${demandSource}
-${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: \n Available in:  ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
+𝗦𝗘𝗥𝗩𝗜𝗖𝗘 𝗟𝗔𝗬𝗘𝗥: ${demandSource}
+${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡:\nAvailable in: ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
 𝗥𝗘𝗟𝗔𝗧𝗘𝗗: ${related}
+𝗥𝗘𝗟𝗔𝗧𝗘𝗗 𝗙𝗘𝗔𝗧𝗨𝗥𝗘𝗦/𝗣𝗔𝗚𝗘𝗦:
+${relatedFeatures}
 𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡𝗧: ${envStr}
 𝗜𝗦 𝗣𝗢𝗦𝗦𝗜𝗕𝗟𝗘 𝗥𝗘𝗣𝗥𝗢𝗗𝗨𝗖𝗘 𝗜𝗡 𝗣𝗥𝗢𝗗 𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡: ${prodRepro}
 𝗖𝗢𝗡𝗧𝗘𝗫𝗧:
@@ -1204,15 +1271,15 @@ ${reproSteps}
 𝗨𝗦𝗘𝗥 𝗧𝗬𝗣𝗘: ${userTypeStr}
 𝗕𝗨𝗦𝗜𝗡𝗘𝗦𝗦 𝗥𝗨𝗟𝗘 𝗔𝗡𝗗 𝗘𝗫𝗣𝗘𝗖𝗧𝗘𝗗 𝗦𝗢𝗟𝗨𝗧𝗜𝗢𝗡:
 ${businessRule}
-${linkFigma ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigma}` : ''}${backendDocMessage}
+${linkFigma ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigma}` : ''}
 Created by ${nome} on ${dataFormatada}`;
                 } else {
                     // Campos de Defect (iguais aos de BUG)
-                    const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
-                    const demandSource = demandSourceEl ? demandSourceEl.value : '';
+                    const demandSources = Array.from(document.querySelectorAll('input[name="demandSource"]:checked')).map(i => i.value);
+                    const demandSource = demandSources.join(', ');
                     const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
                     const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
-                    
+
                     const env = Array.from(document.querySelectorAll('input[name="envDefect"]:checked')).map(i => i.value || i.id);
                     const envStr = env.join(', ');
                     const prodRepro = document.getElementById('prodReproDefect').checked ? '✓Yes' : '✘No';
@@ -1244,12 +1311,6 @@ Created by ${nome} on ${dataFormatada}`;
                     const businessRule = document.getElementById('businessRuleDefect').value.trim();
                     const linkFigma = document.getElementById('linkFigmaDefect').value.trim() || '';
                     const relatedDefect = document.getElementById('relatedDefect').value.trim() || '';
-                    
-                    // Preparar mensagens condicionais
-                    let backendDocMessage = '';
-                    if (!backendDocAvailable) {
-                        backendDocMessage = '\n⚠️ Validation with the service provider\'s team will be necessary to determine the feasibility of the request.';
-                    }
 
                     // Validação de campos obrigatórios Defect
                     if (env.length === 0) {
@@ -1291,13 +1352,19 @@ Created by ${nome} on ${dataFormatada}`;
                         return pendencias;
                     }
 
+                    // Coletar features relacionadas
+                    const relatedFeaturesRaw = document.getElementById('relatedFeaturesSelectedValues').value || '';
+                    const relatedFeatures = formatRelatedFeaturesByGroup(relatedFeaturesRaw);
+
                     // Formato de texto simples conforme especificado - adicionar 🪲[DEF] antes do título
                     formatted = `🪲[DEF][${feature}] ${titulo}
 𝗖𝗢𝗨𝗡𝗧𝗥𝗬: ${countryStr}
 𝗪𝗢𝗥𝗞 𝗜𝗧𝗘𝗠: DEFECT (INT)
-𝗗𝗘𝗠𝗔𝗡𝗗 𝗦𝗢𝗨𝗥𝗖𝗘: ${demandSource}
-${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: \n Available in:  ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
+𝗦𝗘𝗥𝗩𝗜𝗖𝗘 𝗟𝗔𝗬𝗘𝗥: ${demandSource}
+${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡:\nAvailable in: ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
 𝗥𝗘𝗟𝗔𝗧𝗘𝗗: ${relatedDefect}
+𝗥𝗘𝗟𝗔𝗧𝗘𝗗 𝗙𝗘𝗔𝗧𝗨𝗥𝗘𝗦/𝗣𝗔𝗚𝗘𝗦:
+${relatedFeatures}
 𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡𝗧: ${envStr}
 𝗜𝗦 𝗣𝗢𝗦𝗦𝗜𝗕𝗟𝗘 𝗥𝗘𝗣𝗥𝗢𝗗𝗨𝗖𝗘 𝗜𝗡 𝗣𝗥𝗢𝗗 𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡: ${prodRepro}
 𝗖𝗢𝗡𝗧𝗘𝗫𝗧:
@@ -1311,7 +1378,7 @@ ${reproSteps}
 𝗨𝗦𝗘𝗥 𝗧𝗬𝗣𝗘: ${userTypeStr}
 𝗕𝗨𝗦𝗜𝗡𝗘𝗦𝗦 𝗥𝗨𝗟𝗘 𝗔𝗡𝗗 𝗘𝗫𝗣𝗘𝗖𝗧𝗘𝗗 𝗦𝗢𝗟𝗨𝗧𝗜𝗢𝗡:
 ${businessRule}
-${linkFigma ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigma}` : ''}${backendDocMessage}
+${linkFigma ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigma}` : ''}
 Created by ${nome} on ${dataFormatada}`;
                 }
 
@@ -1324,7 +1391,7 @@ Created by ${nome} on ${dataFormatada}`;
                 const accordionItemResultado = document.getElementById('accordionItemResultado');
                 const collapseResultadoEl = document.getElementById('collapseResultado');
                 accordionItemResultado.style.display = 'block';
-                
+
                 // Colapsar etapas anteriores
                 const collapseBug = bootstrap.Collapse.getInstance(document.getElementById('collapseBug'));
                 const collapseDefect = bootstrap.Collapse.getInstance(document.getElementById('collapseDefect'));
@@ -1340,11 +1407,11 @@ Created by ${nome} on ${dataFormatada}`;
                             toggle: false
                         });
                     }
-                    
+
                     // Forçar exibição do conteúdo
                     collapseResultadoEl.classList.add('show');
                     collapseResultadoEl.style.display = 'block';
-                    
+
                     // Expandir
                     collapseResultado.show();
 
@@ -1391,18 +1458,18 @@ Created by ${nome} on ${dataFormatada}`;
                 } else {
                     // Se não houver pendências, o resultado já foi gerado na função
                     document.getElementById('pendenciasBox').classList.remove('show');
-                    
+
                     // Obter tipo de work item
                     const workitemEl = document.querySelector('input[name="workitem"]:checked');
                     const workitemType = workitemEl ? workitemEl.id : '';
                     const resultado = document.getElementById('resultado').value;
-                    
+
                     console.log('📋 Formulário submetido com sucesso!', {
                         workitemType,
                         resultadoLength: resultado?.length,
                         resultadoPreview: resultado?.substring(0, 100) + '...'
                     });
-                    
+
                     // Enviar notificação ao Slack
                     if (workitemType && resultado) {
                         notificarSlack(workitemType, resultado);
@@ -1415,7 +1482,7 @@ Created by ${nome} on ${dataFormatada}`;
             // Função para notificar o Slack usando Supabase Edge Function (resolve CORS)
             async function notificarSlack(workitemType, formattedText) {
                 console.log('🔔 Função notificarSlack chamada', { workitemType, formattedTextLength: formattedText?.length });
-                
+
                 if (!formattedText || formattedText.trim() === '') {
                     console.error('❌ Texto formatado está vazio!');
                     return;
@@ -1429,7 +1496,7 @@ Created by ${nome} on ${dataFormatada}`;
                 try {
                     const titulo = document.getElementById('titulo').value.trim();
                     const nome = document.getElementById('nome').value.trim();
-                    
+
                     // Determinar emoji e cor baseado no tipo
                     let emoji = '🪲';
                     let typeLabel = 'DEFECT';
@@ -1440,7 +1507,7 @@ Created by ${nome} on ${dataFormatada}`;
                         emoji = '🪲';
                         typeLabel = 'DEFECT';
                     }
-                    
+
 
                     console.log('📝 Dados preparados:', { titulo, nome, typeLabel });
 
@@ -1518,14 +1585,14 @@ Created by ${nome} on ${dataFormatada}`;
             // Função para coletar todos os dados do formulário
             function coletarDadosFormulario() {
                 const dados = {
-                    demandSource: document.querySelector('input[name="demandSource"]:checked')?.value || '',
+                    demandSource: Array.from(document.querySelectorAll('input[name="demandSource"]:checked')).map(i => i.value),
                     backendDocAvailable: document.getElementById('backendDocAvailable').checked,
                     backendDocUrl: document.getElementById('backendDocUrl').value.trim(),
                     titulo: document.getElementById('titulo').value.trim(),
                     nome: document.getElementById('nome').value.trim(),
                     countries: Array.from(document.querySelectorAll('input[name="country"]:checked')).map(i => i.value),
-                    features: selectedFeatures,
-                    featureOtherInput: document.getElementById('featureOtherInput').value.trim(),
+                    feature: document.getElementById('featureSelectedValue').value || '',
+                    relatedFeatures: document.getElementById('relatedFeaturesSelectedValues').value.split(', ').filter(f => f.trim()),
                     workitem: document.querySelector('input[name="workitem"]:checked')?.id || '',
                     // Campos de BUG
                     env: Array.from(document.querySelectorAll('input[name="env"]:checked')).map(i => i.value),
@@ -1561,43 +1628,62 @@ Created by ${nome} on ${dataFormatada}`;
             function preencherFormulario(dados) {
                 try {
                     console.log('Preenchendo formulário com dados:', dados);
-                    
-                    // Campos básicos - Demand Source
+
+                    // Campos básicos - Demand Source (múltipla seleção)
                     if (dados.demandSource) {
                         // Primeiro desmarcar todos
-                        document.querySelectorAll('input[name="demandSource"]').forEach(radio => radio.checked = false);
-                        // Depois marcar o selecionado
-                        const demandSourceEl = document.getElementById(dados.demandSource);
-                        if (demandSourceEl) {
-                            demandSourceEl.checked = true;
-                            demandSourceEl.dispatchEvent(new Event('change'));
-                        } else {
-                            console.warn('Demand Source não encontrado:', dados.demandSource);
-                        }
+                        document.querySelectorAll('input[name="demandSource"]').forEach(cb => cb.checked = false);
+                        // Depois marcar os selecionados
+                        const demandSourceArray = Array.isArray(dados.demandSource) ? dados.demandSource : [dados.demandSource];
+                        demandSourceArray.forEach(source => {
+                            const demandSourceEl = document.getElementById(source);
+                            if (demandSourceEl) {
+                                demandSourceEl.checked = true;
+                                demandSourceEl.dispatchEvent(new Event('change'));
+                            } else {
+                                console.warn('Demand Source não encontrado:', source);
+                            }
+                        });
                     }
-                    
+
                     // Backend Doc
                     const backendDocAvailable = document.getElementById('backendDocAvailable');
                     if (backendDocAvailable) {
                         backendDocAvailable.checked = dados.backendDocAvailable === true || dados.backendDocAvailable === 'true';
                         backendDocAvailable.dispatchEvent(new Event('change'));
                     }
-                    
+
                     const backendDocUrl = document.getElementById('backendDocUrl');
                     if (backendDocUrl) {
                         backendDocUrl.value = dados.backendDocUrl || '';
                     }
-                    
+
                     // Título e Nome
                     const titulo = document.getElementById('titulo');
                     if (titulo) titulo.value = dados.titulo || '';
-                    
+
                     const nome = document.getElementById('nome');
                     if (nome) nome.value = dados.nome || '';
-                    
-                    const featureOtherInput = document.getElementById('featureOtherInput');
-                    if (featureOtherInput) featureOtherInput.value = dados.featureOtherInput || '';
-                    
+
+                    // Feature principal
+                    if (dados.feature) {
+                        selectedFeature = dados.feature;
+                        document.getElementById('featureSelectedValue').value = dados.feature;
+                        document.getElementById('featureSelectedDisplay').innerHTML = `<span class="badge bg-primary">${dados.feature}</span>`;
+                    }
+
+                    // Features relacionadas
+                    if (dados.relatedFeatures && Array.isArray(dados.relatedFeatures)) {
+                        selectedRelatedFeatures = dados.relatedFeatures;
+                        document.getElementById('relatedFeaturesSelectedValues').value = dados.relatedFeatures.join(', ');
+                        document.getElementById('relatedFeaturesSelectedDisplay').innerHTML = dados.relatedFeatures.length > 0 ? dados.relatedFeatures.map(f => `<span class="badge bg-secondary me-1 mb-1">${f}</span>`).join('') : '<span class="text-muted">Select related features...</span>';
+                    } else if (dados.relatedFeatures && typeof dados.relatedFeatures === 'string') {
+                        // Se vier como string separada por vírgula
+                        selectedRelatedFeatures = dados.relatedFeatures.split(',').map(f => f.trim()).filter(f => f);
+                        document.getElementById('relatedFeaturesSelectedValues').value = selectedRelatedFeatures.join(', ');
+                        document.getElementById('relatedFeaturesSelectedDisplay').innerHTML = selectedRelatedFeatures.length > 0 ? selectedRelatedFeatures.map(f => `<span class="badge bg-secondary me-1 mb-1">${f}</span>`).join('') : '<span class="text-muted">Select related features...</span>';
+                    }
+
                     // Countries
                     document.querySelectorAll('input[name="country"]').forEach(cb => cb.checked = false);
                     if (dados.countries && Array.isArray(dados.countries)) {
@@ -1618,13 +1704,7 @@ Created by ${nome} on ${dataFormatada}`;
                             }
                         });
                     }
-                    
-                    // Features
-                    if (dados.features) {
-                        selectedFeatures = Array.isArray(dados.features) ? dados.features : [];
-                        updateFeatureDisplay();
-                    }
-                    
+
                     // Work Item - IMPORTANTE: fazer isso primeiro para mostrar os campos corretos
                     if (dados.workitem) {
                         const workitemEl = document.getElementById(dados.workitem);
@@ -1647,7 +1727,7 @@ Created by ${nome} on ${dataFormatada}`;
                     alert('Erro ao preencher formulário: ' + error.message);
                 }
             }
-            
+
             // Função auxiliar para preencher campos específicos de BUG e Defect
             function preencherCamposEspecificos(dados) {
                 // Campos de BUG
@@ -1658,37 +1738,37 @@ Created by ${nome} on ${dataFormatada}`;
                         if (cb) cb.checked = true;
                     });
                 }
-                
+
                 const prodRepro = document.getElementById('prodRepro');
                 if (prodRepro) {
                     prodRepro.checked = dados.prodRepro === true || dados.prodRepro === 'true';
                     prodRepro.dispatchEvent(new Event('change'));
                 }
-                
+
                 const context = document.getElementById('context');
                 if (context) context.value = dados.context || '';
-                
+
                 const reproSteps = document.getElementById('reproSteps');
                 if (reproSteps) reproSteps.value = dados.reproSteps || '';
-                
+
                 const cine = document.getElementById('cine');
                 if (cine) cine.value = dados.cine || '';
-                
+
                 const user = document.getElementById('user');
                 if (user) user.value = dados.user || '';
-                
+
                 const password = document.getElementById('password');
                 if (password) password.value = dados.password || '';
-                
+
                 const businessRule = document.getElementById('businessRule');
                 if (businessRule) businessRule.value = dados.businessRule || '';
-                
+
                 const related = document.getElementById('related');
                 if (related) related.value = dados.related || '';
-                
+
                 const linkFigma = document.getElementById('linkFigma');
                 if (linkFigma) linkFigma.value = dados.linkFigma || '';
-                
+
                 if (dados.breakpoint && Array.isArray(dados.breakpoint)) {
                     document.querySelectorAll('input[name="breakpoint"]').forEach(cb => cb.checked = false);
                     dados.breakpoint.forEach(bp => {
@@ -1696,7 +1776,7 @@ Created by ${nome} on ${dataFormatada}`;
                         if (cb) cb.checked = true;
                     });
                 }
-                
+
                 if (dados.userType && Array.isArray(dados.userType)) {
                     document.querySelectorAll('input[name="userType"]').forEach(cb => cb.checked = false);
                     dados.userType.forEach(ut => {
@@ -1716,7 +1796,7 @@ Created by ${nome} on ${dataFormatada}`;
                         }
                     });
                 }
-                
+
                 // Campos de Defect
                 if (dados.envDefect && Array.isArray(dados.envDefect)) {
                     document.querySelectorAll('input[name="envDefect"]').forEach(cb => cb.checked = false);
@@ -1725,37 +1805,37 @@ Created by ${nome} on ${dataFormatada}`;
                         if (cb) cb.checked = true;
                     });
                 }
-                
+
                 const prodReproDefect = document.getElementById('prodReproDefect');
                 if (prodReproDefect) {
                     prodReproDefect.checked = dados.prodReproDefect === true || dados.prodReproDefect === 'true';
                     prodReproDefect.dispatchEvent(new Event('change'));
                 }
-                
+
                 const contextDefect = document.getElementById('contextDefect');
                 if (contextDefect) contextDefect.value = dados.contextDefect || '';
-                
+
                 const reproStepsDefect = document.getElementById('reproStepsDefect');
                 if (reproStepsDefect) reproStepsDefect.value = dados.reproStepsDefect || '';
-                
+
                 const cineDefect = document.getElementById('cineDefect');
                 if (cineDefect) cineDefect.value = dados.cineDefect || '';
-                
+
                 const userDefect = document.getElementById('userDefect');
                 if (userDefect) userDefect.value = dados.userDefect || '';
-                
+
                 const passwordDefect = document.getElementById('passwordDefect');
                 if (passwordDefect) passwordDefect.value = dados.passwordDefect || '';
-                
+
                 const businessRuleDefect = document.getElementById('businessRuleDefect');
                 if (businessRuleDefect) businessRuleDefect.value = dados.businessRuleDefect || '';
-                
+
                 const relatedDefect = document.getElementById('relatedDefect');
                 if (relatedDefect) relatedDefect.value = dados.relatedDefect || '';
-                
+
                 const linkFigmaDefect = document.getElementById('linkFigmaDefect');
                 if (linkFigmaDefect) linkFigmaDefect.value = dados.linkFigmaDefect || '';
-                
+
                 if (dados.breakpointDefect && Array.isArray(dados.breakpointDefect)) {
                     document.querySelectorAll('input[name="breakpointDefect"]').forEach(cb => cb.checked = false);
                     dados.breakpointDefect.forEach(bp => {
@@ -1763,7 +1843,7 @@ Created by ${nome} on ${dataFormatada}`;
                         if (cb) cb.checked = true;
                     });
                 }
-                
+
                 if (dados.userTypeDefect && Array.isArray(dados.userTypeDefect)) {
                     document.querySelectorAll('input[name="userTypeDefect"]').forEach(cb => cb.checked = false);
                     dados.userTypeDefect.forEach(ut => {
@@ -1792,14 +1872,14 @@ Created by ${nome} on ${dataFormatada}`;
             // Função para gerar template com exemplos válidos
             function gerarTemplateExemplo() {
                 return {
-                    demandSource: "Service",
+                    demandSource: ["NextSolutions"],
                     backendDocAvailable: true,
                     backendDocUrl: "https://example.com/docs",
                     titulo: "Exemplo de Título do Work Item",
                     nome: "Nome do Usuário",
                     countries: ["AR", "CL"],
-                    features: ["Feature1", "Feature2"],
-                    featureOtherInput: "",
+                    feature: "Homepage",
+                    relatedFeatures: ["NavigationBar", "Header"],
                     workitem: "BUG",
                     // Campos de BUG
                     env: ["QA", "BETA"],
@@ -1831,7 +1911,7 @@ Created by ${nome} on ${dataFormatada}`;
             }
 
             // Baixar Template JSON
-            document.getElementById('btn-download-json').addEventListener('click', function(e) {
+            document.getElementById('btn-download-json').addEventListener('click', function (e) {
                 e.preventDefault();
                 const template = gerarTemplateExemplo();
                 const jsonStr = JSON.stringify(template, null, 2);
@@ -1845,24 +1925,24 @@ Created by ${nome} on ${dataFormatada}`;
             });
 
             // Importar JSON
-            document.getElementById('btn-import-json').addEventListener('click', function(e) {
+            document.getElementById('btn-import-json').addEventListener('click', function (e) {
                 e.preventDefault();
                 const fileInput = document.getElementById('fileInputJson');
                 if (!fileInput) {
                     alert('Erro: Input de arquivo não encontrado!');
                     return;
                 }
-                
+
                 // Remover listener anterior se existir
                 const newFileInput = fileInput.cloneNode(true);
                 fileInput.parentNode.replaceChild(newFileInput, fileInput);
-                
-                newFileInput.addEventListener('change', function(e) {
+
+                newFileInput.addEventListener('change', function (e) {
                     const file = e.target.files[0];
                     if (file) {
                         console.log('Arquivo selecionado:', file.name);
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             try {
                                 console.log('Lendo arquivo...');
                                 const dados = JSON.parse(e.target.result);
@@ -1874,19 +1954,19 @@ Created by ${nome} on ${dataFormatada}`;
                                 alert('Erro ao importar JSON: ' + error.message);
                             }
                         };
-                        reader.onerror = function(error) {
+                        reader.onerror = function (error) {
                             console.error('Erro ao ler arquivo:', error);
                             alert('Erro ao ler arquivo!');
                         };
                         reader.readAsText(file);
                     }
                 });
-                
+
                 newFileInput.click();
             });
 
             // Baixar Template CSV
-            document.getElementById('btn-download-csv').addEventListener('click', function(e) {
+            document.getElementById('btn-download-csv').addEventListener('click', function (e) {
                 e.preventDefault();
                 const dados = gerarTemplateExemplo();
                 const csvRows = [];
@@ -1913,39 +1993,39 @@ Created by ${nome} on ${dataFormatada}`;
             });
 
             // Importar CSV
-            document.getElementById('btn-import-csv').addEventListener('click', function(e) {
+            document.getElementById('btn-import-csv').addEventListener('click', function (e) {
                 e.preventDefault();
                 const fileInput = document.getElementById('fileInputCsv');
                 if (!fileInput) {
                     alert('Erro: Input de arquivo não encontrado!');
                     return;
                 }
-                
+
                 // Remover listener anterior se existir
                 const newFileInput = fileInput.cloneNode(true);
                 fileInput.parentNode.replaceChild(newFileInput, fileInput);
-                
-                newFileInput.addEventListener('change', function(e) {
+
+                newFileInput.addEventListener('change', function (e) {
                     const file = e.target.files[0];
                     if (file) {
                         console.log('Arquivo CSV selecionado:', file.name);
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             try {
                                 const csv = e.target.result;
                                 const lines = csv.split('\n');
                                 const dados = {};
-                                
+
                                 for (let i = 1; i < lines.length; i++) {
                                     const line = lines[i].trim();
                                     if (!line) continue;
-                                    
+
                                     // Melhorar parsing do CSV para lidar com valores que contêm vírgulas e aspas
                                     const match = line.match(/^"([^"]*(?:""[^"]*)*)","([^"]*(?:""[^"]*)*)"$/);
                                     if (match) {
                                         const key = match[1].replace(/""/g, '"');
                                         let value = match[2].replace(/""/g, '"');
-                                        
+
                                         // Converter booleanos
                                         if (value === 'true') {
                                             value = true;
@@ -1954,9 +2034,14 @@ Created by ${nome} on ${dataFormatada}`;
                                         }
                                         // Converter arrays
                                         else if (value.includes('; ')) {
-                                            value = value.split('; ');
+                                            value = value.split('; ').map(v => v.trim()).filter(v => v);
                                         }
-                                        
+
+                                        // Tratamento especial para relatedFeatures (pode vir como string ou array)
+                                        if (key === 'relatedFeatures' && typeof value === 'string' && value.trim()) {
+                                            value = value.split(',').map(v => v.trim()).filter(v => v);
+                                        }
+
                                         dados[key] = value;
                                     } else {
                                         // Tentar parsing simples sem aspas
@@ -1964,7 +2049,7 @@ Created by ${nome} on ${dataFormatada}`;
                                         if (parts.length >= 2) {
                                             const key = parts[0].replace(/^"|"$/g, '');
                                             let value = parts.slice(1).join(',').replace(/^"|"$/g, '');
-                                            
+
                                             // Converter booleanos
                                             if (value === 'true') {
                                                 value = true;
@@ -1973,14 +2058,19 @@ Created by ${nome} on ${dataFormatada}`;
                                             }
                                             // Converter arrays
                                             else if (value.includes('; ')) {
-                                                value = value.split('; ');
+                                                value = value.split('; ').map(v => v.trim()).filter(v => v);
                                             }
-                                            
+
+                                            // Tratamento especial para relatedFeatures (pode vir como string ou array)
+                                            if (key === 'relatedFeatures' && typeof value === 'string' && value.trim()) {
+                                                value = value.split(',').map(v => v.trim()).filter(v => v);
+                                            }
+
                                             dados[key] = value;
                                         }
                                     }
                                 }
-                                
+
                                 console.log('Dados CSV parseados:', dados);
                                 preencherFormulario(dados);
                                 alert('CSV importado com sucesso!');
@@ -1989,18 +2079,23 @@ Created by ${nome} on ${dataFormatada}`;
                                 alert('Erro ao importar CSV: ' + error.message);
                             }
                         };
-                        reader.onerror = function(error) {
+                        reader.onerror = function (error) {
                             console.error('Erro ao ler arquivo CSV:', error);
                             alert('Erro ao ler arquivo!');
                         };
                         reader.readAsText(file);
                     }
                 });
-                
+
                 newFileInput.click();
             });
         });
     </script>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-5" style="color: #6c757d; font-size: 0.875rem;">
+        Created by Matheus Bonotto - MB Labs - 2025
+    </footer>
 </body>
 
 </html>

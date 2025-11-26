@@ -46,17 +46,24 @@
                                 <div class="mb-4">
                                     <div class="mb-4">
                                         <label class="form-label" for="demandSource">
-                                            Will this demand be returned directly by the service or come from Backoffice? <span class="badge-required">*</span>
+                                            Will this demand be returned directly by the service or come from
+                                            Backoffice? <span class="badge-required">*</span>
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                                title="Select whether the demand comes directly from the service or from Backoffice."></i>
+                                                title="Select the service layer(s) involved (multiple selection allowed)."></i>
                                         </label>
                                         <div class="btn-toggle-group" role="group" id="demandSourceGroup">
-                                            <input type="radio" class="btn-check" name="demandSource" id="Service" value="Service"
-                                                autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="Service">Service</label>
-                                            <input type="radio" class="btn-check" name="demandSource" id="Backoffice" value="Backoffice"
-                                                autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="Backoffice">Backoffice</label>
+                                            <input type="checkbox" class="btn-check" name="demandSource" id="NextSolutions"
+                                                value="NextSolutions" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="NextSolutions">NextSolutions</label>
+                                            <input type="checkbox" class="btn-check" name="demandSource" id="SunDevs"
+                                                value="SunDevs" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="SunDevs">SunDevs</label>
+                                            <input type="checkbox" class="btn-check" name="demandSource" id="LênioLabs"
+                                                value="LênioLabs" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="LênioLabs">LênioLabs</label>
+                                            <input type="checkbox" class="btn-check" name="demandSource" id="BackOffice"
+                                                value="BackOffice" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="BackOffice">BackOffice</label>
                                         </div>
                                     </div>
 
@@ -67,8 +74,8 @@
                                                 title="Indicate if the backend documentation is already available."></i>
                                         </label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="backendDocAvailable"
-                                                name="backendDocAvailable">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="backendDocAvailable" name="backendDocAvailable">
                                             <label class="form-check-label" for="backendDocAvailable">
                                                 <span id="backendDocAvailableLabel">No</span>
                                             </label>
@@ -77,7 +84,8 @@
 
                                     <div class="mb-4" id="backendDocUrlContainer" style="display: none;">
                                         <label class="form-label" for="backendDocUrl">
-                                            Enter URL/Link to document (Azure Wiki or other) <span class="badge-required">*</span>
+                                            Enter URL/Link to document (Azure Wiki or other) <span
+                                                class="badge-required">*</span>
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
                                                 title="Enter the URL or link to the backend documentation."></i>
                                         </label>
@@ -159,20 +167,35 @@
                                     <label class="form-label" for="featureModalBtn">
                                         Select Feature/Page <span class="badge-required">*</span>
                                         <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                            title="Select one or more features or pages related to the work item. Click the button to open the complete list."></i>
+                                            title="Select the main feature or page for the work item. Click the button to open the complete list."></i>
                                     </label>
-                                        <button type="button"
-                                            class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center"
-                                            id="featureModalBtn" data-bs-toggle="modal" data-bs-target="#featureModal">
+                                    <button type="button"
+                                        class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center"
+                                        id="featureModalBtn" data-bs-toggle="modal" data-bs-target="#featureModal">
                                         <span id="featureSelectedDisplay">
-                                                <span class="text-muted">Select one or more features...</span>
+                                            <span class="text-muted">Select one feature...</span>
                                         </span>
                                         <i class="bi bi-chevron-right"></i>
                                     </button>
-                                    <input type="text" id="featureOtherInput" name="featureOtherInput"
-                                        class="form-control mt-2" style="display:none;"
-                                            placeholder="Describe the feature...">
-                                    <input type="hidden" id="featureSelectedValues" name="featureSelectedValues">
+                                    <input type="hidden" id="featureSelectedValue" name="featureSelectedValue">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="relatedFeaturesModalBtn">
+                                        Related Features/Pages
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Select related features or pages (multiple selection allowed). Click the button to open the complete list."></i>
+                                    </label>
+                                    <button type="button"
+                                        class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center"
+                                        id="relatedFeaturesModalBtn" data-bs-toggle="modal"
+                                        data-bs-target="#relatedFeaturesModal">
+                                        <span id="relatedFeaturesSelectedDisplay">
+                                            <span class="text-muted">Select related features...</span>
+                                        </span>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                    <input type="hidden" id="relatedFeaturesSelectedValues"
+                                        name="relatedFeaturesSelectedValues">
                                 </div>
 
                                 <div class="mb-4">
@@ -310,7 +333,7 @@
                                                 title="User password for login."></i>
                                         </label>
                                         <input type="password" id="password" name="password" class="form-control"
- placeholder="••••••••">
+                                            placeholder="••••••••">
                                     </div>
 
                                     <div class="mb-4">
@@ -369,15 +392,6 @@
                                             placeholder="Describe the business rule and expected solution..."></textarea>
                                     </div>
                                     <div class="mb-4">
-                                        <label class="form-label" for="related">
-                                            Related
-                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                                title="Related ID or reference"></i>
-                                        </label>
-                                        <input type="text" id="related" name="related" class="form-control"
-                                            placeholder="Enter the related ID or reference...">
-                                    </div>
-                                    <div class="mb-4">
                                         <label class="form-label" for="linkFigma">
                                             Link Figma (optional)
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
@@ -407,19 +421,23 @@
 
                                     <div class="mb-4">
                                         <label class="form-label" for="presidentApproval">
-                                            Has this demand already been validated and approved by the President or the responsible Marketing sector?
+                                            Has this demand already been validated and approved by the President or the
+                                            responsible Marketing sector?
                                             <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
                                                 title="Indicate if the demand has already been validated and approved."></i>
                                         </label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="presidentApproval"
-                                                name="presidentApproval">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="presidentApproval" name="presidentApproval">
                                             <label class="form-check-label" for="presidentApproval">
                                                 <span id="presidentApprovalLabel">No</span>
                                             </label>
                                         </div>
-                                        <div id="presidentApprovalMessage" class="alert alert-warning mt-2" style="display: none;">
-                                            <i class="bi bi-exclamation-triangle me-2"></i>We will need to wait for approval or a feasibility assessment from the responsible party before proceeding.
+                                        <div id="presidentApprovalMessage" class="alert alert-warning mt-2"
+                                            style="display: none;">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>We will need to wait for
+                                            approval or a feasibility assessment from the responsible party before
+                                            proceeding.
                                         </div>
                                     </div>
 
@@ -569,30 +587,48 @@
         <i class="bi bi-check-circle me-2"></i>Text copied successfully!
     </div>
 
-    <!-- Modal for Feature Selection -->
+    <!-- Modal for Feature Selection (Single) -->
     <div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="featureModalLabel">
-                        <i class="bi bi-list-check me-2"></i>Select Features/Pages
+                        <i class="bi bi-list-check me-2"></i>Select Feature/Page
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Barra de pesquisa -->
-                    <div class="">
-                        <input type="text" id="featureModalSearch" class="form-control"
-                            placeholder="Search features...">
-                    </div>
-                    <!-- Lista de features -->
-                    <div id="featureModalOptions" style="max-height: 400px; overflow-y: auto;">
-                        <!-- Opções serão preenchidas via JavaScript -->
-                    </div>
+                    <input type="text" id="featureModalSearch" class="form-control" placeholder="Search features...">
+                    <div id="featureModalOptions" class="modal-options-container"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="featureModalConfirm">
+                        <i class="bi bi-check-lg me-1"></i>Confirm Selection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Related Features (Multi) -->
+    <div class="modal fade" id="relatedFeaturesModal" tabindex="-1" aria-labelledby="relatedFeaturesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="relatedFeaturesModalLabel">
+                        <i class="bi bi-list-check me-2"></i>Select Related Features/Pages
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="relatedFeaturesModalSearch" class="form-control"
+                        placeholder="Search features...">
+                    <div id="relatedFeaturesModalOptions" class="modal-options-container"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="relatedFeaturesModalConfirm">
                         <i class="bi bi-check-lg me-1"></i>Confirm Selection
                     </button>
                 </div>
@@ -611,182 +647,170 @@
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     </script>
     <script>
-        // Lista de features
-        const featuresList = [
-            'General application', 'NavigationBar', 'Header', 'Footer', 'Homepage',
-            'Candy LP', 'CineFan LP', 'Cinemark Club LP', 'CineFan Drawer', 'CinemarkClub Drawer',
-            'Visitas LP', 'Login', 'Profile', 'Profile/CineFan Drawer', 'Profile/CinemarkClub Drawer',
-            'Profile/User Date', 'Profile/Order History', 'Profile/OrderDetail', 'MerchStore', 'RegalaCine',
-            'Formats LP (General)', 'Formats (Dedicated)', 'Which Movie', 'Movie Page', 'Movies By Theater',
-            'Erros Page', 'Quich Purchase', 'Eletronic Invoce', 'Groups Purchase', 'Corporate Purchase',
-            'OtherPurchase', 'Theaters', 'Prices', 'About Us', 'Promotions',
-            'Cyber Sales', 'Work with Us', 'Ticket Upgrade', 'Ticket selection', 'Seat Map',
-            'Candy (by ticket journey)', 'Merch (by ticket journey)', 'Checkout', 'Order Detail',
-            'Candy (by candy journey)', 'Checkout  (by candy journey)', 'OrderDetail  (by candy journey)',
-            'Merch (by merch journey)', 'Creat Account', 'Disclaimer',
-            'CineFan  Signature drawer', 'CineFan Plus Signature drawer', 'CineFan  Black Signature drawer',
-            'Cinemark Club Signature drawer', 'Cinemark Club Plus Signature drawer', 'Cinemark Club Black Signature drawer',
-            'Other'
-        ];
+        // Variável global para armazenar features carregadas do JSON
+        let featuresGrouped = {};
+        let featuresList = [];
 
-        document.addEventListener('DOMContentLoaded', function () {
+        // Função para carregar features do JSON
+        async function loadFeatures() {
+            try {
+                const response = await fetch('data/features.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load features.json');
+                }
+                featuresGrouped = await response.json();
+                featuresList = Object.values(featuresGrouped).flat();
+                return featuresGrouped;
+            } catch (error) {
+                console.error('Erro ao carregar features.json:', error);
+                // Fallback para objeto vazio em caso de erro
+                featuresGrouped = {};
+                featuresList = [];
+                return featuresGrouped;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            // Carregar features do JSON antes de inicializar
+            await loadFeatures();
             // Inicializar tooltips do Bootstrap 5
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
-            // Sistema de seleção de Features com Modal
-            let selectedFeatures = [];
-            const featureOtherInput = document.getElementById('featureOtherInput');
-            const featureModalSearch = document.getElementById('featureModalSearch');
-            const featureModalOptions = document.getElementById('featureModalOptions');
-            const featureModal = new bootstrap.Modal(document.getElementById('featureModal'));
-            let tempSelectedFeatures = []; // Para armazenar seleções temporárias no modal
+            // --- Seleção principal (single) ---
+            let selectedFeature = '';
+            function renderFeatureModalOptions(filter = '') {
+                const container = document.getElementById('featureModalOptions');
+                container.innerHTML = '';
 
-            // Renderizar opções no modal
-            function renderFeaturesInModal(filter = '') {
-                featureModalOptions.innerHTML = '';
-                const filtered = featuresList.filter(f =>
-                    f.toLowerCase().includes(filter.toLowerCase())
-                );
+                let hasResults = false;
 
-                if (filtered.length === 0) {
-                    featureModalOptions.innerHTML = '<p class="text-muted text-center py-3">No features found.</p>';
-                    return;
-                }
+                // Iterar sobre os grupos
+                Object.entries(featuresGrouped).forEach(([groupName, features]) => {
+                    // Filtrar features do grupo
+                    const filtered = features.filter(f => f.toLowerCase().includes(filter.toLowerCase()));
 
-                filtered.forEach((feature, index) => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'form-check border-bottom';
-                    
-                    const isSelected = tempSelectedFeatures.includes(feature);
-                    
-                    // Criar ID seguro para o checkbox
-                    const safeId = 'feature-modal-' + index + '-' + Date.now();
-                    
-                    // Criar checkbox
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.className = 'form-check-input';
-                    checkbox.id = safeId;
-                    checkbox.value = feature;
-                    checkbox.checked = isSelected;
-                    
-                    // Criar label
-                    const label = document.createElement('label');
-                    label.className = 'form-check-label w-100';
-                    label.setAttribute('for', safeId);
-                    label.textContent = feature;
-                    
-                    // Adicionar evento ao checkbox
-                    checkbox.addEventListener('change', function () {
-                        if (this.checked) {
-                            if (!tempSelectedFeatures.includes(feature)) {
-                                tempSelectedFeatures.push(feature);
-                            }
-                        } else {
-                            tempSelectedFeatures = tempSelectedFeatures.filter(f => f !== feature);
-                        }
+                    if (filtered.length === 0) return;
+
+                    hasResults = true;
+
+                    // Criar cabeçalho do grupo
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'fw-bold text-primary mt-3 mb-2 px-2 py-1 feature-group-header';
+                    groupHeader.textContent = groupName;
+                    container.appendChild(groupHeader);
+
+                    // Criar features do grupo
+                    filtered.forEach((feature, idx) => {
+                        const id = 'feature-modal-single-' + groupName.replace(/\s+/g, '-') + '-' + idx;
+                        const div = document.createElement('div');
+                        div.className = 'form-check border-bottom feature-item';
+                        const input = document.createElement('input');
+                        input.type = 'radio';
+                        input.className = 'form-check-input feature-input';
+                        input.name = 'featureModalRadio';
+                        input.id = id;
+                        input.value = feature;
+                        input.checked = selectedFeature === feature;
+                        input.addEventListener('change', function () {
+                            selectedFeature = this.value;
+                        });
+                        const label = document.createElement('label');
+                        label.className = 'form-check-label feature-label';
+                        label.setAttribute('for', id);
+                        label.textContent = feature;
+                        div.appendChild(input);
+                        div.appendChild(label);
+                        container.appendChild(div);
                     });
-                    
-                    // Adicionar evento ao label também
-                    label.addEventListener('click', function (e) {
-                        if (e.target.tagName !== 'INPUT') {
-                            checkbox.checked = !checkbox.checked;
-                            checkbox.dispatchEvent(new Event('change'));
-                        }
-                    });
-                    
-                    // Adicionar elementos ao div na ordem correta
-                    optionDiv.appendChild(checkbox);
-                    optionDiv.appendChild(label);
-                    
-                    // Adicionar ao container
-                    featureModalOptions.appendChild(optionDiv);
                 });
-            }
 
-            // Atualizar display do botão com features selecionadas
-            function updateFeatureDisplay() {
-                const featureDisplay = document.getElementById('featureSelectedDisplay');
-                const featureBtn = document.getElementById('featureModalBtn');
-                
-                if (selectedFeatures.length === 0) {
-                    featureDisplay.innerHTML = '<span class="text-muted">Select one or more features...</span>';
-                } else {
-                    const tagsHtml = selectedFeatures.map(feature => 
-                        `<span class="badge bg-primary me-1 mb-1">${feature}</span>`
-                    ).join('');
-                    featureDisplay.innerHTML = tagsHtml || '<span class="text-muted">Select one or more features...</span>';
-                }
-                document.getElementById('featureSelectedValues').value = selectedFeatures.join(',');
-                
-                // Remover destaque de pendente se houver seleções
-                if (selectedFeatures.length > 0) {
-                    document.querySelector('label[for="featureModalBtn"]')?.classList.remove('campo-pendente-label');
-                    featureBtn?.classList.remove('campo-pendente');
+                if (!hasResults) {
+                    container.innerHTML = '<p class="text-muted text-center py-3">No features found.</p>';
                 }
             }
-
-            // Quando o modal abrir, copiar seleções atuais para temporárias
             document.getElementById('featureModal').addEventListener('show.bs.modal', function () {
-                tempSelectedFeatures = [...selectedFeatures];
-                featureModalSearch.value = '';
-                // Garantir que o modal esteja visível antes de renderizar
-                setTimeout(() => {
-                    renderFeaturesInModal();
-                }, 100);
+                document.getElementById('featureModalSearch').value = '';
+                renderFeatureModalOptions();
+            });
+            document.getElementById('featureModalSearch').addEventListener('input', function () {
+                renderFeatureModalOptions(this.value);
+            });
+            document.getElementById('featureModalConfirm').addEventListener('click', function () {
+                document.getElementById('featureSelectedValue').value = selectedFeature;
+                document.getElementById('featureSelectedDisplay').innerHTML = selectedFeature ? `<span class="badge bg-primary">${selectedFeature}</span>` : '<span class="text-muted">Select one feature...</span>';
+                bootstrap.Modal.getInstance(document.getElementById('featureModal')).hide();
             });
 
-            // Pesquisa no modal
-            featureModalSearch.addEventListener('input', function () {
-                renderFeaturesInModal(this.value);
-            });
+            // --- Seleção relacionadas (multi) ---
+            let selectedRelatedFeatures = [];
+            function renderRelatedFeaturesModalOptions(filter = '') {
+                const container = document.getElementById('relatedFeaturesModalOptions');
+                container.innerHTML = '';
 
-            // Variável para rastrear se foi clicado no botão de confirmar
-            let modalConfirmClicked = false;
+                let hasResults = false;
 
-            // Confirmar seleção do modal
-            document.getElementById('featureModalConfirm').addEventListener('click', function (e) {
-                e.preventDefault();
-                modalConfirmClicked = true;
-                
-                // Remover foco do botão
-                this.blur();
-                
-                // Processar seleções
-                selectedFeatures = [...tempSelectedFeatures];
-                updateFeatureDisplay();
-                
-                // Mostrar/ocultar input "Other"
-                if (selectedFeatures.includes('Other')) {
-                    featureOtherInput.style.display = 'block';
-                } else {
-                    featureOtherInput.style.display = 'none';
-                    featureOtherInput.value = '';
+                // Iterar sobre os grupos
+                Object.entries(featuresGrouped).forEach(([groupName, features]) => {
+                    // Filtrar features do grupo
+                    const filtered = features.filter(f => f.toLowerCase().includes(filter.toLowerCase()));
+
+                    if (filtered.length === 0) return;
+
+                    hasResults = true;
+
+                    // Criar cabeçalho do grupo
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'fw-bold text-primary mt-3 mb-2 px-2 py-1 feature-group-header';
+                    groupHeader.textContent = groupName;
+                    container.appendChild(groupHeader);
+
+                    // Criar features do grupo
+                    filtered.forEach((feature, idx) => {
+                        const id = 'related-feature-modal-' + groupName.replace(/\s+/g, '-') + '-' + idx;
+                        const div = document.createElement('div');
+                        div.className = 'form-check border-bottom feature-item';
+                        const input = document.createElement('input');
+                        input.type = 'checkbox';
+                        input.className = 'form-check-input feature-input';
+                        input.id = id;
+                        input.value = feature;
+                        input.checked = selectedRelatedFeatures.includes(feature);
+                        input.addEventListener('change', function () {
+                            if (this.checked) {
+                                if (!selectedRelatedFeatures.includes(feature)) selectedRelatedFeatures.push(feature);
+                            } else {
+                                selectedRelatedFeatures = selectedRelatedFeatures.filter(f => f !== feature);
+                            }
+                        });
+                        const label = document.createElement('label');
+                        label.className = 'form-check-label feature-label';
+                        label.setAttribute('for', id);
+                        label.textContent = feature;
+                        div.appendChild(input);
+                        div.appendChild(label);
+                        container.appendChild(div);
+                    });
+                });
+
+                if (!hasResults) {
+                    container.innerHTML = '<p class="text-muted text-center py-3">No features found.</p>';
                 }
-                
-                // Fechar modal após um pequeno delay
-                setTimeout(() => {
-                    const modalElement = document.getElementById('featureModal');
-                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                    if (modalInstance) {
-                        modalInstance.hide();
-                    }
-                    // Mover foco para fora do modal
-                    document.getElementById('featureModalBtn')?.blur();
-                    modalConfirmClicked = false;
-                }, 50);
+            }
+            document.getElementById('relatedFeaturesModal').addEventListener('show.bs.modal', function () {
+                document.getElementById('relatedFeaturesModalSearch').value = '';
+                renderRelatedFeaturesModalOptions();
             });
-
-            // Resetar flag quando modal for aberto novamente
-            document.getElementById('featureModal').addEventListener('show.bs.modal', function () {
-                modalConfirmClicked = false;
+            document.getElementById('relatedFeaturesModalSearch').addEventListener('input', function () {
+                renderRelatedFeaturesModalOptions(this.value);
             });
-
-            // Inicializar
-            updateFeatureDisplay();
+            document.getElementById('relatedFeaturesModalConfirm').addEventListener('click', function () {
+                document.getElementById('relatedFeaturesSelectedValues').value = selectedRelatedFeatures.join(', ');
+                document.getElementById('relatedFeaturesSelectedDisplay').innerHTML = selectedRelatedFeatures.length > 0 ? selectedRelatedFeatures.map(f => `<span class="badge bg-secondary me-1 mb-1">${f}</span>`).join('') : '<span class="text-muted">Select related features...</span>';
+                bootstrap.Modal.getInstance(document.getElementById('relatedFeaturesModal')).hide();
+            });
 
             // Controlar switch do prodRepro
             const prodReproSwitch = document.getElementById('prodRepro');
@@ -800,7 +824,7 @@
             const backendDocAvailableLabel = document.getElementById('backendDocAvailableLabel');
             const backendDocUrlContainer = document.getElementById('backendDocUrlContainer');
             const backendDocUrlInput = document.getElementById('backendDocUrl');
-            
+
             backendDocAvailableSwitch.addEventListener('change', function () {
                 backendDocAvailableLabel.textContent = this.checked ? 'Yes' : 'No';
                 if (this.checked) {
@@ -817,7 +841,7 @@
             const presidentApprovalSwitch = document.getElementById('presidentApproval');
             const presidentApprovalLabel = document.getElementById('presidentApprovalLabel');
             const presidentApprovalMessage = document.getElementById('presidentApprovalMessage');
-            
+
             presidentApprovalSwitch.addEventListener('change', function () {
                 presidentApprovalLabel.textContent = this.checked ? 'Yes' : 'No';
                 if (!this.checked) {
@@ -970,10 +994,10 @@
                 // Coletar dados básicos
                 const nome = document.getElementById('nome').value.trim();
                 const titulo = document.getElementById('titulo').value.trim();
-                const related = document.getElementById('related').value.trim() || '';
 
                 // Coletar novos campos
-                const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
+                const demandSources = Array.from(document.querySelectorAll('input[name="demandSource"]:checked')).map(i => i.value);
+                const demandSourceStr = demandSources.join(', ');
                 const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
                 const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
 
@@ -981,11 +1005,39 @@
                 const countries = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(i => i.value || i.id);
                 const countryStr = countries.join(', ');
 
-                // Coletar features
-                const feature = selectedFeatures.join(', ') || '';
+                // Coletar feature principal
+                const feature = document.getElementById('featureSelectedValue').value || '';
+                // Coletar features relacionadas
+                const relatedFeaturesRaw = document.getElementById('relatedFeaturesSelectedValues').value || '';
+                
+                // Função para agrupar features relacionadas por grupo
+                function formatRelatedFeaturesByGroup(featuresStr) {
+                    if (!featuresStr || featuresStr.trim() === '') return '';
+                    
+                    const featuresList = featuresStr.split(', ').map(f => f.trim()).filter(f => f);
+                    if (featuresList.length === 0) return '';
+                    
+                    // Agrupar features por grupo
+                    const grouped = {};
+                    Object.entries(featuresGrouped).forEach(([groupName, groupFeatures]) => {
+                        const matchingFeatures = featuresList.filter(f => groupFeatures.includes(f));
+                        if (matchingFeatures.length > 0) {
+                            grouped[groupName] = matchingFeatures;
+                        }
+                    });
+                    
+                    // Formatar como "Group(feature1, feature2, etc...)"
+                    const formattedGroups = Object.entries(grouped).map(([groupName, features]) => {
+                        return `${groupName}(${features.join(', ')})`;
+                    });
+                    
+                    return formattedGroups.join('\n');
+                }
+                
+                const relatedFeatures = formatRelatedFeaturesByGroup(relatedFeaturesRaw);
 
                 // Validar campos obrigatórios básicos
-                if (!demandSourceEl) {
+                if (demandSources.length === 0) {
                     pendencias.push('Will this demand be returned directly by the service or come from Backoffice?');
                     document.querySelector('label[for="demandSource"]')?.classList.add('campo-pendente-label');
                 }
@@ -1024,7 +1076,7 @@
 
                 // Formatação da data
                 const dataAtual = new Date();
-                    const dataFormatada = dataAtual.toLocaleDateString('en-US', {
+                const dataFormatada = dataAtual.toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric',
@@ -1036,11 +1088,11 @@
 
                 if (workitem === 'BUG') {
                     // Campos de BUG
-                    const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
-                    const demandSource = demandSourceEl ? demandSourceEl.value : '';
+                    const demandSources = Array.from(document.querySelectorAll('input[name="demandSource"]:checked')).map(i => i.value);
+                    const demandSource = demandSources.join(', ');
                     const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
                     const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
-                    
+
                     const env = Array.from(document.querySelectorAll('input[name="env"]:checked')).map(i => i.value || i.id);
                     const envStr = env.join(', ');
                     const prodRepro = document.getElementById('prodRepro').checked ? '✓Yes' : '✘No';
@@ -1054,12 +1106,7 @@
                     const userTypeStr = userType.join(', ');
                     const businessRule = document.getElementById('businessRule').value.trim();
                     const linkFigma = document.getElementById('linkFigma').value.trim() || '';
-                    
-                    // Preparar mensagens condicionais
-                    let backendDocMessage = '';
-                    if (!backendDocAvailable) {
-                        backendDocMessage = '\n⚠️ Validation with the service provider\'s team will be necessary to determine the feasibility of the request.';
-                    }
+
 
                     // Validação de campos obrigatórios BUG
                     if (env.length === 0) {
@@ -1105,9 +1152,10 @@
                     formatted = `[${feature}] ${titulo}
 𝗖𝗢𝗨𝗡𝗧𝗥𝗬: ${countryStr}
 𝗪𝗢𝗥𝗞 𝗜𝗧𝗘𝗠: BUG (EXT)
-𝗗𝗘𝗠𝗔𝗡𝗗 𝗦𝗢𝗨𝗥𝗖𝗘: ${demandSource}
-${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: \n Available in:  ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
-𝗥𝗘𝗟𝗔𝗧𝗘𝗗: ${related}
+𝗦𝗘𝗥𝗩𝗜𝗖𝗘 𝗟𝗔𝗬𝗘𝗥: ${demandSource}
+${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡:\nAvailable in: ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
+𝗥𝗘𝗟𝗔𝗧𝗘𝗗 𝗙𝗘𝗔𝗧𝗨𝗥𝗘𝗦/𝗣𝗔𝗚𝗘𝗦:
+${relatedFeatures}
 𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡𝗧: ${envStr}
 𝗜𝗦 𝗣𝗢𝗦𝗦𝗜𝗕𝗟𝗘 𝗥𝗘𝗣𝗥𝗢𝗗𝗨𝗖𝗘 𝗜𝗡 𝗣𝗥𝗢𝗗 𝗘𝗡𝗩𝗜𝗥𝗢𝗠𝗘𝗡: ${prodRepro}
 𝗖𝗢𝗡𝗧𝗘𝗫𝗧:
@@ -1121,16 +1169,16 @@ ${reproSteps}
 𝗨𝗦𝗘𝗥 𝗧𝗬𝗣𝗘: ${userTypeStr}
 𝗕𝗨𝗦𝗜𝗡𝗘𝗦𝗦 𝗥𝗨𝗟𝗘 𝗔𝗡𝗗 𝗘𝗫𝗣𝗘𝗖𝗧𝗘𝗗 𝗦𝗢𝗟𝗨𝗧𝗜𝗢𝗡:
 ${businessRule}
-${linkFigma ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigma}` : ''}${backendDocMessage}
+${linkFigma ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigma}` : ''}
 Created by ${nome} on ${dataFormatada}`;
                 } else {
                     // Campos de User Story
-                    const demandSourceEl = document.querySelector('input[name="demandSource"]:checked');
-                    const demandSource = demandSourceEl ? demandSourceEl.value : '';
+                    const demandSources = Array.from(document.querySelectorAll('input[name="demandSource"]:checked')).map(i => i.value);
+                    const demandSource = demandSources.join(', ');
                     const backendDocAvailable = document.getElementById('backendDocAvailable').checked;
                     const backendDocUrl = document.getElementById('backendDocUrl').value.trim();
                     const presidentApproval = document.getElementById('presidentApproval').checked;
-                    
+
                     const typeDemandEl = document.querySelector('input[name="typeDemand"]:checked');
                     const typeDemandStr = typeDemandEl ? (typeDemandEl.value || typeDemandEl.id) : 'Improvement';
                     const asA = document.getElementById('asA').value.trim();
@@ -1140,17 +1188,7 @@ Created by ${nome} on ${dataFormatada}`;
                     const businessRuleUS = document.getElementById('businessRuleUS').value.trim();
                     const criteriosAceite = document.getElementById('criteriosAceite').value.trim();
                     const linkFigmaUS = document.getElementById('linkFigmaUS').value.trim() || '';
-                    
-                    // Preparar mensagens condicionais
-                    let backendDocMessage = '';
-                    if (!backendDocAvailable) {
-                        backendDocMessage = '\n⚠️ Validation with the service provider\'s team will be necessary to determine the feasibility of the request.';
-                    }
-                    
-                    let approvalMessage = '';
-                    if (!presidentApproval) {
-                        approvalMessage = '\n⚠️ We will need to wait for approval or a feasibility assessment from the responsible party before proceeding.';
-                    }
+
 
                     // Validação de campos obrigatórios User Story
                     if (!typeDemandEl) {
@@ -1196,11 +1234,12 @@ Created by ${nome} on ${dataFormatada}`;
                     // Formato de texto simples conforme especificado
                     formatted = `[${feature}] ${titulo}
 𝗖𝗢𝗨𝗡𝗧𝗥𝗬: ${countryStr}
-𝗪𝗢𝗥𝗸 𝗜𝗧𝗘𝗠: USER STORY
-𝗗𝗘𝗠𝗔𝗡𝗗 𝗦𝗢𝗨𝗥𝗖𝗘: ${demandSource}
-${backendDocAvailable ? `𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Available\n𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡 𝗨𝗥𝗟: ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
+𝗪𝗢𝗥𝗞 𝗜𝗧𝗘𝗠: USER STORY
+𝗦𝗘𝗥𝗩𝗜𝗖𝗘 𝗟𝗔𝗬𝗘𝗥: ${demandSource}
+${backendDocAvailable ? `𝗕𝗔𝗖𝗸𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Available\n𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡 𝗨𝗥𝗟: ${backendDocUrl}` : '𝗕𝗔𝗖𝗞𝗘𝗡𝗗 𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧𝗔𝗧𝗜𝗢𝗡: Not available'}
 ${presidentApproval ? '𝗣𝗥𝗘𝗦𝗜𝗗𝗘𝗡𝗧/𝗠𝗞𝗧 𝗔𝗣𝗣𝗥𝗢𝗩𝗔𝗟: Approved' : '𝗣𝗥𝗘𝗦𝗜𝗗𝗘𝗡𝗧/𝗠𝗞𝗧 𝗔𝗣𝗣𝗥𝗢𝗩𝗔𝗟: Pending'}
-𝗥𝗘𝗟𝗔𝗧𝗘𝗗: ${related}
+𝗥𝗘𝗟𝗔𝗧𝗘𝗗 𝗙𝗘𝗔𝗧𝗨𝗥𝗘𝗦/𝗣𝗔𝗚𝗘𝗦:
+${relatedFeatures}
 𝗧𝗬𝗣𝗘 𝗗𝗘𝗠𝗔𝗡𝗗: ${typeDemandStr}
 𝗔𝗦 𝗔: ${asA}
 𝗜 𝗪𝗔𝗡𝗧: ${iWant}
@@ -1211,7 +1250,7 @@ ${contextUS}
 ${businessRuleUS}
 ${linkFigmaUS ? `𝗟𝗜𝗡𝗞 𝗙𝗜𝗚𝗠𝗔 (𝗢𝗣𝗖𝗜𝗢𝗡𝗔𝗟): ${linkFigmaUS}` : ''}
 𝗖𝗥𝗜𝗧É𝗥𝗜𝗢𝗦 𝗗𝗘 𝗔𝗖𝗘𝗜𝗧𝗘:
-${criteriosAceite}${backendDocMessage}${approvalMessage}
+${criteriosAceite}
 Created by ${nome} on ${dataFormatada}`;
                 }
 
@@ -1224,7 +1263,7 @@ Created by ${nome} on ${dataFormatada}`;
                 const accordionItemResultado = document.getElementById('accordionItemResultado');
                 const collapseResultadoEl = document.getElementById('collapseResultado');
                 accordionItemResultado.style.display = 'block';
-                
+
                 // Colapsar etapas anteriores
                 const collapseBug = bootstrap.Collapse.getInstance(document.getElementById('collapseBug'));
                 const collapseUserStory = bootstrap.Collapse.getInstance(document.getElementById('collapseUserStory'));
@@ -1240,11 +1279,11 @@ Created by ${nome} on ${dataFormatada}`;
                             toggle: false
                         });
                     }
-                    
+
                     // Forçar exibição do conteúdo
                     collapseResultadoEl.classList.add('show');
                     collapseResultadoEl.style.display = 'block';
-                    
+
                     // Expandir
                     collapseResultado.show();
 
@@ -1291,18 +1330,18 @@ Created by ${nome} on ${dataFormatada}`;
                 } else {
                     // Se não houver pendências, o resultado já foi gerado na função
                     document.getElementById('pendenciasBox').classList.remove('show');
-                    
+
                     // Obter tipo de work item
                     const workitemEl = document.querySelector('input[name="workitem"]:checked');
                     const workitemType = workitemEl ? workitemEl.id : '';
                     const resultado = document.getElementById('resultado').value;
-                    
+
                     console.log('📋 Formulário submetido com sucesso!', {
                         workitemType,
                         resultadoLength: resultado?.length,
                         resultadoPreview: resultado?.substring(0, 100) + '...'
                     });
-                    
+
                     // Enviar notificação ao Slack
                     if (workitemType && resultado) {
                         notificarSlack(workitemType, resultado);
@@ -1315,7 +1354,7 @@ Created by ${nome} on ${dataFormatada}`;
             // Função para notificar o Slack usando Supabase Edge Function (resolve CORS)
             async function notificarSlack(workitemType, formattedText) {
                 console.log('🔔 Função notificarSlack chamada', { workitemType, formattedTextLength: formattedText?.length });
-                
+
                 if (!formattedText || formattedText.trim() === '') {
                     console.error('❌ Texto formatado está vazio!');
                     return;
@@ -1329,18 +1368,18 @@ Created by ${nome} on ${dataFormatada}`;
                 try {
                     const titulo = document.getElementById('titulo').value.trim();
                     const nome = document.getElementById('nome').value.trim();
-                    
+
                     // Determinar emoji e cor baseado no tipo
                     let emoji = '📋';
                     let typeLabel = 'USER STORY';
                     if (workitemType === 'BUG') {
                         emoji = '🐞';
                         typeLabel = 'BUG';
-                    }else{
+                    } else {
                         emoji = '🎯';
                         typeLabel = 'USER STORY';
                     }
-                    
+
 
                     console.log('📝 Dados preparados:', { titulo, nome, typeLabel });
 
@@ -1416,6 +1455,11 @@ Created by ${nome} on ${dataFormatada}`;
             });
         });
     </script>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-5" style="color: #6c757d; font-size: 0.875rem;">
+        Created by Matheus Bonotto - MB Labs - 2025
+    </footer>
 </body>
 
 </html>
