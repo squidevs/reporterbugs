@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Item Generation Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .main-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            margin: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .header h1 {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        .card-option {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .card-option:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            text-decoration: none;
+            color: inherit;
+        }
+        .card-option.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        }
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+        }
+        .icon-wrapper.qa {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+        .icon-wrapper.client {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        .card-description {
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .badge-custom {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .badge-qa {
+            background: #ff6b6b;
+            color: white;
+        }
+        .badge-client {
+            background: #4ecdc4;
+            color: white;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1><i class="bi bi-hammer me-2"></i>Work Item Generation Assistant</h1>
+            <p>Choose the appropriate tool for your needs</p>
+        </div>
+
+        <a href="gerar-novo.html" class="card-option">
+            <div class="icon-wrapper qa">
+                <i class="bi bi-bug-fill"></i>
+            </div>
+            <h3 class="card-title">QA & Internal Team</h3>
+            <p class="card-description">
+                Use this tool to create BUGs and DEFECTs for internal use by the QA team or development team.
+                <span class="badge-custom badge-qa">Internal Use</span>
+            </p>
+        </a>
+
+        <a href="auxiliar-de-geracao-de-work-item.html" class="card-option">
+            <div class="icon-wrapper client">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <h3 class="card-title">Client Portal</h3>
+            <p class="card-description">
+                Use this tool for clients to create BUGs and USER STORIES. This interface is designed for external use.
+                <span class="badge-custom badge-client">Client Use</span>
+            </p>
+        </a>
+
+        <div class="footer">
+            Created by Matheus Bonotto - MB Labs - 2025
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

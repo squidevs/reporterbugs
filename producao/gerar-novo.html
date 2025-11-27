@@ -670,6 +670,9 @@
                     <button type="submit" id="gerarButton" class="btn btn-success btn-lg px-5">
                         <i class="bi bi-hammer me-2"></i>Generate Work Item
                     </button>
+                    <button type="button" id="clearButton" class="btn btn-warning btn-lg px-5" style="display: none;">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Clear Form
+                    </button>
 
                     <!-- Pending Fields List -->
                     <div id="pendenciasBox" class="pendencias-box">
@@ -749,6 +752,9 @@
         // Variável global para armazenar features carregadas do JSON
         let featuresGrouped = {};
         let featuresList = [];
+        
+        // Flag para prevenir múltiplos envios
+        let isSubmitting = false;
 
         // Função para carregar features do JSON
         async function loadFeatures() {
@@ -1447,6 +1453,12 @@ Created by ${nome} on ${dataFormatada}`;
             document.getElementById('formulario').addEventListener('submit', function (e) {
                 e.preventDefault();
 
+                // Prevenir múltiplos envios
+                if (isSubmitting) {
+                    console.log('⚠️ Formulário já está sendo processado, ignorando submissão...');
+                    return;
+                }
+
                 const pendencias = validarFormularioCompleto();
 
                 if (pendencias.length > 0) {
@@ -1475,6 +1487,14 @@ Created by ${nome} on ${dataFormatada}`;
                     // Se não houver pendências, o resultado já foi gerado na função
                     document.getElementById('pendenciasBox').classList.remove('show');
 
+                    // Marcar como enviando
+                    isSubmitting = true;
+                    
+                    // Desabilitar botão para prevenir múltiplos cliques
+                    const gerarButton = document.getElementById('gerarButton');
+                    gerarButton.disabled = true;
+                    gerarButton.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Sending...';
+
                     // Obter tipo de work item
                     const workitemEl = document.querySelector('input[name="workitem"]:checked');
                     const workitemType = workitemEl ? workitemEl.id : '';
@@ -1491,6 +1511,10 @@ Created by ${nome} on ${dataFormatada}`;
                         notificarSlack(workitemType, resultado);
                     } else {
                         console.error('❌ Dados incompletos para enviar ao Slack:', { workitemType, resultado: !!resultado });
+                        // Reabilitar botão em caso de erro
+                        isSubmitting = false;
+                        gerarButton.disabled = false;
+                        gerarButton.innerHTML = '<i class="bi bi-hammer me-2"></i>Generate Work Item';
                     }
                 }
             });
@@ -1533,7 +1557,7 @@ Created by ${nome} on ${dataFormatada}`;
                     console.log('📤 Enviando mensagem via Supabase Edge Function...');
 
                     // Chamar Edge Function do Supabase para enviar ao Slack (resolve CORS)
-                    const { data, error } = await supabase.functions.invoke('notify-slack', {
+                    const { data, error } = await supabase.functions.invoke('qa-notify-slack', {
                         body: {
                             message: slackMessageText
                         }
@@ -1543,6 +1567,11 @@ Created by ${nome} on ${dataFormatada}`;
                         console.error('❌ Erro ao chamar Edge Function:', error);
                         console.error('📋 Detalhes do erro:', JSON.stringify(error, null, 2));
                         alert(`Erro ao enviar notificação ao Slack.\n\nErro: ${error.message || JSON.stringify(error)}\n\nVerifique o console (F12) para mais detalhes.`);
+                        // Reabilitar botão em caso de erro
+                        isSubmitting = false;
+                        const gerarButton = document.getElementById('gerarButton');
+                        gerarButton.disabled = false;
+                        gerarButton.innerHTML = '<i class="bi bi-hammer me-2"></i>Generate Work Item';
                         return;
                     }
 
@@ -1582,7 +1611,69 @@ Created by ${nome} on ${dataFormatada}`;
                     alertCopiado.innerHTML = originalText;
                     alertCopiado.style.display = 'none';
                 }, 4000);
+                
+                // Esconder botão Generate e mostrar botão Clear
+                const gerarButton = document.getElementById('gerarButton');
+                const clearButton = document.getElementById('clearButton');
+                gerarButton.style.display = 'none';
+                clearButton.style.display = 'inline-block';
             }
+            
+            // Função para limpar o formulário completamente
+            function limparFormulario() {
+                // Resetar flag
+                isSubmitting = false;
+                
+                // Resetar formulário
+                document.getElementById('formulario').reset();
+                
+                // Limpar seleções de features
+                selectedFeature = '';
+                selectedRelatedFeatures = [];
+                document.getElementById('featureSelectedValue').value = '';
+                document.getElementById('featureSelectedDisplay').innerHTML = '<span class="text-muted">Select one feature...</span>';
+                document.getElementById('relatedFeaturesSelectedValues').value = '';
+                document.getElementById('relatedFeaturesSelectedDisplay').innerHTML = '<span class="text-muted">Select related features...</span>';
+                
+                // Limpar work item selection
+                document.querySelectorAll('input[name="workitem"]').forEach(radio => radio.checked = false);
+                
+                // Ocultar accordions de Bug e Defect
+                document.getElementById('accordionItemBug').style.display = 'none';
+                document.getElementById('accordionItemDefect').style.display = 'none';
+                document.getElementById('accordionItemResultado').style.display = 'none';
+                
+                // Expandir apenas o Step 1
+                const collapseInfoBasicas = bootstrap.Collapse.getInstance(document.getElementById('collapseInfoBasicas'));
+                if (collapseInfoBasicas) {
+                    collapseInfoBasicas.show();
+                }
+                
+                // Limpar resultado
+                document.getElementById('resultado').value = '';
+                
+                // Remover destaques de campos pendentes
+                removerDestaquesPendentes();
+                
+                // Remover classes de tema
+                document.body.classList.remove('theme-bug', 'theme-defect', 'theme-us');
+                
+                // Mostrar botão Generate e esconder Clear
+                const gerarButton = document.getElementById('gerarButton');
+                const clearButton = document.getElementById('clearButton');
+                gerarButton.style.display = 'inline-block';
+                gerarButton.disabled = false;
+                gerarButton.innerHTML = '<i class="bi bi-hammer me-2"></i>Generate Work Item';
+                clearButton.style.display = 'none';
+                
+                // Scroll para o topo
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Event listener para o botão Clear
+            document.getElementById('clearButton').addEventListener('click', function() {
+                limparFormulario();
+            });
 
             // Event listener para o botão de copiar
             document.getElementById('copyButton').addEventListener('click', function () {
