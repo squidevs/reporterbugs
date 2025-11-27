@@ -685,6 +685,78 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
+            // --- Validação de Serviços por País ---
+            // Mapeamento de países para serviços disponíveis
+            const countryServiceMap = {
+                'AR': ['NextSolutions', 'LênioLabs', 'BackOffice'], // Argentina: apenas NextSolutions
+                'LT': ['SunDevs', 'LênioLabs', 'BackOffice'],      // Outros países: SunDevs
+                'BO': ['SunDevs', 'LênioLabs', 'BackOffice'],
+                'CL': ['SunDevs', 'LênioLabs', 'BackOffice'],
+                'PE': ['SunDevs', 'LênioLabs', 'BackOffice'],
+                'PY': ['SunDevs', 'LênioLabs', 'BackOffice']
+            };
+
+            // Função para atualizar serviços disponíveis baseado nos países selecionados
+            function atualizarServicosDisponiveis() {
+                const selectedCountries = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(cb => cb.value);
+                
+                // Se nenhum país estiver selecionado, desabilitar todos os serviços
+                if (selectedCountries.length === 0) {
+                    document.querySelectorAll('input[name="demandSource"]').forEach(service => {
+                        service.disabled = true;
+                        service.checked = false;
+                        const label = document.querySelector(`label[for="${service.id}"]`);
+                        if (label) {
+                            label.classList.add('opacity-50');
+                            label.style.cursor = 'not-allowed';
+                        }
+                    });
+                    return;
+                }
+
+                // Calcular interseção de serviços disponíveis para todos os países selecionados
+                let availableServices = null;
+                selectedCountries.forEach(country => {
+                    const servicesForCountry = countryServiceMap[country] || [];
+                    if (availableServices === null) {
+                        availableServices = new Set(servicesForCountry);
+                    } else {
+                        // Interseção: manter apenas serviços que estão disponíveis em todos os países selecionados
+                        availableServices = new Set([...availableServices].filter(s => servicesForCountry.includes(s)));
+                    }
+                });
+
+                // Atualizar estado de cada serviço
+                document.querySelectorAll('input[name="demandSource"]').forEach(service => {
+                    const isAvailable = availableServices.has(service.value);
+                    service.disabled = !isAvailable;
+                    
+                    // Se o serviço não está mais disponível e estava selecionado, desmarcá-lo
+                    if (!isAvailable && service.checked) {
+                        service.checked = false;
+                    }
+                    
+                    const label = document.querySelector(`label[for="${service.id}"]`);
+                    if (label) {
+                        if (isAvailable) {
+                            label.classList.remove('opacity-50');
+                            label.style.cursor = 'pointer';
+                        } else {
+                            label.classList.add('opacity-50');
+                            label.style.cursor = 'not-allowed';
+                        }
+                    }
+                });
+            }
+
+            // Adicionar event listeners nos checkboxes de países
+            document.querySelectorAll('input[name="country"]').forEach(countryCheckbox => {
+                countryCheckbox.addEventListener('change', atualizarServicosDisponiveis);
+            });
+
+            // Inicializar: desabilitar todos os serviços até que um país seja selecionado
+            atualizarServicosDisponiveis();
+
             // --- Seleção principal (single) ---
             let selectedFeature = '';
             function renderFeatureModalOptions(filter = '') {
@@ -1082,12 +1154,13 @@
 
                 // Formatação da data
                 const dataAtual = new Date();
-                const dataFormatada = dataAtual.toLocaleDateString('en-US', {
+                const dataFormatada = dataAtual.toLocaleString('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric',
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    hour12: false
                 });
 
                 let formatted = '';
@@ -1540,6 +1613,9 @@ Created by ${nome} on ${dataFormatada}`;
                 gerarButton.disabled = false;
                 gerarButton.innerHTML = '<i class="bi bi-hammer me-2"></i>Generate Work Item';
                 clearButton.style.display = 'none';
+                
+                // Atualizar serviços disponíveis após limpar países
+                atualizarServicosDisponiveis();
                 
                 // Scroll para o topo
                 window.scrollTo({ top: 0, behavior: 'smooth' });

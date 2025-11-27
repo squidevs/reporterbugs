@@ -784,6 +784,78 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
+            // --- Validação de Serviços por País ---
+            // Mapeamento de países para serviços disponíveis
+            const countryServiceMap = {
+                'AR': ['NextSolutions', 'LênioLabs', 'BackOffice'], // Argentina: apenas NextSolutions
+                'LT': ['SunDevs', 'LênioLabs', 'BackOffice'],      // Outros países: SunDevs
+                'BO': ['SunDevs', 'LênioLabs', 'BackOffice'],
+                'CL': ['SunDevs', 'LênioLabs', 'BackOffice'],
+                'PE': ['SunDevs', 'LênioLabs', 'BackOffice'],
+                'PY': ['SunDevs', 'LênioLabs', 'BackOffice']
+            };
+
+            // Função para atualizar serviços disponíveis baseado nos países selecionados
+            function atualizarServicosDisponiveis() {
+                const selectedCountries = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(cb => cb.value);
+                
+                // Se nenhum país estiver selecionado, desabilitar todos os serviços
+                if (selectedCountries.length === 0) {
+                    document.querySelectorAll('input[name="demandSource"]').forEach(service => {
+                        service.disabled = true;
+                        service.checked = false;
+                        const label = document.querySelector(`label[for="${service.id}"]`);
+                        if (label) {
+                            label.classList.add('opacity-50');
+                            label.style.cursor = 'not-allowed';
+                        }
+                    });
+                    return;
+                }
+
+                // Calcular interseção de serviços disponíveis para todos os países selecionados
+                let availableServices = null;
+                selectedCountries.forEach(country => {
+                    const servicesForCountry = countryServiceMap[country] || [];
+                    if (availableServices === null) {
+                        availableServices = new Set(servicesForCountry);
+                    } else {
+                        // Interseção: manter apenas serviços que estão disponíveis em todos os países selecionados
+                        availableServices = new Set([...availableServices].filter(s => servicesForCountry.includes(s)));
+                    }
+                });
+
+                // Atualizar estado de cada serviço
+                document.querySelectorAll('input[name="demandSource"]').forEach(service => {
+                    const isAvailable = availableServices.has(service.value);
+                    service.disabled = !isAvailable;
+                    
+                    // Se o serviço não está mais disponível e estava selecionado, desmarcá-lo
+                    if (!isAvailable && service.checked) {
+                        service.checked = false;
+                    }
+                    
+                    const label = document.querySelector(`label[for="${service.id}"]`);
+                    if (label) {
+                        if (isAvailable) {
+                            label.classList.remove('opacity-50');
+                            label.style.cursor = 'pointer';
+                        } else {
+                            label.classList.add('opacity-50');
+                            label.style.cursor = 'not-allowed';
+                        }
+                    }
+                });
+            }
+
+            // Adicionar event listeners nos checkboxes de países
+            document.querySelectorAll('input[name="country"]').forEach(countryCheckbox => {
+                countryCheckbox.addEventListener('change', atualizarServicosDisponiveis);
+            });
+
+            // Inicializar: desabilitar todos os serviços até que um país seja selecionado
+            atualizarServicosDisponiveis();
+
             // --- Seleção principal (single) ---
             let selectedFeature = '';
             function renderFeatureModalOptions(filter = '') {
@@ -1180,12 +1252,13 @@
 
                 // Formatação da data
                 const dataAtual = new Date();
-                const dataFormatada = dataAtual.toLocaleDateString('en-US', {
+                const dataFormatada = dataAtual.toLocaleString('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric',
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    hour12: false
                 });
 
                 let formatted = '';
@@ -1666,6 +1739,9 @@ Created by ${nome} on ${dataFormatada}`;
                 gerarButton.innerHTML = '<i class="bi bi-hammer me-2"></i>Generate Work Item';
                 clearButton.style.display = 'none';
                 
+                // Atualizar serviços disponíveis após limpar países
+                atualizarServicosDisponiveis();
+                
                 // Scroll para o topo
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -1743,6 +1819,11 @@ Created by ${nome} on ${dataFormatada}`;
                         // Depois marcar os selecionados
                         const demandSourceArray = Array.isArray(dados.demandSource) ? dados.demandSource : [dados.demandSource];
                         demandSourceArray.forEach(source => {
+                            // Corrigir "SundDevs" para "SunDevs" (typo comum)
+                            if (source === 'SundDevs') {
+                                source = 'SunDevs';
+                                console.warn('Corrigido "SundDevs" para "SunDevs"');
+                            }
                             const demandSourceEl = document.getElementById(source);
                             if (demandSourceEl) {
                                 demandSourceEl.checked = true;
@@ -1811,6 +1892,9 @@ Created by ${nome} on ${dataFormatada}`;
                             }
                         });
                     }
+                    
+                    // Atualizar serviços disponíveis após preencher países
+                    atualizarServicosDisponiveis();
 
                     // Work Item - IMPORTANTE: fazer isso primeiro para mostrar os campos corretos
                     if (dados.workitem) {
@@ -1837,142 +1921,177 @@ Created by ${nome} on ${dataFormatada}`;
 
             // Função auxiliar para preencher campos específicos de BUG e Defect
             function preencherCamposEspecificos(dados) {
-                // Campos de BUG
-                if (dados.env && Array.isArray(dados.env)) {
-                    document.querySelectorAll('input[name="env"]').forEach(cb => cb.checked = false);
-                    dados.env.forEach(env => {
-                        const cb = document.getElementById(env);
-                        if (cb) cb.checked = true;
-                    });
-                }
+                // Detectar tipo de workitem
+                const workitemType = dados.workitem || '';
+                const isDefect = workitemType === 'Defect' || workitemType === 'DEFECT';
+                
+                // Mapeamento de userType comum para IDs corretos
+                const userTypeMap = {
+                    'Cinemark Club Member': 'cine fan or club',
+                    'Cine Fan': 'cine fan or club',
+                    'Cine Fan/Club': 'cine fan or club',
+                    'Cine Fan Plus': 'cine fan or club plus',
+                    'Cine Fan/Club Plus': 'cine fan or club plus',
+                    'Cine Fan Black': 'cine fan or club black',
+                    'Cine Fan/Club Black': 'cine fan or club black',
+                    'Comum': 'Comum',
+                    'Common': 'Comum',
+                    'Employee': 'employee',
+                    'YPF': 'YPF'
+                };
+                
+                // Se for DEFECT, verificar se tem campos específicos de DEFECT ou usar campos de BUG como fallback
+                if (isDefect) {
+                    // Tentar campos específicos de DEFECT primeiro
+                    const envDefect = dados.envDefect || dados.env;
+                    if (envDefect && Array.isArray(envDefect)) {
+                        document.querySelectorAll('input[name="envDefect"]').forEach(cb => cb.checked = false);
+                        envDefect.forEach(env => {
+                            const cb = document.getElementById(env + 'Defect');
+                            if (cb) cb.checked = true;
+                        });
+                    }
 
-                const prodRepro = document.getElementById('prodRepro');
-                if (prodRepro) {
-                    prodRepro.checked = dados.prodRepro === true || dados.prodRepro === 'true';
-                    prodRepro.dispatchEvent(new Event('change'));
-                }
+                    const prodReproDefect = document.getElementById('prodReproDefect');
+                    if (prodReproDefect) {
+                        const value = dados.prodReproDefect !== undefined ? dados.prodReproDefect : dados.prodRepro;
+                        prodReproDefect.checked = value === true || value === 'true';
+                        prodReproDefect.dispatchEvent(new Event('change'));
+                    }
 
-                const context = document.getElementById('context');
-                if (context) context.value = dados.context || '';
+                    const contextDefect = document.getElementById('contextDefect');
+                    if (contextDefect) contextDefect.value = (dados.contextDefect || dados.context) || '';
 
-                const reproSteps = document.getElementById('reproSteps');
-                if (reproSteps) reproSteps.value = dados.reproSteps || '';
+                    const reproStepsDefect = document.getElementById('reproStepsDefect');
+                    if (reproStepsDefect) reproStepsDefect.value = (dados.reproStepsDefect || dados.reproSteps) || '';
 
-                const cine = document.getElementById('cine');
-                if (cine) cine.value = dados.cine || '';
+                    const cineDefect = document.getElementById('cineDefect');
+                    if (cineDefect) cineDefect.value = (dados.cineDefect || dados.cine) || '';
 
-                const user = document.getElementById('user');
-                if (user) user.value = dados.user || '';
+                    const userDefect = document.getElementById('userDefect');
+                    if (userDefect) userDefect.value = (dados.userDefect || dados.user) || '';
 
-                const password = document.getElementById('password');
-                if (password) password.value = dados.password || '';
+                    const passwordDefect = document.getElementById('passwordDefect');
+                    if (passwordDefect) passwordDefect.value = (dados.passwordDefect || dados.password) || '';
 
-                const businessRule = document.getElementById('businessRule');
-                if (businessRule) businessRule.value = dados.businessRule || '';
+                    const businessRuleDefect = document.getElementById('businessRuleDefect');
+                    if (businessRuleDefect) businessRuleDefect.value = (dados.businessRuleDefect || dados.businessRule) || '';
 
-                const related = document.getElementById('related');
-                if (related) related.value = dados.related || '';
+                    const relatedDefect = document.getElementById('relatedDefect');
+                    if (relatedDefect) relatedDefect.value = (dados.relatedDefect || dados.related) || '';
 
-                const linkFigma = document.getElementById('linkFigma');
-                if (linkFigma) linkFigma.value = dados.linkFigma || '';
+                    const linkFigmaDefect = document.getElementById('linkFigmaDefect');
+                    if (linkFigmaDefect) linkFigmaDefect.value = (dados.linkFigmaDefect || dados.linkFigma) || '';
 
-                if (dados.breakpoint && Array.isArray(dados.breakpoint)) {
-                    document.querySelectorAll('input[name="breakpoint"]').forEach(cb => cb.checked = false);
-                    dados.breakpoint.forEach(bp => {
-                        const cb = document.getElementById(bp);
-                        if (cb) cb.checked = true;
-                    });
-                }
+                    const breakpointDefect = dados.breakpointDefect || dados.breakpoint;
+                    if (breakpointDefect && Array.isArray(breakpointDefect)) {
+                        document.querySelectorAll('input[name="breakpointDefect"]').forEach(cb => cb.checked = false);
+                        breakpointDefect.forEach(bp => {
+                            // Tentar com e sem "Defect" no ID
+                            let cb = document.getElementById(bp);
+                            if (!cb) cb = document.getElementById(bp + 'Defect');
+                            if (!cb && bp.includes('px')) {
+                                // Tentar formatos como "1280pxDefect"
+                                cb = document.getElementById(bp.replace('px', 'pxDefect'));
+                            }
+                            if (cb) cb.checked = true;
+                        });
+                    }
 
-                if (dados.userType && Array.isArray(dados.userType)) {
-                    document.querySelectorAll('input[name="userType"]').forEach(cb => cb.checked = false);
-                    dados.userType.forEach(ut => {
-                        // Tentar encontrar pelo ID exato
-                        let cb = document.getElementById(ut);
-                        if (!cb) {
-                            // Tentar encontrar pelo name e value
-                            cb = Array.from(document.querySelectorAll('input[name="userType"]')).find(
-                                input => input.id === ut || input.value === ut
-                            );
-                        }
-                        if (cb) {
-                            cb.checked = true;
-                            cb.dispatchEvent(new Event('change'));
-                        } else {
-                            console.warn('UserType não encontrado:', ut);
-                        }
-                    });
-                }
+                    const userTypeDefect = dados.userTypeDefect || dados.userType;
+                    if (userTypeDefect && Array.isArray(userTypeDefect)) {
+                        document.querySelectorAll('input[name="userTypeDefect"]').forEach(cb => cb.checked = false);
+                        userTypeDefect.forEach(ut => {
+                            // Mapear nome comum para ID
+                            const mappedUt = userTypeMap[ut] || ut;
+                            // Tentar encontrar pelo ID com e sem "Defect"
+                            let cb = document.getElementById(mappedUt);
+                            if (!cb && !mappedUt.endsWith('Defect')) {
+                                cb = document.getElementById(mappedUt + 'Defect');
+                            }
+                            if (!cb) {
+                                // Tentar encontrar pelo name e value
+                                cb = Array.from(document.querySelectorAll('input[name="userTypeDefect"]')).find(
+                                    input => input.id === mappedUt || input.id === mappedUt + 'Defect' || input.value === mappedUt
+                                );
+                            }
+                            if (cb) {
+                                cb.checked = true;
+                                cb.dispatchEvent(new Event('change'));
+                            } else {
+                                console.warn('UserTypeDefect não encontrado:', ut, '(tentou mapear para:', mappedUt + ')');
+                            }
+                        });
+                    }
+                } else {
+                    // Campos de BUG
+                    if (dados.env && Array.isArray(dados.env)) {
+                        document.querySelectorAll('input[name="env"]').forEach(cb => cb.checked = false);
+                        dados.env.forEach(env => {
+                            const cb = document.getElementById(env);
+                            if (cb) cb.checked = true;
+                        });
+                    }
 
-                // Campos de Defect
-                if (dados.envDefect && Array.isArray(dados.envDefect)) {
-                    document.querySelectorAll('input[name="envDefect"]').forEach(cb => cb.checked = false);
-                    dados.envDefect.forEach(env => {
-                        const cb = document.getElementById(env + 'Defect');
-                        if (cb) cb.checked = true;
-                    });
-                }
+                    const prodRepro = document.getElementById('prodRepro');
+                    if (prodRepro) {
+                        prodRepro.checked = dados.prodRepro === true || dados.prodRepro === 'true';
+                        prodRepro.dispatchEvent(new Event('change'));
+                    }
 
-                const prodReproDefect = document.getElementById('prodReproDefect');
-                if (prodReproDefect) {
-                    prodReproDefect.checked = dados.prodReproDefect === true || dados.prodReproDefect === 'true';
-                    prodReproDefect.dispatchEvent(new Event('change'));
-                }
+                    const context = document.getElementById('context');
+                    if (context) context.value = dados.context || '';
 
-                const contextDefect = document.getElementById('contextDefect');
-                if (contextDefect) contextDefect.value = dados.contextDefect || '';
+                    const reproSteps = document.getElementById('reproSteps');
+                    if (reproSteps) reproSteps.value = dados.reproSteps || '';
 
-                const reproStepsDefect = document.getElementById('reproStepsDefect');
-                if (reproStepsDefect) reproStepsDefect.value = dados.reproStepsDefect || '';
+                    const cine = document.getElementById('cine');
+                    if (cine) cine.value = dados.cine || '';
 
-                const cineDefect = document.getElementById('cineDefect');
-                if (cineDefect) cineDefect.value = dados.cineDefect || '';
+                    const user = document.getElementById('user');
+                    if (user) user.value = dados.user || '';
 
-                const userDefect = document.getElementById('userDefect');
-                if (userDefect) userDefect.value = dados.userDefect || '';
+                    const password = document.getElementById('password');
+                    if (password) password.value = dados.password || '';
 
-                const passwordDefect = document.getElementById('passwordDefect');
-                if (passwordDefect) passwordDefect.value = dados.passwordDefect || '';
+                    const businessRule = document.getElementById('businessRule');
+                    if (businessRule) businessRule.value = dados.businessRule || '';
 
-                const businessRuleDefect = document.getElementById('businessRuleDefect');
-                if (businessRuleDefect) businessRuleDefect.value = dados.businessRuleDefect || '';
+                    const related = document.getElementById('related');
+                    if (related) related.value = dados.related || '';
 
-                const relatedDefect = document.getElementById('relatedDefect');
-                if (relatedDefect) relatedDefect.value = dados.relatedDefect || '';
+                    const linkFigma = document.getElementById('linkFigma');
+                    if (linkFigma) linkFigma.value = dados.linkFigma || '';
 
-                const linkFigmaDefect = document.getElementById('linkFigmaDefect');
-                if (linkFigmaDefect) linkFigmaDefect.value = dados.linkFigmaDefect || '';
+                    if (dados.breakpoint && Array.isArray(dados.breakpoint)) {
+                        document.querySelectorAll('input[name="breakpoint"]').forEach(cb => cb.checked = false);
+                        dados.breakpoint.forEach(bp => {
+                            const cb = document.getElementById(bp);
+                            if (cb) cb.checked = true;
+                        });
+                    }
 
-                if (dados.breakpointDefect && Array.isArray(dados.breakpointDefect)) {
-                    document.querySelectorAll('input[name="breakpointDefect"]').forEach(cb => cb.checked = false);
-                    dados.breakpointDefect.forEach(bp => {
-                        const cb = document.getElementById(bp);
-                        if (cb) cb.checked = true;
-                    });
-                }
-
-                if (dados.userTypeDefect && Array.isArray(dados.userTypeDefect)) {
-                    document.querySelectorAll('input[name="userTypeDefect"]').forEach(cb => cb.checked = false);
-                    dados.userTypeDefect.forEach(ut => {
-                        // Os IDs já têm "Defect" no final, então não adicionar novamente
-                        // Mas pode vir sem "Defect" do template, então tentar ambos
-                        let cb = document.getElementById(ut);
-                        if (!cb && !ut.endsWith('Defect')) {
-                            cb = document.getElementById(ut + 'Defect');
-                        }
-                        if (!cb) {
-                            // Tentar encontrar pelo name e value
-                            cb = Array.from(document.querySelectorAll('input[name="userTypeDefect"]')).find(
-                                input => input.id === ut || input.id === ut + 'Defect' || input.value === ut
-                            );
-                        }
-                        if (cb) {
-                            cb.checked = true;
-                            cb.dispatchEvent(new Event('change'));
-                        } else {
-                            console.warn('UserTypeDefect não encontrado:', ut);
-                        }
-                    });
+                    if (dados.userType && Array.isArray(dados.userType)) {
+                        document.querySelectorAll('input[name="userType"]').forEach(cb => cb.checked = false);
+                        dados.userType.forEach(ut => {
+                            // Mapear nome comum para ID
+                            const mappedUt = userTypeMap[ut] || ut;
+                            // Tentar encontrar pelo ID exato
+                            let cb = document.getElementById(mappedUt);
+                            if (!cb) {
+                                // Tentar encontrar pelo name e value
+                                cb = Array.from(document.querySelectorAll('input[name="userType"]')).find(
+                                    input => input.id === mappedUt || input.value === mappedUt
+                                );
+                            }
+                            if (cb) {
+                                cb.checked = true;
+                                cb.dispatchEvent(new Event('change'));
+                            } else {
+                                console.warn('UserType não encontrado:', ut, '(tentou mapear para:', mappedUt + ')');
+                            }
+                        });
+                    }
                 }
             }
 
