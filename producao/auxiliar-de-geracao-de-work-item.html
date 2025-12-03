@@ -44,75 +44,6 @@
                             <div class="accordion-body">
 
                                 <div class="mb-4">
-                                    <div class="mb-4">
-                                        <label class="form-label" for="demandSource">
-                                            Will this demand be returned directly by the service or come from
-                                            Backoffice? <span class="badge-required">*</span>
-                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                                title="Select the service layer(s) involved (multiple selection allowed)."></i>
-                                        </label>
-                                        <div class="btn-toggle-group" role="group" id="demandSourceGroup">
-                                            <input type="checkbox" class="btn-check" name="demandSource" id="NextSolutions"
-                                                value="NextSolutions" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="NextSolutions">NextSolutions</label>
-                                            <input type="checkbox" class="btn-check" name="demandSource" id="SunDevs"
-                                                value="SunDevs" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="SunDevs">SunDevs</label>
-                                            <input type="checkbox" class="btn-check" name="demandSource" id="LênioLabs"
-                                                value="LênioLabs" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="LênioLabs">LênioLabs</label>
-                                            <input type="checkbox" class="btn-check" name="demandSource" id="BackOffice"
-                                                value="BackOffice" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="BackOffice">BackOffice</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label class="form-label" for="backendDocAvailable">
-                                            Backend documentation already available?
-                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                                title="Indicate if the backend documentation is already available."></i>
-                                        </label>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="backendDocAvailable" name="backendDocAvailable">
-                                            <label class="form-check-label" for="backendDocAvailable">
-                                                <span id="backendDocAvailableLabel">No</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-4" id="backendDocUrlContainer" style="display: none;">
-                                        <label class="form-label" for="backendDocUrl">
-                                            Enter URL/Link to document (Azure Wiki or other) <span
-                                                class="badge-required">*</span>
-                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                                title="Enter the URL or link to the backend documentation."></i>
-                                        </label>
-                                        <input type="url" id="backendDocUrl" name="backendDocUrl" class="form-control"
-                                            placeholder="https://dev.azure.com/... or https://wiki.example.com/...">
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label class="form-label" for="titulo">
-                                            Title <span class="badge-required">*</span>
-                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                                title="Enter a clear and objective title for the work item."></i>
-                                        </label>
-                                        <input type="text" id="titulo" name="titulo" class="form-control"
-                                            placeholder="Enter the work item title...">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label" for="solicitante">
-                                            Reported by <span class="badge-required">*</span>
-                                            <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                                title="Enter your name"></i>
-                                        </label>
-                                        <input type="text" id="nome" name="nome" class="form-control"
-                                            placeholder="Enter your name...">
-                                    </div>
-
-
                                     <label class="form-label" for="country">
                                         Select country <span class="badge-required">*</span>
                                         <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
@@ -162,6 +93,76 @@
                                             PY
                                         </label>
                                     </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="demandSource">
+                                        Which partner is this request related to? <span class="badge-required">*</span>
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Select the partner(s) involved (multiple selection allowed)."></i>
+                                    </label>
+                                    <div class="btn-toggle-group" role="group" id="demandSourceGroup">
+                                        <input type="checkbox" class="btn-check" name="demandSource" id="NextSolutions"
+                                            value="NextSolutions" autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="NextSolutions">NextSolutions</label>
+                                        <input type="checkbox" class="btn-check" name="demandSource" id="SunDevs"
+                                            value="SunDevs" autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="SunDevs">SunDevs</label>
+                                        <input type="checkbox" class="btn-check" name="demandSource" id="LênioLabs"
+                                            value="LênioLabs" autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="LênioLabs">LênioLabs</label>
+                                        <input type="checkbox" class="btn-check" name="demandSource" id="BackOffice"
+                                            value="BackOffice" autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="BackOffice">BackOffice</label>
+                                        <input type="checkbox" class="btn-check" name="demandSource" id="Frontend"
+                                            value="Frontend" autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="Frontend">Frontend</label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="backendDocAvailable">
+                                        Backend documentation already available?
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Indicate if the backend documentation is already available."></i>
+                                    </label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="backendDocAvailable" name="backendDocAvailable">
+                                        <label class="form-check-label" for="backendDocAvailable">
+                                            <span id="backendDocAvailableLabel">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4" id="backendDocUrlContainer" style="display: none;">
+                                    <label class="form-label" for="backendDocUrl">
+                                        Enter URL/Link to document (Azure Wiki or other) <span
+                                            class="badge-required">*</span>
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Enter the URL or link to the backend documentation."></i>
+                                    </label>
+                                    <input type="url" id="backendDocUrl" name="backendDocUrl" class="form-control"
+                                        placeholder="https://dev.azure.com/... or https://wiki.example.com/...">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="titulo">
+                                        Title <span class="badge-required">*</span>
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Enter a clear and objective title for the work item."></i>
+                                    </label>
+                                    <input type="text" id="titulo" name="titulo" class="form-control"
+                                        placeholder="Enter the work item title...">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="solicitante">
+                                        Reported by <span class="badge-required">*</span>
+                                        <i class="bi bi-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Enter your name"></i>
+                                    </label>
+                                    <input type="text" id="nome" name="nome" class="form-control"
+                                        placeholder="Enter your name...">
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label" for="featureModalBtn">
@@ -688,12 +689,12 @@
             // --- Validação de Serviços por País ---
             // Mapeamento de países para serviços disponíveis
             const countryServiceMap = {
-                'AR': ['NextSolutions', 'LênioLabs', 'BackOffice'], // Argentina: apenas NextSolutions
-                'LT': ['SunDevs', 'LênioLabs', 'BackOffice'],      // Outros países: SunDevs
-                'BO': ['SunDevs', 'LênioLabs', 'BackOffice'],
-                'CL': ['SunDevs', 'LênioLabs', 'BackOffice'],
-                'PE': ['SunDevs', 'LênioLabs', 'BackOffice'],
-                'PY': ['SunDevs', 'LênioLabs', 'BackOffice']
+                'AR': ['NextSolutions', 'LênioLabs', 'BackOffice', 'Frontend'], // Argentina: apenas NextSolutions
+                'LT': ['NextSolutions','SunDevs', 'LênioLabs', 'BackOffice', 'Frontend'],      // Outros países: SunDevs
+                'BO': ['SunDevs', 'LênioLabs', 'BackOffice', 'Frontend'],
+                'CL': ['SunDevs', 'LênioLabs', 'BackOffice', 'Frontend'],
+                'PE': ['SunDevs', 'LênioLabs', 'BackOffice', 'Frontend'],
+                'PY': ['SunDevs', 'LênioLabs', 'BackOffice', 'Frontend']
             };
 
             // Função para atualizar serviços disponíveis baseado nos países selecionados
@@ -714,17 +715,21 @@
                     return;
                 }
 
-                // Calcular interseção de serviços disponíveis para todos os países selecionados
-                let availableServices = null;
-                selectedCountries.forEach(country => {
-                    const servicesForCountry = countryServiceMap[country] || [];
-                    if (availableServices === null) {
-                        availableServices = new Set(servicesForCountry);
-                    } else {
-                        // Interseção: manter apenas serviços que estão disponíveis em todos os países selecionados
-                        availableServices = new Set([...availableServices].filter(s => servicesForCountry.includes(s)));
-                    }
-                });
+                // Se mais de 1 país for selecionado, liberar todos os partners
+                if (selectedCountries.length > 1) {
+                    document.querySelectorAll('input[name="demandSource"]').forEach(service => {
+                        service.disabled = false;
+                        const label = document.querySelector(`label[for="${service.id}"]`);
+                        if (label) {
+                            label.classList.remove('opacity-50');
+                            label.style.cursor = 'pointer';
+                        }
+                    });
+                    return;
+                }
+
+                // Se apenas 1 país for selecionado, aplicar regras de disponibilidade
+                const availableServices = new Set(countryServiceMap[selectedCountries[0]] || []);
 
                 // Atualizar estado de cada serviço
                 document.querySelectorAll('input[name="demandSource"]').forEach(service => {
@@ -1116,7 +1121,7 @@
 
                 // Validar campos obrigatórios básicos
                 if (demandSources.length === 0) {
-                    pendencias.push('Will this demand be returned directly by the service or come from Backoffice?');
+                    pendencias.push('Which partner is this request related to?');
                     document.querySelector('label[for="demandSource"]')?.classList.add('campo-pendente-label');
                 }
                 if (backendDocAvailable && !backendDocUrl) {
